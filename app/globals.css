@@ -3,8 +3,13 @@
 @tailwind utilities;
 
 #wheel{
+  max-height: 70vh;
 }
 #canvas{
   left:50%;
-  max-width:100%;
+  max-width:95vw;
+  max-height: 80%;
+}
+canvas{
+  max-height: 80%;
 }

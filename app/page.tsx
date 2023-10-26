@@ -1,5 +1,5 @@
 'use client'
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Wheel from '@components/Wheel';
 import { participants as sampleParticipants } from '@data/sample';
 
@@ -13,6 +13,12 @@ export default function Home() {
   const [participant, setParticipant] =useState<IndexState['participant']>('')
   const [participants, setParticipants] = useState<IndexState['participants']>(sampleParticipants);
   const [winnerToBeDeclared, setWinnerToBeDeclared] = useState<IndexState['winnerToBeDeclared']>('')
+
+  const fetchParticipants = () => {
+    fetch('/api/all').then().catch((err)=>console.log(err))
+  }
+
+  useEffect(()=>fetchParticipants(),[])
   console.log(participant, ' is participant')
   console.log(participants, ' are participants')
 
@@ -54,7 +60,7 @@ export default function Home() {
       {winnerToBeDeclared ?
        <h1 className='text-bold text-3xl text-green-900'>{`Congratulations ${winnerToBeDeclared} `}</h1>
        :
-       <></>}
+       <>Result will be here</>}
 
     </div>
   );
