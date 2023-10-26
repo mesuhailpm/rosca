@@ -8,7 +8,7 @@ interface WheelProps {
   segColors?: Prize[];
   onFinished?: (winner: string) => void;
 }
-type Segment = string | {lable: string, value?: string}
+type Segment = string | {label: string, value?: string}
 type Prize = string | { color: string}
 
 const Wheel: React.FC<WheelProps> = ({ segments, segColors, onFinished }) => {
