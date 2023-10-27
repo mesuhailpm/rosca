@@ -19,8 +19,8 @@ export default function Home() {
   }
 
   useEffect(()=>fetchParticipants(),[])
-  console.log(participant, ' is participant')
-  console.log(participants, ' are participants')
+  // console.log(participant, ' is participant')
+  // console.log(participants, ' are participants')
 
   const addParticipant = () => {
     setParticipants([...participants, participant]);
