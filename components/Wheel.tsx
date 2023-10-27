@@ -12,7 +12,7 @@ type Segment = string | {label: string, value?: string}
 type Prize = string | { color: string}
 
 const Wheel: React.FC<WheelProps> = ({ segments, segColors, onFinished }) => {
-  console.log(segments, 'are participan the wheels recieved')
+  // console.log(segments, 'are participan the wheels recieved')
   return (
     <WheelComponent
       segments={segments}
