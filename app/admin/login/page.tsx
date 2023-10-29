@@ -18,7 +18,6 @@ const AdminLogin = () => {
     try {
       const response = await fetch('/api/login',{method: 'POST', body: JSON.stringify(formData)})
       const {message,token, userName} = await response.json();
-      alert(message+ token+userName);
       
       if(response.ok) {
         localStorage.setItem('userObject', JSON.stringify({token, userName}));
