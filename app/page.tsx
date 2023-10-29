@@ -1,10 +1,8 @@
 "use client";
 import React, { useEffect, useState } from "react";
-import Wheel from "@components/Wheel";
-import { participants as sampleParticipants } from "@data/sample";
 import Link from "next/link";
 
-import {fetchAllParticipants} from '@actions'
+import { fetchAllParticipants } from '@actions'
 
 export default function Home() {
   interface Participant {
@@ -18,12 +16,12 @@ export default function Home() {
     winnerToBeDeclared: string;
   }
 
-  const [participant, setParticipant] =useState<IndexState['participant']>('')
+  // const [participant, setParticipant] = useState<IndexState['participant']>('')
   const [participants, setParticipants] = useState<IndexState["participants"]>(
     []
   );
 
-  
+
   // const [winnerToBeDeclared, setWinnerToBeDeclared] = useState<IndexState['winnerToBeDeclared']>('')
 
   // console.log(participant, ' is participant')
@@ -55,7 +53,11 @@ export default function Home() {
   //   }
   // };
   useEffect(() => {
-  fetchAllParticipants();
+    (async () => {
+      const participants = await fetchAllParticipants();
+      setParticipants(participants);     
+    })()
+
   }, []);
 
   return (
@@ -94,7 +96,7 @@ export default function Home() {
         Register as an admin
       </Link>
       <h1 className="text-blue-800 font-bold text-2xl pt-4">Prticipants</h1>
-    
+
       {participants.length > 0 && (
         <table className="self-start m-4 bg-[#96D4D4] border border-black table-auto">
           <thead>
@@ -106,7 +108,7 @@ export default function Home() {
           </thead>
           <tbody>
             {participants.map((participantObject, index) => (
-              <tr key={index} className={`${index % 2 === 1? '':'bg-green-300'}`}>
+              <tr key={index} className={`${index % 2 === 1 ? '' : 'bg-green-300'}`}>
                 <td>{index}</td>
                 <td>{participantObject.name}</td>
                 <td>{participantObject.claimed}</td>

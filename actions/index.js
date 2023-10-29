@@ -3,8 +3,8 @@ export const fetchAllParticipants = async () => {
     try {
       const response = await fetch("api/participants/all");
       const data = await response.json();
-      
-    //   setParticipants(data.allParticipants);
+      console.log( data.allParticipants, ' are all participants');
+      return data.allParticipants
     } catch (error) {
       console.log(error);
     }
