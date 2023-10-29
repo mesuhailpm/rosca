@@ -13,3 +13,8 @@
 canvas{
   max-height: 80%;
 }
+td,th,table{
+  border: 1px solid white;
+  border-collapse: collapse;
+  padding: 10px;
+}
