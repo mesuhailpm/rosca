@@ -13,8 +13,15 @@
 canvas{
   max-height: 80%;
 }
-td,th,table{
+td,th,table,tr{
   border: 1px solid white;
   border-collapse: collapse;
   padding: 10px;
+}
+input,select{
+  padding: 5px;
+  border-radius: 4px;
+}
+.modal{
+  background-color: rgba(rgb(25, 23, 23), rgb(41, 47, 41), rgb(32, 32, 43)) !important;
 }

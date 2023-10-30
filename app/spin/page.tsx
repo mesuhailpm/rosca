@@ -1,19 +1,40 @@
 'use client'
-import React, { useEffect, useState } from 'react'
+import React, { ChangeEvent, FormEvent, useEffect, useState } from 'react'
 import Wheel from '@components/Wheel'
 import { participants as sampleParticipants } from '@data/sample'
 import { fetchAllParticipants } from '@actions'
+import '../../app/globals.css'
+import MemberForm from '@components/MemberForm'
 const Spin = () => {
   const [participant, setParticipant] = useState<IndexState['participant']>('')
   const [participantNames, setParticipantNames] = useState<IndexState['participantNames']>([])
   const [participants, setParticipants] = useState<IndexState['participants']>([]); // array of objects
   const [winnerToBeDeclared, setWinnerToBeDeclared] = useState<IndexState['winnerToBeDeclared']>('')
   const [loading, setLoading] = useState<IndexState['loading']>(true)
-  console.log(participants);
-  console.log(participantNames);
+  const [showWheel, setShowWheel] = useState(false)
+  const [formData, setFormData] = useState({
+    serial:'',
+    name:'',
+    claimed:false
+  })
+  // console.log(participants);
+  const [showForm, setShowForm] = useState(false)
+  // console.log(participantNames);
+
+  const handleChange = (e:ChangeEvent<HTMLInputElement>) => {
+    setFormData((prevFormData) => ({
+      ...prevFormData,
+      [e.target.name]: e.target.value
+    }) )
+  }
+  const hanldeAdd =() => {
+    setShowForm(true)
+  }
+  const handleSubmit = (e:FormEvent<HTMLFormElement>) => {
+    e.preventDefault()
 
 
-
+  }
 
   interface participant {
     name: string,
@@ -78,10 +99,52 @@ const Spin = () => {
   //   console.log(participants)
 
   // }, [participants])
-
-
-
   return (
+    <>{participants.length ?
+      (<table className='bg-slate-500'>
+        <thead>
+          <tr>
+            <td>Serial Number</td>
+            <td>Name</td>
+            <td>Status</td>
+            <td colSpan={2}>Action</td>
+          </tr>
+        </thead>
+        <tbody>
+          {participants.map((participant, index) => (
+            <tr>
+              <td>{participant.serial}</td>
+              <td>{participant.name}</td>
+              <td>{participant.claimed}</td>
+              <td><button>Edit</button></td>
+              <td><button>Delete</button></td>
+            </tr>
+          ))}
+          <tr><td colSpan={5} align='center'><button>Add a member</button></td></tr>
+        </tbody>
+
+      </table>)
+      : (
+        <h1>No Members</h1>
+
+      )}
+      <div 
+      className='absolute w-screen h-screen modal dbg-slate-400 top-0 flex items-center justify-center'
+      > 
+      <MemberForm 
+        handleChange={handleChange}
+        handleSubmit={handleSubmit}
+        title={'Add'}
+        formData={formData}
+
+        />
+      </div>
+
+    </>
+  )
+
+
+  if (!showWheel) return (
     <>
       {loading ? (<>Loading...</>)
         :
