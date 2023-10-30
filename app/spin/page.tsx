@@ -12,11 +12,27 @@ const Spin = () => {
   const [winnerToBeDeclared, setWinnerToBeDeclared] = useState<IndexState['winnerToBeDeclared']>('')
   const [loading, setLoading] = useState<IndexState['loading']>(true)
   const [showWheel, setShowWheel] = useState(false)
+  const [showModal, setShowModal] = useState(false)
+  const toggleModal = () => {
+    setShowModal((prev)=>!prev)
+
+  }
+
   const [formData, setFormData] = useState({
     serial:'',
     name:'',
     claimed:false
   })
+
+  const handleEdit = async (serial, name, claimed) => {
+    await setFormData({
+      serial: serial,
+      name: name,
+      claimed: claimed
+
+    })
+    toggleModal()
+  }
   // console.log(participants);
   const [showForm, setShowForm] = useState(false)
   // console.log(participantNames);
@@ -111,16 +127,19 @@ const Spin = () => {
           </tr>
         </thead>
         <tbody>
-          {participants.map((participant, index) => (
-            <tr>
-              <td>{participant.serial}</td>
-              <td>{participant.name}</td>
-              <td>{participant.claimed}</td>
-              <td><button>Edit</button></td>
+          {participants.map((participant, index) =>
+            { const {serial, name, claimed} = participant
+              return(
+            <tr key={index}>
+              <td>{serial}</td>
+              <td>{name}</td>
+              <td>{claimed}</td>
+              <td><button onClick={(serial, name, claimed)=>handleEdit()}>Edit</button></td>
               <td><button>Delete</button></td>
-            </tr>
-          ))}
-          <tr><td colSpan={5} align='center'><button>Add a member</button></td></tr>
+            </tr>) }
+          )
+          }
+          <tr><td colSpan={5} align='center'><button onClick={toggleModal}>Add a member</button></td></tr>
         </tbody>
 
       </table>)
@@ -128,17 +147,21 @@ const Spin = () => {
         <h1>No Members</h1>
 
       )}
-      <div 
+      {showModal && (
+      <div
       className='absolute w-screen h-screen modal dbg-slate-400 top-0 flex items-center justify-center'
-      > 
-      <MemberForm 
+      >
+      <MemberForm
         handleChange={handleChange}
         handleSubmit={handleSubmit}
         title={'Add'}
         formData={formData}
+        toggleModal={toggleModal}
 
         />
       </div>
+        )
+      }
 
     </>
   )
