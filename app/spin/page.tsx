@@ -2,7 +2,7 @@
 import React, { ChangeEvent, FormEvent, useEffect, useState } from 'react'
 import Wheel from '@components/Wheel'
 import { participants as sampleParticipants } from '@data/sample'
-import { fetchAllParticipants } from '@actions'
+import { fetchAllParticipants, addParticipant, updateParticipant } from '@actions'
 import '../../app/globals.css'
 import MemberForm from '@components/MemberForm'
 const Spin = () => {
@@ -13,46 +13,91 @@ const Spin = () => {
   const [loading, setLoading] = useState<IndexState['loading']>(true)
   const [showWheel, setShowWheel] = useState(false)
   const [showModal, setShowModal] = useState(false)
-  const toggleModal = () => {
-    setShowModal((prev)=>!prev)
+  const [action, setAction] = useState('')
+  const edit = 'edit'
+  const add = 'add'
+  const remove = 'remove'
+  const initialFomData: IndexState['formData'] = {
+    _id:'',
+    serial: NaN,
+    name: '',
+    claimed: false
+
+  }
+  const toggleModal = ( action: string) => {
+    setFormData(initialFomData)
+    setAction(action)
+    setShowModal((prev) => !prev)
 
   }
 
-  const [formData, setFormData] = useState({
-    serial:'',
-    name:'',
-    claimed:false
-  })
+  const [formData, setFormData] = useState<IndexState['formData']>(initialFomData)
 
-  const handleEdit = async (serial, name, claimed) => {
-    await setFormData({
-      serial: serial,
-      name: name,
-      claimed: claimed
+  const handleEdit = async (serial: number, name: string, claimed: boolean, action: string, _id:string) => {
+    console.log(serial, name, claimed, ' from handleEdit')
+    toggleModal(action)
+    setFormData({
+      _id,
+      serial,
+      name,
+      claimed
 
     })
-    toggleModal()
   }
-  // console.log(participants);
+  console.log(participants, ' are participants');
   const [showForm, setShowForm] = useState(false)
   // console.log(participantNames);
 
-  const handleChange = (e:ChangeEvent<HTMLInputElement>) => {
+  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     setFormData((prevFormData) => ({
       ...prevFormData,
       [e.target.name]: e.target.value
-    }) )
+    }))
   }
-  const hanldeAdd =() => {
+  const hanldeAdd = () => {
     setShowForm(true)
+    setFormData(initialFomData)
   }
-  const handleSubmit = (e:FormEvent<HTMLFormElement>) => {
+
+  
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>, action: string, _id:string, formData:IndexState['formData']) => {
     e.preventDefault()
+    console.log(action, _id,'is id', formData, ' is formData');
+    try {
+      switch (action) {
+        case edit:
+          console.log('action is edit and the id is ',_id)
+          const dataWithMessage = await updateParticipant(_id, JSON.stringify(formData))
+          console.log('Got updataed data with message',dataWithMessage.data );
+          
+          const updtedArray = participants.map((participant) => {
+            console.log(participant);
+            
+            return participant._id === dataWithMessage.data._id ? dataWithMessage.data : participant
+          })
+          setParticipants(updtedArray)
+
+          break;
+        case add:
+          await addParticipant(formData)
+
+          break
+
+        default:
+          console.log('this is default action');
+          
+          break;
+      }
+    } catch (error) {
+      console.log(error)
+    }
+
 
 
   }
 
   interface participant {
+    _id: string,
     name: string,
     serial: number,
     claimed: boolean,
@@ -64,6 +109,12 @@ const Spin = () => {
     participantNames: string[];
     winnerToBeDeclared: string;
     loading: boolean;
+    formData: {
+      _id:string;
+      serial: number;
+      name: string;
+      claimed: boolean;
+    }
   }
 
   const onFinished = (winner: string) => setWinnerToBeDeclared(winner);
@@ -127,19 +178,20 @@ const Spin = () => {
           </tr>
         </thead>
         <tbody>
-          {participants.map((participant, index) =>
-            { const {serial, name, claimed} = participant
-              return(
-            <tr key={index}>
-              <td>{serial}</td>
-              <td>{name}</td>
-              <td>{claimed}</td>
-              <td><button onClick={(serial, name, claimed)=>handleEdit()}>Edit</button></td>
-              <td><button>Delete</button></td>
-            </tr>) }
+          {participants.map((participant: {_id:string, serial: number, name: string, claimed: boolean }, index) => {
+            const { serial, name, claimed,_id } = participant
+            return (
+              <tr key={index}>
+                <td>{serial}</td>
+                <td>{name}</td>
+                <td>{claimed === true ? 'Yes': 'No'}</td>
+                <td><button onClick={() => handleEdit(serial, name, claimed, edit, _id)}>Edit</button></td>
+                <td><button>Delete</button></td>
+              </tr>)
+          }
           )
           }
-          <tr><td colSpan={5} align='center'><button onClick={toggleModal}>Add a member</button></td></tr>
+          <tr><td colSpan={5} align='center'><button onClick={(e) => toggleModal(add)}>Add a member</button></td></tr>
         </tbody>
 
       </table>)
@@ -148,19 +200,20 @@ const Spin = () => {
 
       )}
       {showModal && (
-      <div
-      className='absolute w-screen h-screen modal dbg-slate-400 top-0 flex items-center justify-center'
-      >
-      <MemberForm
-        handleChange={handleChange}
-        handleSubmit={handleSubmit}
-        title={'Add'}
-        formData={formData}
-        toggleModal={toggleModal}
+        <div
+          className='absolute w-screen h-screen modal dbg-slate-400 top-0 flex items-center justify-center'
+        >
+          <MemberForm
+            handleChange={handleChange}
+            handleSubmit={handleSubmit}
+            title={'Add'}
+            formData={formData}
+            toggleModal={toggleModal}
+            action={action}
 
-        />
-      </div>
-        )
+          />
+        </div>
+      )
       }
 
     </>

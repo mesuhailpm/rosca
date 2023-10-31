@@ -23,5 +23,5 @@ input,select{
   border-radius: 4px;
 }
 .modal{
-  background-color: rgba(18, 30, 51, 0.8) !important;
+  background-color: rgba(18, 30, 51, 0.8);
 }
