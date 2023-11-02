@@ -7,6 +7,7 @@ import '../../app/globals.css'
 import MemberForm from '@components/MemberForm'
 import DeleteModal from '@components/DeleteModal'
 import LoaderSpinner from '@components/Spinner'
+import Confirmation from '@components/Confirmation'
 const Spin = () => {
   // const [participant, setParticipant] = useState<IndexState['participant']>('')
   const [participantNames, setParticipantNames] = useState<IndexState['participantNames']>([])
@@ -19,6 +20,13 @@ const Spin = () => {
   const [showDeleteModal, setShowDeleteModal] = useState(false)
   const [action, setAction] = useState('')
   const [ideToDelete, setIdToDelete] = useState('')
+  const [showConfirmation, setShowCinfirmation] = useState(false);
+  let [confirmationMessage, setconfirmationMessage] = useState({
+    message:'',
+    success: true,
+  })
+  // console.log(responseLoading, ' is loading component');
+
 
   const toggleDeleteModal = () => setShowDeleteModal((prev) => !prev)
 
@@ -32,10 +40,10 @@ const Spin = () => {
     claimed: false
 
   }
-  const toggleModal = (action: string) => {
+  const toggleFormModal = (action: string) => {
     setShowFormModal((prev) => !prev)
     setFormData(initialFomData)
-    setAction(action)
+    if (!showFormModal) { setAction(action) }//setAction when closing modal is causing error ' object can't be react child'
 
   }
 
@@ -43,7 +51,7 @@ const Spin = () => {
 
   const handleEdit = async (serial: number, name: string, claimed: boolean, action: string, _id: string) => {
     console.log(serial, name, claimed, ' from handleEdit')
-    toggleModal(action)
+    toggleFormModal(action)
     setFormData({
       _id,
       serial,
@@ -57,7 +65,7 @@ const Spin = () => {
     setIdToDelete(id)
     toggleDeleteModal()
   }
-  console.log(participants, ' are participants');
+  // console.log(participants, ' are participants');
   const [showForm, setShowForm] = useState(false)
   // console.log(participantNames);
 
@@ -82,7 +90,14 @@ const Spin = () => {
           console.log('action is edit and the id is ', _id)
           setResponseLoading(true)
           const dataWithMessage = await updateParticipant(_id, JSON.stringify(formData))
-          console.log('Got updataed data with message', dataWithMessage.result);
+          setconfirmationMessage({
+            message: dataWithMessage.message,
+            success: true
+          }
+            )
+          console.log(confirmationMessage, ' is confirmationMessage');
+
+          // console.log('Got updataed data with message', dataWithMessage.result);
 
           const updtedArray = participants.map((participant) => {
             // console.log(participant);
@@ -92,29 +107,57 @@ const Spin = () => {
           setParticipants(updtedArray)
           setResponseLoading(false)
 
+
+
           break;
         case add:
+          setResponseLoading(true)
           const dataWIthMessage = await addParticipant(formData)
+          setconfirmationMessage({
+            message: dataWIthMessage.message,
+            success: true
+          })
           const participantCopy = participants
           participantCopy.push(dataWIthMessage.result)
           setParticipants(participantCopy)
+          setResponseLoading(false)
 
-          break
+          break;
 
         case remove:
-          const response = await deleteParticipant(_id)
+          setResponseLoading(true)
+
+          const dataAndMessage = await deleteParticipant(_id)
+          setconfirmationMessage({
+            message: dataAndMessage.message,
+            success: true
+          })
+          const deletedParticipant = dataAndMessage.result
+          if(deletedParticipant === undefined) throw new Error()
+
+
           setParticipants((prev) => {
-            return prev.filter((participant) => participant._id !== _id)
+            return prev.filter((participant) => participant._id !== deletedParticipant._id)
           })
           toggleDeleteModal()
+          setResponseLoading(false)
+          break
 
         default:
+          setResponseLoading(false)
           console.log('this is default action');
 
           break;
       }
     } catch (error) {
-      console.log(error)
+      
+      console.log(error, ' hanlde sumit failed nwith confirm message object',confirmationMessage)
+
+      setResponseLoading(false)
+      setconfirmationMessage((prev)=>(
+        {...prev, success: false}
+      ))
+
 
     }
 
@@ -178,7 +221,30 @@ const Spin = () => {
   }, [])
 
   useEffect(() => {
+    if (confirmationMessage.message) {
+      console.log(confirmationMessage);
+      
+      setShowCinfirmation(true);
+      setShowDeleteModal(false)
+      setShowFormModal(false)
+      setTimeout(() => {
+        setShowCinfirmation(false);
+        setconfirmationMessage ({
+          message: '',
+          success: false
+        })
+      }, 2000)
+
+      console.log(confirmationMessage, 'useEffect ran  is confirmation message');
+
+    }
+
+  }, [confirmationMessage.message])
+
+
+  useEffect(() => {
     (async () => {
+
       const allParticipants = await fetchAllParticipants()
       setParticipants(allParticipants)
     })()
@@ -196,7 +262,7 @@ const Spin = () => {
       {participants.length ?
         (<table className='bg-slate-500'>
           <thead>
-            <tr>
+            <tr className='bg-blue-900 text-white'>
               <td>Serial Number</td>
               <td>Name</td>
               <td>Status</td>
@@ -207,66 +273,75 @@ const Spin = () => {
             {participants.map((participant: { _id: string, serial: number, name: string, claimed: boolean }, index) => {
               const { serial, name, claimed, _id } = participant
               return (
-                <tr key={index}>
+                <tr key={index} className={`${!(index%2) &&'bg-sky-500'}`}>
                   <td>{serial}</td>
                   <td>{name}</td>
                   <td>{claimed === true ? 'Yes' : 'No'}</td>
-                  <td><button onClick={() => handleEdit(serial, name, claimed, edit, _id)}>Edit</button></td>
-                  <td><button onClick={() => handleDelete(_id)}>Delete</button></td>
+                  <td className='hover:text-yellow-500'><button onClick={() => handleEdit(serial, name, claimed, edit, _id)}>Edit</button></td>
+                  <td className='hover:text-red-500'><button onClick={() => handleDelete(_id)}>Delete</button></td>
                 </tr>)
             }
             )
             }
-            <tr><td colSpan={5} align='center'><button onClick={() => toggleModal(add)}>Add a member</button></td></tr>
+            <tr className='bg-purple-500'><td colSpan={5} align='center'><button className='p-2 pr-4 pl-4 rounded-md bg-green-800 text-yellow-100 hover:text-green-500' onClick={() => toggleFormModal(add)}>Want to add a member? click here</button></td></tr>
           </tbody>
 
         </table>)
         : (
-          !loading ?( <h1>No Members</h1>)
-          :(
-            <h1>Loading...</h1>
-          )
+          !loading ? (<h1>No Members</h1>)
+            : (
+              <h1>Loading...</h1>
+            )
 
 
         )}
       {/* {showFormModal && ( */}
-        <div
-          className={`absolute w-screen h-screen top-0 flex items-center justify-center modal ${showFormModal && 'appear'}`}
-        >
-          <MemberForm
-            handleChange={handleChange}
-            handleSubmit={handleSubmit}
-            title={'Add'}
-            formData={formData}
-            toggleModal={toggleModal}
-            action={action}
+      <div
+        className={`absolute w-screen h-screen top-0 flex items-center justify-center modal ${showFormModal && 'appear'}`}
+      >
+        <MemberForm
+          handleChange={handleChange}
+          handleSubmit={handleSubmit}
+          title={'Add'}
+          formData={formData}
+          toggleFormModal={toggleFormModal}
+          action={action}
 
-          />
-        </div>
+        />
+      </div>
       {/* )
       } */}
 
       {responseLoading && (
-        <div className='absolute w-screen h-screen border border-black modal top-0 right-0 flex justify-center items-center'>
+        <div className={`absolute w-screen h-screen border border-black loading top-0 right-0 flex justify-center items-center`}>
           <LoaderSpinner />
         </div>
       )}
 
 
 
-      {showDeleteModal && (
-        <div
-          className='absolute w-screen h-screen modal dbg-slate-400 top-0 flex items-center justify-center'
-        >
-          <DeleteModal
-            toggleDeleteModal={toggleDeleteModal}
-            handleSubmit={handleSubmit}
-            id={ideToDelete}
-          />
-        </div>
-      )}
+      {/* {showDeleteModal && ( */}
+      <div
+        className={`absolute w-screen h-screen modal ${showDeleteModal && 'appear'} top-0 flex items-center justify-center`}
+      >
+        <DeleteModal
+          toggleDeleteModal={toggleDeleteModal}
+          handleSubmit={handleSubmit}
+          id={ideToDelete}
+        />
+      </div>
+      {/* )} */}
 
+      {
+        showConfirmation ? (
+          <div className='bg-sky-500/[.5] z-100 flex absolute h-screen w-screen top-0 left-0 items-center justify-center'>
 
+            <Confirmation
+              confirmationMessage={confirmationMessage}
+            />
+          </div>
+        ) : <></>
+      }
 
 
       {showWheel && (

@@ -9,13 +9,14 @@ export const fetchAllParticipants = async () => {
   }
 };
 export const updateParticipant = async (id, formData) => {
-  // console.log(id, formData, ' from actions');
+  console.log(id, formData, ' from updateParticipant actions');
   try {
     const response = await fetch(`api/participants/edit/${id}`, {
       method: "POST",
       body: formData,
     });
     const data = await response.json(); //{data: 'particpant object', message: 'successflly updated'}
+    console.log(data, 'from updateParticipant It should contain the error');
     return data;
   } catch (error) {
     console.log(error);
@@ -30,6 +31,7 @@ export const addParticipant = async (formData) => {
       body: JSON.stringify(formData),
     });
     const data = await response.json(); //{data: 'particpant object', message: 'successflly updated'}
+    console.log(data, ' is the result after creating a new participant');
     return data;
   } catch (error) {
     console.log(error);
@@ -42,7 +44,7 @@ export const deleteParticipant = async (id) => {
     const response = await fetch(`api/participants/delete/${id}`, {
       method: "DELETE",
     });
-    const data = await response.json();
+    const data = await response.json();//{data: 'particpant object', message: 'successflly updated'}
     console.log(data, ' is data returned');
     return data;
 
