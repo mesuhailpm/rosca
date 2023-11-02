@@ -8,6 +8,7 @@ import MemberForm from '@components/MemberForm'
 import DeleteModal from '@components/DeleteModal'
 import LoaderSpinner from '@components/Spinner'
 import Confirmation from '@components/Confirmation'
+import MemberTable from '@components/MemberTable'
 const Spin = () => {
   // const [participant, setParticipant] = useState<IndexState['participant']>('')
   const [participantNames, setParticipantNames] = useState<IndexState['participantNames']>([])
@@ -150,7 +151,7 @@ const Spin = () => {
           break;
       }
     } catch (error) {
-      
+
       console.log(error, ' hanlde sumit failed nwith confirm message object',confirmationMessage)
 
       setResponseLoading(false)
@@ -223,7 +224,7 @@ const Spin = () => {
   useEffect(() => {
     if (confirmationMessage.message) {
       console.log(confirmationMessage);
-      
+
       setShowCinfirmation(true);
       setShowDeleteModal(false)
       setShowFormModal(false)
@@ -258,43 +259,15 @@ const Spin = () => {
 
   // }, [participants])
   return (
-    <>
-      {participants.length ?
-        (<table className='bg-slate-500'>
-          <thead>
-            <tr className='bg-blue-900 text-white'>
-              <td>Serial Number</td>
-              <td>Name</td>
-              <td>Status</td>
-              <td colSpan={2}>Action</td>
-            </tr>
-          </thead>
-          <tbody>
-            {participants.map((participant: { _id: string, serial: number, name: string, claimed: boolean }, index) => {
-              const { serial, name, claimed, _id } = participant
-              return (
-                <tr key={index} className={`${!(index%2) &&'bg-sky-500'}`}>
-                  <td>{serial}</td>
-                  <td>{name}</td>
-                  <td>{claimed === true ? 'Yes' : 'No'}</td>
-                  <td className='hover:text-yellow-500'><button onClick={() => handleEdit(serial, name, claimed, edit, _id)}>Edit</button></td>
-                  <td className='hover:text-red-500'><button onClick={() => handleDelete(_id)}>Delete</button></td>
-                </tr>)
-            }
-            )
-            }
-            <tr className='bg-purple-500'><td colSpan={5} align='center'><button className='p-2 pr-4 pl-4 rounded-md bg-green-800 text-yellow-100 hover:text-green-500' onClick={() => toggleFormModal(add)}>Want to add a member? click here</button></td></tr>
-          </tbody>
+    <div className='flex flex-col p-5'>
+      <MemberTable
+        participants = {participants}
+        handleEdit= {handleEdit}
+        handleDelete={handleDelete}
+        toggleFormModal={toggleFormModal}
 
-        </table>)
-        : (
-          !loading ? (<h1>No Members</h1>)
-            : (
-              <h1>Loading...</h1>
-            )
+      />
 
-
-        )}
       {/* {showFormModal && ( */}
       <div
         className={`absolute w-screen h-screen top-0 flex items-center justify-center modal ${showFormModal && 'appear'}`}
@@ -306,6 +279,7 @@ const Spin = () => {
           formData={formData}
           toggleFormModal={toggleFormModal}
           action={action}
+          loading={loading}
 
         />
       </div>
@@ -369,7 +343,7 @@ const Spin = () => {
 
       )
       }
-    </>
+    </div>
   )
 
 
