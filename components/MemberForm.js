@@ -1,10 +1,10 @@
 import React from 'react'
 
-const MemberForm = ({handleSubmit, title, handleChange,formData,toggleModal, action}) => {
+const MemberForm = ({handleSubmit, title, handleChange,formData,toggleFormModal, action}) => {
     const {_id,serial, name, claimed} = formData
   return (
     <form className='relative bg-red-400 flex flex-col gap-1 p-4 rounded-md' onSubmit={(e)=>handleSubmit(e, action, _id, formData )}>
-      <button className='absolute right-[5%] top-[5%] border border-black pl-1 pr-1 rounded-md' onClick={toggleModal}>x</button>
+      <button type='button' className='absolute right-[5%] top-[5%] border border-black pl-1 pr-1 rounded-md' onClick={toggleFormModal}>x</button>
         <h1 className='text-center'>{`${action} a member`}</h1>
         <label htmlFor="serial">Serial</label>
         <input type="number" name='serial' max={30} maxLength={2} onChange={handleChange} value={String(serial)}/>

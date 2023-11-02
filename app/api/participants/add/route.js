@@ -2,19 +2,29 @@ import connectToDb from "@utils/connectToDb";
 import Participant from "@models/Participant";
 export const POST = async (req) => {
   const body = await req.json();
-  console.log(body)
-  const editedForm = {name: body.name, serial: body.serial, claimed:body.claimed}
+  console.log(body);
+  const editedForm = {
+    name: body.name,
+    serial: body.serial,
+    claimed: body.claimed,
+  };
   try {
     await connectToDb();
-    const result = await Participant.create(editedForm);
-    console.log(result); //
+    const newParticipant = await Participant.create(editedForm);
+    console.log(newParticipant, " is new particpant created"); //
     return new Response(
-      JSON.stringify(
-        { result, message: "Member created successfully" },
-        { status: 200 }
-      )
+      JSON.stringify({
+        result: newParticipant,
+        message: "Member created successfully",
+      }),
+      { status: 200 }
     );
   } catch (error) {
-    console.log(error);
+    return new Response(
+      JSON.stringify({
+        message: "Failure adding the member",
+      }),
+      { status: 400 }
+    );
   }
 };
