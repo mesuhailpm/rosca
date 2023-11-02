@@ -26,6 +26,7 @@ const Spin = () => {
     message:'',
     success: true,
   })
+  const [isOnlyOnce, setIsOnlyOnce] = useState(true)
   // console.log(responseLoading, ' is loading component');
 
 
@@ -267,6 +268,7 @@ const Spin = () => {
         toggleFormModal={toggleFormModal}
 
       />
+      {!loading && <button className='m-4 p-2 bg-teal-500 rounded-xl text-rose-900' onClick={()=>setShowWheel(true)}>{`Click Me to ${showWheel ? 'Hide': 'Show'} the Spinning wheel`}</button>}
 
       {/* {showFormModal && ( */}
       <div
@@ -325,10 +327,12 @@ const Spin = () => {
 
               <h1 className='font-bold text-3xl'>ROSCA Wheel</h1>
 
+
               {participantNames?.length && <Wheel
                 segments={participantNames}
                 segColors={['#EE4040', '#F0CF50', '#815CD1', '#3DA5E0', '#34A24F', '#F9AA1F', '#EC3F3F', '#FF9000', '#FF9E80', '#00FF00', '#0000FF', '#800080', '#FFFF00', '#00FFFF', '#FF00FF', '#C0C0C0', '#FFFFFF', '#000000', '#808080', '#FF0000', '#00FF00']}
                 onFinished={(winner) => onFinished(winner)}
+                isOnlyOnce={isOnlyOnce}
               />}
 
               {winnerToBeDeclared ?
