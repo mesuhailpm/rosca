@@ -3,7 +3,6 @@ import React, { useEffect, useState } from "react";
 import Link from "next/link";
 
 import { fetchAllParticipants } from '@actions'
-import Nav from "@components/nav";
 
 export default function Home() {
   interface Participant {
