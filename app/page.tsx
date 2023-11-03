@@ -26,7 +26,7 @@ export default function Home() {
   useEffect(() => {
     (async () => {
       const participants = await fetchAllParticipants();
-      participants.sort((a, b) => a.serial - b.serial)
+      participants.sort((a:Participant, b:Participant) => a.serial - b.serial)
       setParticipants(participants);     
     })()
 
