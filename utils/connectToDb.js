@@ -1,6 +1,5 @@
 import mongoose from "mongoose"
-const mongodbUri = 'mongodb+srv://rocsa:rocsa@cluster0.2gygs7q.mongodb.net/ROSCA?retryWrites=true&w=majority'
-// const mongodbUri = 'mongodb+srv://promptpedia:promptpedia@cluster0.2gygs7q.mongodb.net/?retryWrites=true&w=majority'
+const mongodbUri = process.env.NEXT_PUBLIC_MONGODB_URI
 
 let isConnected;
 export default async () => {
