@@ -23,11 +23,23 @@ const Wheel: React.FC<WheelProps> = ({ segments, segColors, onFinished, isOnlyOn
       primaryColor="black"
       contrastColor="white"
       size={190}
-      upDuration={500}
-      downDuration={600}
+      // upDuration={2000}
+      // downDuration={1200}
       fontFamily="Calibri"
 
     />
+
+// Properties	default value	Optional
+// segments	NA	No
+// segColors	NA	No
+// winningSegment	NA	Yes
+// primaryColor	'black'	Yes
+// contrastColor	'white'	Yes
+// buttonText	'spin'	Yes
+// isOnlyOnce	true	Yes
+// upDuration	100	Yes
+// downDuration	1000	Yes
+// fontFamily	'proxima-nova'	Yes
   );
 };
 

@@ -12,8 +12,8 @@ const Nav = () => {
         <Link  href='/' className=''>
             <Image src={logo2} width={100} alt="logo" />
         </Link>
-        <Link href='/admin' className=''>
-           Admin Login
+        <Link href='/admin/login' className="bg-blue-800 text-white rounded-xs p-2 m-2 hover:bg-blue-700">
+           Admin Page
         </Link>
 
     </div>
