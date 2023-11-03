@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react";
 import Link from "next/link";
 
 import { fetchAllParticipants } from '@actions'
+import Nav from "@components/nav";
 
 export default function Home() {
   interface Participant {
@@ -62,6 +63,7 @@ export default function Home() {
 
   return (
     <div className="flex flex-col items-center pt-4 bg-yellow-100 h-screen">
+      <Nav />
       <h1 className="font-bold text-3xl">ROSCA Wheel</h1>
 
       {/* <input

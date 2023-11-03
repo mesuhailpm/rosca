@@ -1,8 +1,12 @@
 'use client'
-import React, { ChangeEvent, FormEvent, useState } from 'react'
+import Spinner from '@components/Spinner'
+import React, { ChangeEvent, FormEvent, useState, useEffect } from 'react'
 
 
 const AdminLogin = () => {
+  const [verifyLoading, setVerifyLoading] = useState(true)
+  const [redirectingLoading, setRedirectingLoading] = useState(false)
+
   const [formData, setFomData] = useState({
     userName: '',
     password: ''
@@ -30,6 +34,50 @@ const AdminLogin = () => {
     }
 
   }
+
+  const checkLoggedin =async () => {
+    try {
+      console.log('checking');
+      
+      const userObject = await JSON.parse(localStorage.getItem('userObject') || '')
+      const { token } = userObject
+      console.log(token, ' is token in local storage');
+      
+      // const isTokenValid = await verifyToken(token)
+      const response = await fetch('/api/verifyToken', { method: 'POST', body: JSON.stringify(token) })
+      
+      const decodedData = await response.json()
+      console.log(decodedData, ' is decoded data from jsonwebtoken');
+      if (decodedData) {
+        setVerifyLoading(false)
+        setRedirectingLoading(true)
+        setTimeout(() =>{
+
+          location.href = '/spin';
+        },2000)
+      }
+
+      // console.log(new Date());
+      // console.log( new Date(decodedData.exp*1000).toLocaleString())
+      
+    } catch (error) {
+      console.log(error)
+      
+    }
+  }
+
+  useEffect(() => {
+    (async() => {
+      console.log('useEffect');
+      
+      await checkLoggedin()
+    })()
+  
+    
+  }, [])
+  
+  if(verifyLoading) return <div className='flex flex-col w-screen h-screen justify-center items-center'> <Spinner /><h1>We are verfying the details</h1></div>
+  if(redirectingLoading) return <div className='flex flex-col w-screen h-screen justify-center items-center'><Spinner/><h1>Welcome back, we are shipping you to dashboard...</h1></div>
 
   return (
     <div className='bg-blue-300 h-screen pt-4'>
