@@ -49,7 +49,7 @@ const Spin = () => {
   const [formData, setFormData] = useState<IndexState['formData']>(initialFomData)
 
   const handleEdit = async (serial: number, name: string, claimed: boolean, action: string, _id: string) => {
-    console.log(serial, name, claimed, ' from handleEdit')
+    //console.log(serial, name, claimed, ' from handleEdit')
     toggleFormModal(action)
     setFormData({
       _id,
@@ -78,11 +78,11 @@ const Spin = () => {
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>, action: string, _id: string, formData: IndexState['formData']) => {
     if (e) e.preventDefault()
-    console.log(action, _id, 'is id', formData, ' is formData');
+    //console.log(action, _id, 'is id', formData, ' is formData');
     try {
       switch (action) {
         case edit:
-          console.log('action is edit and the id is ', _id)
+          //console.log('action is edit and the id is ', _id)
           setResponseLoading(true)
           const dataWithMessage = await updateParticipant(_id, JSON.stringify(formData))
           setconfirmationMessage({
@@ -90,7 +90,7 @@ const Spin = () => {
             success: true
           }
           )
-          console.log(confirmationMessage, ' is confirmationMessage');
+          //console.log(confirmationMessage, ' is confirmationMessage');
 
           // console.log('Got updataed data with message', dataWithMessage.result);
 
@@ -131,11 +131,11 @@ const Spin = () => {
           break
         default:
           setResponseLoading(false)
-          console.log('this is default action');
+          //console.log('this is default action');
           break;
       }
     } catch (error) {
-      console.log(error, ' hanlde sumit failed nwith confirm message object', confirmationMessage)
+      //console.log(error, ' hanlde sumit failed nwith confirm message object', confirmationMessage)
       setResponseLoading(false)
       setconfirmationMessage((prev) => (
         { ...prev, success: false }
@@ -188,7 +188,7 @@ const Spin = () => {
       // console.log( new Date(decodedData.exp*1000).toLocaleString())
       setLoading(false);
     } catch (error) {
-      console.log(error)
+      //console.log(error)
       setTimeout(() => {
         location.href = '/';
       }, 1000);
@@ -200,7 +200,7 @@ const Spin = () => {
 
   useEffect(() => {
     if (confirmationMessage.message) {
-      console.log(confirmationMessage);
+      //console.log(confirmationMessage);
 
       setShowCinfirmation(true);
       setShowDeleteModal(false)
@@ -212,7 +212,7 @@ const Spin = () => {
           success: false
         })
       }, 2000)
-      console.log(confirmationMessage, 'useEffect ran  is confirmation message');
+      //console.log(confirmationMessage, 'useEffect ran  is confirmation message');
     }
 
   }, [confirmationMessage.message])
@@ -221,7 +221,7 @@ const Spin = () => {
   useEffect(() => {
     (async () => {
       const allParticipants = await fetchAllParticipants()
-      allParticipants.sort((a, b) => a.serial - b.serial)
+      allParticipants.sort((a:participant, b:participant) => a.serial - b.serial)
       setParticipants(allParticipants)
     })()
   }, [])

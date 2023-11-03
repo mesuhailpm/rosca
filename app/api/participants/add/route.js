@@ -2,7 +2,7 @@ import connectToDb from "@utils/connectToDb";
 import Participant from "@models/Participant";
 export const POST = async (req) => {
   const body = await req.json();
-  console.log(body);
+  //console.log(body);
   const editedForm = {
     name: body.name,
     serial: body.serial,
@@ -11,7 +11,7 @@ export const POST = async (req) => {
   try {
     await connectToDb();
     const newParticipant = await Participant.create(editedForm);
-    console.log(newParticipant, " is new particpant created"); //
+    //console.log(newParticipant, " is new particpant created"); //
     return new Response(
       JSON.stringify({
         result: newParticipant,
