@@ -1,7 +1,7 @@
 import connectToDb from "@utils/connectToDb";
 import Admin from "@models/Admin";
 import {generateToken} from "@middleware/auth";
-import bcrypt from "bcrypt";
+
 
 export const POST = async (req) => {
   const { userName, password } = await req.json();

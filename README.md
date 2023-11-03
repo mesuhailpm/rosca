@@ -1,5 +1,6 @@
 ## Issues
-    blank members are added in front end shich willl cause error (not in backend)
+    blank members are added in front end shich willl cause error (not in backend)y
+    no encryption of password brypt should be there for security
 
 
 
