@@ -1,6 +1,8 @@
 import React from 'react';
 
 const MemberTable = ({ participants, handleEdit, handleDelete, toggleFormModal, loading }) => {
+    const add = 'add'
+    const edit = 'edit'
     return (<div className='flex flex-col justify-center items-center'>
         {participants.length ? (<table className='bg-slate-500 max-w-lg'>
             <thead>
