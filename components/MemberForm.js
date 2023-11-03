@@ -1,6 +1,6 @@
 import React from 'react'
 
-const MemberForm = ({handleSubmit, title, handleChange,formData,toggleFormModal, action}) => {
+const MemberForm = ({handleSubmit, handleChange,formData,toggleFormModal, action}) => {
     const {_id,serial, name, claimed} = formData
   return (
     <form className='relative bg-red-400 flex flex-col gap-1 p-4 rounded-md' onSubmit={(e)=>handleSubmit(e, action, _id, formData )}>

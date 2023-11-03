@@ -1,6 +1,10 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+body, *{
+  margin: 0;
+  padding: 0;
+}
 
 #wheel{
   max-height: 70vh;

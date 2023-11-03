@@ -1,7 +1,6 @@
 'use client'
 import React, { ChangeEvent, FormEvent, useEffect, useState } from 'react'
 import Wheel from '@components/Wheel'
-import { participants as sampleParticipants } from '@data/sample'
 import { fetchAllParticipants, addParticipant, updateParticipant, deleteParticipant } from '@actions'
 import '../../app/globals.css'
 import MemberForm from '@components/MemberForm'
@@ -9,9 +8,10 @@ import DeleteModal from '@components/DeleteModal'
 import LoaderSpinner from '@components/Spinner'
 import Confirmation from '@components/Confirmation'
 import MemberTable from '@components/MemberTable'
+import Confetti from 'react-confetti'
 const Spin = () => {
   // const [participant, setParticipant] = useState<IndexState['participant']>('')
-  const [participantNames, setParticipantNames] = useState<IndexState['participantNames']>([])
+  const [notClaimedParticipantNames, setNotClaimedParticipantNames] = useState<IndexState['notClaimedParticipantNames']>([])
   const [participants, setParticipants] = useState<IndexState['participants']>([]); // array of objects
   const [winnerToBeDeclared, setWinnerToBeDeclared] = useState<IndexState['winnerToBeDeclared']>('')
   const [loading, setLoading] = useState<IndexState['loading']>(true)
@@ -23,15 +23,12 @@ const Spin = () => {
   const [ideToDelete, setIdToDelete] = useState('')
   const [showConfirmation, setShowCinfirmation] = useState(false);
   let [confirmationMessage, setconfirmationMessage] = useState({
-    message:'',
+    message: '',
     success: true,
   })
   const [isOnlyOnce, setIsOnlyOnce] = useState(true)
-  // console.log(responseLoading, ' is loading component');
-
 
   const toggleDeleteModal = () => setShowDeleteModal((prev) => !prev)
-
   const edit = 'edit'
   const add = 'add'
   const remove = 'remove'
@@ -69,17 +66,13 @@ const Spin = () => {
   }
   // console.log(participants, ' are participants');
   const [showForm, setShowForm] = useState(false)
-  // console.log(participantNames);
+  // console.log(notClaimedParticipantNames);
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     setFormData((prevFormData) => ({
       ...prevFormData,
       [e.target.name]: e.target.value
     }))
-  }
-  const hanldeAdd = () => {
-    setShowForm(true)
-    setFormData(initialFomData)
   }
 
 
@@ -96,21 +89,17 @@ const Spin = () => {
             message: dataWithMessage.message,
             success: true
           }
-            )
+          )
           console.log(confirmationMessage, ' is confirmationMessage');
 
           // console.log('Got updataed data with message', dataWithMessage.result);
 
           const updtedArray = participants.map((participant) => {
             // console.log(participant);
-
             return participant._id === dataWithMessage.result._id ? dataWithMessage.result : participant
           })
           setParticipants(updtedArray)
           setResponseLoading(false)
-
-
-
           break;
         case add:
           setResponseLoading(true)
@@ -123,46 +112,44 @@ const Spin = () => {
           participantCopy.push(dataWIthMessage.result)
           setParticipants(participantCopy)
           setResponseLoading(false)
-
           break;
 
         case remove:
           setResponseLoading(true)
-
           const dataAndMessage = await deleteParticipant(_id)
           setconfirmationMessage({
             message: dataAndMessage.message,
             success: true
           })
           const deletedParticipant = dataAndMessage.result
-          if(deletedParticipant === undefined) throw new Error()
-
-
+          if (deletedParticipant === undefined) throw new Error()
           setParticipants((prev) => {
             return prev.filter((participant) => participant._id !== deletedParticipant._id)
           })
           toggleDeleteModal()
           setResponseLoading(false)
           break
-
         default:
           setResponseLoading(false)
           console.log('this is default action');
-
           break;
       }
     } catch (error) {
-
-      console.log(error, ' hanlde sumit failed nwith confirm message object',confirmationMessage)
-
+      console.log(error, ' hanlde sumit failed nwith confirm message object', confirmationMessage)
       setResponseLoading(false)
-      setconfirmationMessage((prev)=>(
-        {...prev, success: false}
+      setconfirmationMessage((prev) => (
+        { ...prev, success: false }
       ))
-
-
     }
+  }
 
+  const declareWinner = (winner: string) => {
+    setWinnerToBeDeclared(winner)
+    setTimeout(
+      () => {
+       setWinnerToBeDeclared('')
+      }, 15000
+    )
 
   }
 
@@ -176,7 +163,7 @@ const Spin = () => {
   interface IndexState {
     participant: {};
     participants: participant[];
-    participantNames: string[];
+    notClaimedParticipantNames: string[];
     winnerToBeDeclared: string;
     loading: boolean;
     formData: {
@@ -187,19 +174,8 @@ const Spin = () => {
     }
   }
 
-  const onFinished = (winner: string) => setWinnerToBeDeclared(winner);
+  const onFinished = (winner: string) => declareWinner(winner);
 
-  // const fetchParticipants = async () => {
-  //   try {
-  //     const response = await fetch('/api/participants/all')
-  //     const data = await response.json();
-  //     const newArray = data?.allParticipants.map((participant: { name: string }) => participant.name)
-  //     setParticipants(newArray)
-  //   } catch (error) {
-  //     console.log(error)
-  //   }
-
-  // }
   const handleToken = async () => {
     try {
       const userObject = await JSON.parse(localStorage.getItem('userObject') || '')
@@ -231,14 +207,12 @@ const Spin = () => {
       setShowFormModal(false)
       setTimeout(() => {
         setShowCinfirmation(false);
-        setconfirmationMessage ({
+        setconfirmationMessage({
           message: '',
           success: false
         })
       }, 2000)
-
       console.log(confirmationMessage, 'useEffect ran  is confirmation message');
-
     }
 
   }, [confirmationMessage.message])
@@ -246,47 +220,40 @@ const Spin = () => {
 
   useEffect(() => {
     (async () => {
-
       const allParticipants = await fetchAllParticipants()
+      allParticipants.sort((a, b) => a.serial - b.serial)
       setParticipants(allParticipants)
     })()
   }, [])
   useEffect(() => {
-    const participantNames = participants.map((participant) => participant.name)
-    setParticipantNames(participantNames)
+    const notClaimedParticipantNames = participants.filter((participant) => !participant.claimed).map((participant) => participant.name)
+    setNotClaimedParticipantNames(notClaimedParticipantNames)
   }, [participants])
-  // useEffect(() => {
-  //   console.log(participants)
 
-  // }, [participants])
   return (
-    <div className='flex flex-col p-5'>
+    <div className='flex flex-col p-5 w-screen'>
       <MemberTable
-        participants = {participants}
-        handleEdit= {handleEdit}
+        participants={participants}
+        handleEdit={handleEdit}
         handleDelete={handleDelete}
         toggleFormModal={toggleFormModal}
+        loading={loading}
 
       />
-      {!loading && <button className='m-4 p-2 bg-teal-500 rounded-xl text-rose-900' onClick={()=>setShowWheel(true)}>{`Click Me to ${showWheel ? 'Hide': 'Show'} the Spinning wheel`}</button>}
+      {!loading && <button className='max-w-[500px] m-4 p-2 bg-teal-500 rounded-xl text-rose-900' onClick={() => setShowWheel((prev) => !prev)}>{`Click Me to ${showWheel ? 'Hide' : 'Show'} the Spinning wheel`}</button>}
 
-      {/* {showFormModal && ( */}
       <div
-        className={`absolute w-screen h-screen top-0 flex items-center justify-center modal ${showFormModal && 'appear'}`}
+        className={`memberform absolute w-screen h-screen top-0 left-0 flex items-center justify-center border boder4 border-black modal ${showFormModal && 'appear'}`}
       >
         <MemberForm
           handleChange={handleChange}
           handleSubmit={handleSubmit}
-          title={'Add'}
           formData={formData}
           toggleFormModal={toggleFormModal}
           action={action}
-          loading={loading}
 
         />
       </div>
-      {/* )
-      } */}
 
       {responseLoading && (
         <div className={`absolute w-screen h-screen border border-black loading top-0 right-0 flex justify-center items-center`}>
@@ -294,11 +261,9 @@ const Spin = () => {
         </div>
       )}
 
-
-
       {/* {showDeleteModal && ( */}
       <div
-        className={`absolute w-screen h-screen modal ${showDeleteModal && 'appear'} top-0 flex items-center justify-center`}
+        className={`absolute w-screen h-screen modal ${showDeleteModal && 'appear'} top-0 left-0 flex items-center justify-center`}
       >
         <DeleteModal
           toggleDeleteModal={toggleDeleteModal}
@@ -311,7 +276,6 @@ const Spin = () => {
       {
         showConfirmation ? (
           <div className='bg-sky-500/[.5] z-100 flex absolute h-screen w-screen top-0 left-0 items-center justify-center'>
-
             <Confirmation
               confirmationMessage={confirmationMessage}
             />
@@ -322,24 +286,34 @@ const Spin = () => {
 
       {showWheel && (
         loading ? (<>Loading...</>)
-          : (
-            <>
+          : (<>
+            <h1 className='font-bold text-3xl'>ROSCA Wheel</h1>
+            <h1>{`Can be spinned ${isOnlyOnce ? 'once' : 'multiple times'}`}</h1>
+            <div><h1>Switch</h1><button className={` p-2 hover:font-bold rounded-md ${isOnlyOnce ? 'bg-red-500' : 'bg-green-500'}`} onClick={() => setIsOnlyOnce(prev => !prev)}> {`${isOnlyOnce ? 'Limited' : 'Free'}`} </button></div>
 
-              <h1 className='font-bold text-3xl'>ROSCA Wheel</h1>
+            {notClaimedParticipantNames?.length &&
+              <div className='hover:cursor-pointer'>
+                <Wheel
+                  segments={notClaimedParticipantNames}
+                  segColors={['#EE4040', '#F0CF50', '#815CD1', '#3DA5E0', '#34A24F', '#F9AA1F', '#EC3F3F', '#FF9000', '#FF9E80', '#00FF00', '#0000FF', '#800080', '#FFFF00', '#00FFFF', '#FF00FF', '#C0C0C0', '#FFFFFF', '#000000', '#808080', '#FF0000', '#00FF00']}
+                  onFinished={(winner) => onFinished(winner)}
+                  isOnlyOnce={isOnlyOnce}
+                />
+              </div>
+            }
 
+            {winnerToBeDeclared ? <>
+              <Confetti
+                
+                width={1000}
+                height={2000}
 
-              {participantNames?.length && <Wheel
-                segments={participantNames}
-                segColors={['#EE4040', '#F0CF50', '#815CD1', '#3DA5E0', '#34A24F', '#F9AA1F', '#EC3F3F', '#FF9000', '#FF9E80', '#00FF00', '#0000FF', '#800080', '#FFFF00', '#00FFFF', '#FF00FF', '#C0C0C0', '#FFFFFF', '#000000', '#808080', '#FF0000', '#00FF00']}
-                onFinished={(winner) => onFinished(winner)}
-                isOnlyOnce={isOnlyOnce}
-              />}
-
-              {winnerToBeDeclared ?
-                <h1 className='text-bold text-3xl text-green-900'>{`Congratulations ${winnerToBeDeclared} `}</h1>
-                :
-                <>Result will be here</>}
+              />
+              <h1 className='text-bold text-3xl text-green-900'>{`Congratulations ${winnerToBeDeclared} `}</h1>
             </>
+              :
+              <></>}
+          </>
           )
 
 

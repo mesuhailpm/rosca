@@ -1,5 +1,6 @@
 'use client'
 import Spinner from '@components/Spinner'
+import Link from 'next/link'
 import React, { ChangeEvent, FormEvent, useState, useEffect } from 'react'
 
 
@@ -55,6 +56,8 @@ const AdminLogin = () => {
 
           location.href = '/spin';
         },2000)
+      }else{
+        setVerifyLoading(false)
       }
 
       // console.log(new Date());
@@ -62,7 +65,7 @@ const AdminLogin = () => {
       
     } catch (error) {
       console.log(error)
-      
+      setVerifyLoading(false)
     }
   }
 
@@ -88,8 +91,14 @@ const AdminLogin = () => {
         <label htmlFor="password">Password</label>
         <input type="password" onChange={handleChange} name='password' value={formData.password} placeholder='Enter your password' className='w-[300px] pl-4 pr-4 p-1 border border-green-500 rounded-sm' required />
 
-        <button type='submit' className='border border-none bg-green-600 text-yellow-100 m-4 pl-4 pr-4 p-2 rounded-md hover:bg-green-500 hover:border-white'>Login</button>
+        <button type='submit' className='border border-none bg-green-700 text-yellow-100 m-4 pl-4 pr-4 p-2 rounded-md hover:bg-green-500 hover:border-white'>Login</button>
       </form>
+      <Link
+        href="/admin/register"
+        className="bg-green-900 p-2 text-yellow-100 m-2 hover:bg-green-700 flex-center"
+      >
+        Request to be an admin
+      </Link>
     </div>
   )
 }
