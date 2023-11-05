@@ -9,6 +9,8 @@ export const POST = async(req) => {
       if (decoded) return new Response(JSON.stringify(decoded),{status: 200})
     } catch (e) {
       console.log(e);
+      return new Response(JSON.stringify(e),{status:401})
+
     }
   }
   

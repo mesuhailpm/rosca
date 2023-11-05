@@ -3,7 +3,7 @@ import Participant from "@models/Participant";
 export const POST = async (req, { params }) => {
   try {
     const body = await req.json();
-    //console.log(body, " is body in backed post request");
+    console.log(body, " is body in backed post request");
     await connectToDb();
     const updatedParticipant = await Participant.findByIdAndUpdate(
       params.id,
