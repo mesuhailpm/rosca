@@ -19,7 +19,11 @@ export default function Home() {
   // const [participant, setParticipant] = useState<IndexState['participant']>('')
   const [participants, setParticipants] = useState<IndexState["participants"]>(
     []
-  );
+  )
+  const [loading, setLoading] = useState(true)
+
+
+  
 
 
   
@@ -27,7 +31,8 @@ export default function Home() {
     (async () => {
       const participants = await fetchAllParticipants();
       participants.sort((a:Participant, b:Participant) => a.serial - b.serial)
-      setParticipants(participants);     
+      setParticipants(participants);
+      setLoading(false);
     })()
 
   }, []);
@@ -36,8 +41,8 @@ export default function Home() {
     <div className="flex flex-col items-center pt-4 bg-yellow-100 h-screen">
       <h1 className="font-bold text-3xl">ROSCA Wheel</h1>
       
-      <h1 className="text-blue-800 font-bold text-2xl pt-4">Prticipants</h1>
-
+      <h1 className="text-blue-800 font-bold text-2xl pt-4">Participants</h1>
+      {loading && (<h1>Loading members list</h1>)}
       {participants.length > 0 && (
         <table className="self-start m-4 bg-[#96D4D4] border border-black table-auto font-raleway">
           <thead>
