@@ -4,12 +4,12 @@ const MemberTable = ({ participants, handleEdit, handleDelete, toggleFormModal, 
     const add = 'add'
     const edit = 'edit'
     return (<div className='flex flex-col justify-center items-center'>
-        {participants.length ? (<table className='bg-slate-500 max-w-lg'>
+        {participants.length ? (<table className='bg-slate-500'>
             <thead>
                 <tr className='bg-blue-900 text-white'>
-                    <td>Serial Number</td>
+                    <td>Sl No</td>
                     <td>Name</td>
-                    <td>Status</td>
+                    <td>Claimed</td>
                     <td colSpan={2}>Action</td>
                 </tr>
             </thead>
@@ -22,7 +22,7 @@ const MemberTable = ({ participants, handleEdit, handleDelete, toggleFormModal, 
                             <td>{name}</td>
                             <td>{claimed === true ? 'Yes' : 'No'}</td>
                             <td className='hover:text-yellow-500'><button onClick={() => handleEdit(serial, name, claimed, edit, _id)}>Edit</button></td>
-                            <td className='hover:text-red-500'><button onClick={() => handleDelete(_id)}>Delete</button></td>
+                            <td className='hover:text-red-500'><button onClick={() => handleDelete(_id)}>Del</button></td>
                         </tr>)
                 }
                 )
