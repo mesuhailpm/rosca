@@ -2,11 +2,19 @@
 import Spinner from '@components/Spinner'
 import Link from 'next/link'
 import React, { ChangeEvent, FormEvent, useState, useEffect } from 'react'
+import Confirmation from '@components/Confirmation'
+
 
 
 const AdminLogin = () => {
   const [verifyLoading, setVerifyLoading] = useState(true)
   const [redirectingLoading, setRedirectingLoading] = useState(false)
+  const [showConfirmation, setShowCinfirmation] = useState(false);
+  let [confirmationMessage, setconfirmationMessage] = useState({
+    message: '',
+    success: true,
+  })
+  
 
   const [formData, setFomData] = useState({
     userName: '',
@@ -20,6 +28,7 @@ const AdminLogin = () => {
   }
   const handleLogin = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault()
+    setVerifyLoading(true)
     try {
       const response = await fetch('/api/login',{method: 'POST', body: JSON.stringify(formData)})
       const {message,token, userName} = await response.json();
@@ -27,14 +36,32 @@ const AdminLogin = () => {
       if(response.ok) {
         localStorage.setItem('userObject', JSON.stringify({token, userName}));
         location.href ='/spin'
-      }
+      }else{
+        setVerifyLoading(false)
+      setconfirmationMessage({message: 'Check your credentials', success: false})
+    }
       // console.log(message)
 
     } catch (error) {
       console.error(error)
+
+    }finally {
+      
     }
 
   }
+  useEffect(() => {
+
+
+    if(confirmationMessage.message){
+      setShowCinfirmation(true)
+    setTimeout(() => {
+      setconfirmationMessage({message: '', success: false})
+      setShowCinfirmation(false)
+      },2000
+      )}
+    },[confirmationMessage,formData]
+      )
 
   const checkLoggedin =async () => {
     try {
@@ -96,6 +123,7 @@ const AdminLogin = () => {
       >
         Request to be an admin
       </Link>
+      {showConfirmation ? <Confirmation confirmationMessage={confirmationMessage}/>:<></>}
     </div>
   )
 }
