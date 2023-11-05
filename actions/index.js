@@ -1,6 +1,8 @@
 export const fetchAllParticipants = async () => {
   try {
-    const response = await fetch("api/participants/all");
+    const response = await fetch("api/participants/all",{
+      revalidate: 10, // revalidate the cache every 10 seconds
+    });
     const data = await response.json();
     console.log(data.allParticipants, " are all participants");
     return data.allParticipants;
