@@ -2,9 +2,9 @@
     blank members are added in front end shich willl cause error (not in backend)y
     no encryption of password brypt should be there for security
 
-
-
-
+dependency mismatch
+    configured vercel dependecy installing command in vercel to 'npm install --force' (or 'npm install --legacy-peer-deps)
+    on hosting on netlify shoudl be passing environment variable NPM_CONFIG_FORCE set to true 
 
 
 
