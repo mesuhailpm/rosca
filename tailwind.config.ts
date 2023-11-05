@@ -7,7 +7,14 @@ const config: Config = {
     './app/**/*.{js,ts,jsx,tsx,mdx}',
   ],
   theme: {
-    extend: {},
+    extend: {
+      fontFamily:{
+        raleway:['Raleway','sans'],
+        pacifico:['Caveat','cursive'],
+        kenia:['Kenia', 'sans']
+
+      }
+    },
   },
   plugins: [],
 }

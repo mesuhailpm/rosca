@@ -39,7 +39,7 @@ export default function Home() {
       <h1 className="text-blue-800 font-bold text-2xl pt-4">Prticipants</h1>
 
       {participants.length > 0 && (
-        <table className="self-start m-4 bg-[#96D4D4] border border-black table-auto">
+        <table className="self-start m-4 bg-[#96D4D4] border border-black table-auto font-raleway">
           <thead>
             <tr>
               <th>Serial</th>

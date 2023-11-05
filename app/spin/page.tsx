@@ -147,7 +147,7 @@ const Spin = () => {
     setWinnerToBeDeclared(winner)
     setTimeout(
       () => {
-       setWinnerToBeDeclared('')
+        setWinnerToBeDeclared('')
       }, 15000
     )
 
@@ -174,7 +174,9 @@ const Spin = () => {
     }
   }
 
-  const onFinished = (winner: string) => declareWinner(winner);
+  const onFinished = (winner: string) => {
+    setTimeout(() =>
+    declareWinner(winner),3000)};
 
   const handleToken = async () => {
     try {
@@ -221,7 +223,7 @@ const Spin = () => {
   useEffect(() => {
     (async () => {
       const allParticipants = await fetchAllParticipants()
-      allParticipants.sort((a:participant, b:participant) => a.serial - b.serial)
+      allParticipants.sort((a: participant, b: participant) => a.serial - b.serial)
       setParticipants(allParticipants)
     })()
   }, [])
@@ -229,6 +231,44 @@ const Spin = () => {
     const notClaimedParticipantNames = participants.filter((participant) => !participant.claimed).map((participant) => participant.name)
     setNotClaimedParticipantNames(notClaimedParticipantNames)
   }, [participants])
+
+
+  if (showWheel) return loading ? (<>Loading...</>)
+      : (
+        <div className='w-full flex flex-col items-center'>    
+
+          <h1 className='font-bold text-3xl'>ROSCA Wheel</h1>
+          <h1>{`Can be spinned ${isOnlyOnce ? 'once' : 'multiple times'}`}</h1>
+          <div><h1>Switch</h1><button className={` p-2 hover:font-bold rounded-md ${isOnlyOnce ? 'bg-red-500' : 'bg-green-500'}`} onClick={() => setIsOnlyOnce(prev => !prev)}> {`${isOnlyOnce ? 'Limited' : 'Free'}`} </button></div>
+
+          {notClaimedParticipantNames?.length &&
+            <div className='hover:cursor-pointer'>
+              <Wheel
+                segments={notClaimedParticipantNames}
+                segColors={['#EE4040', '#F0CF50', '#815CD1', '#3DA5E0', '#34A24F', '#F9AA1F', '#EC3F3F', '#FF9000', '#FF9E80', '#00FF00', '#0000FF', '#800080', '#FFFF00', '#00FFFF', '#FF00FF', '#C0C0C0', '#FFFFFF', '#000000', '#808080', '#FF0000', '#00FF00']}
+                onFinished={(winner) => onFinished(winner)}
+                isOnlyOnce={isOnlyOnce}
+              />
+            </div>
+          }
+
+          {winnerToBeDeclared ? <div className='absolute t-0 l-0 h-screen w-screen bg-green-500 flex flex-col items-center justify-center'>
+            <Confetti
+
+              width={1000}
+              height={2000}
+              
+              />
+            <h1 className='text-4xl font-pacifico' >Congratulations!</h1>
+            <br/>
+            <h1 className='text-bold text-xxl text-amber-700'>{`${winnerToBeDeclared} `}</h1>
+          </div>
+            :
+            <></>}
+            {!loading && <button className='max-w-[500px] m-4 p-2 bg-teal-500 rounded-xl text-rose-900' onClick={() => setShowWheel((prev) => !prev)}>{`Click Me to ${showWheel ? 'Hide' : 'Show'} the Spinning wheel`}</button>}
+
+        </div>
+      )
 
   return (
     <div className='flex flex-col p-5 w-screen'>
@@ -284,43 +324,11 @@ const Spin = () => {
       }
 
 
-      {showWheel && (
-        loading ? (<>Loading...</>)
-          : (<>
-            <h1 className='font-bold text-3xl'>ROSCA Wheel</h1>
-            <h1>{`Can be spinned ${isOnlyOnce ? 'once' : 'multiple times'}`}</h1>
-            <div><h1>Switch</h1><button className={` p-2 hover:font-bold rounded-md ${isOnlyOnce ? 'bg-red-500' : 'bg-green-500'}`} onClick={() => setIsOnlyOnce(prev => !prev)}> {`${isOnlyOnce ? 'Limited' : 'Free'}`} </button></div>
-
-            {notClaimedParticipantNames?.length &&
-              <div className='hover:cursor-pointer'>
-                <Wheel
-                  segments={notClaimedParticipantNames}
-                  segColors={['#EE4040', '#F0CF50', '#815CD1', '#3DA5E0', '#34A24F', '#F9AA1F', '#EC3F3F', '#FF9000', '#FF9E80', '#00FF00', '#0000FF', '#800080', '#FFFF00', '#00FFFF', '#FF00FF', '#C0C0C0', '#FFFFFF', '#000000', '#808080', '#FF0000', '#00FF00']}
-                  onFinished={(winner) => onFinished(winner)}
-                  isOnlyOnce={isOnlyOnce}
-                />
-              </div>
-            }
-
-            {winnerToBeDeclared ? <>
-              <Confetti
-                
-                width={1000}
-                height={2000}
-
-              />
-              <h1 className='text-bold text-3xl text-green-900'>{`Congratulations ${winnerToBeDeclared} `}</h1>
-            </>
-              :
-              <></>}
-          </>
-          )
 
 
 
 
-      )
-      }
+
     </div>
   )
 
