@@ -34,7 +34,7 @@ const Spin = () => {
   const remove = 'remove'
   const initialFomData: IndexState['formData'] = {
     _id: '',
-    serial: NaN,
+    serial: 0,
     name: '',
     claimed: false
 
@@ -182,9 +182,13 @@ const Spin = () => {
     try {
       const userObject = await JSON.parse(localStorage.getItem('userObject') || '')
       const { token } = userObject
-      // const isTokenValid = await verifyToken(token)
+      // const isTokenValid = await verifyToken(tok en)
       const response = await fetch('api/verifyToken', { method: 'POST', body: JSON.stringify(token) })
       const decodedData = await response.json()
+      if(!response.ok){setTimeout(() => {
+        localStorage.removeItem('userObject')
+        location.href = '/';
+      }, 100)}
       // console.log(decodedData, ' is decoded data from jsonwebtoken');
       // console.log(new Date());
       // console.log( new Date(decodedData.exp*1000).toLocaleString())
@@ -271,7 +275,7 @@ const Spin = () => {
       )
 
   return (
-    <div className='flex flex-col p-5 w-screen'>
+    <div className={`member-container ${(showFormModal || showDeleteModal) && 'overflow-x-hidden overflow-y-hidden'}`}>
       <MemberTable
         participants={participants}
         handleEdit={handleEdit}
