@@ -22,9 +22,9 @@ const Wheel: React.FC<WheelProps> = ({ segments, segColors, onFinished, isOnlyOn
       isOnlyOnce={isOnlyOnce}
       primaryColor="black"
       contrastColor="white"
-      size={190}
-      // upDuration={2000}
-      // downDuration={1200}
+      size={300}
+      upDuration={2000}
+      downDuration={1200}
       fontFamily="Calibri"
 
     />
