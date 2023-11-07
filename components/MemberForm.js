@@ -17,10 +17,11 @@ const MemberForm = ({
     >
       <button
         type="button"
-        className="absolute right-[5%] top-[5%] border border-black pl-1 pr-1 rounded-md"
+        className="absolute right-[5%] top-[5%] p-1 rounded-md bg-teal-300 flex hover:text-red-500"
         onClick={toggleFormModal}
       >
-        x
+       <i class="fa fa-times" aria-hidden="true"></i>
+
       </button>
       <h1 className="text-center">{`${actionAsTitle} a member`}</h1>
       <label htmlFor="serial">Serial</label>
