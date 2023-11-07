@@ -3,6 +3,7 @@ import Spinner from '@components/Spinner'
 import Link from 'next/link'
 import React, { ChangeEvent, FormEvent, useState, useEffect } from 'react'
 import Confirmation from '@components/Confirmation'
+import { useStore } from '@src/store'
 
 
 
@@ -15,6 +16,7 @@ const AdminLogin = () => {
     success: true,
   })
   
+  const {isLoggedIn} = useStore()
 
   const [formData, setFomData] = useState({
     userName: '',
@@ -35,20 +37,18 @@ const AdminLogin = () => {
       
       if(response.ok) {
         localStorage.setItem('userObject', JSON.stringify({token, userName}));
+        useStore.setState({isLoggedIn:true})
         location.href ='/spin'
       }else{
         setVerifyLoading(false)
-      setconfirmationMessage({message: 'Check your credentials', success: false})
+      setconfirmationMessage({message: message, success: false})
     }
       // console.log(message)
 
     } catch (error) {
       console.error(error)
 
-    }finally {
-      
     }
-
   }
   useEffect(() => {
 
