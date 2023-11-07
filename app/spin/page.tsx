@@ -9,10 +9,13 @@ import LoaderSpinner from '@components/Spinner'
 import Confirmation from '@components/Confirmation'
 import MemberTable from '@components/MemberTable'
 import Confetti from 'react-confetti'
+import { useStore } from '@src/store'
+
 const Spin = () => {
   // const [participant, setParticipant] = useState<IndexState['participant']>('')
   const [notClaimedParticipantNames, setNotClaimedParticipantNames] = useState<IndexState['notClaimedParticipantNames']>([])
-  const [participants, setParticipants] = useState<IndexState['participants']>([]); // array of objects
+  // const [participants, setParticipants] = useState<IndexState['participants']>([]); // array of objects
+  const {participants} = useStore()
   const [winnerToBeDeclared, setWinnerToBeDeclared] = useState<IndexState['winnerToBeDeclared']>('')
   const [loading, setLoading] = useState<IndexState['loading']>(true)
   const [responseLoading, setResponseLoading] = useState<IndexState['loading']>(false)
@@ -94,11 +97,12 @@ const Spin = () => {
 
           // console.log('Got updataed data with message', dataWithMessage.result);
 
-          const updtedArray = participants.map((participant) => {
+          const updatedArray = participants.map((participant:participant) => {
             // console.log(participant);
             return participant._id === dataWithMessage.result._id ? dataWithMessage.result : participant
           })
-          setParticipants(updtedArray)
+          // setParticipants(updtedArray)
+          useStore.setState({participants: updatedArray})
           setResponseLoading(false)
           break;
         case add:
@@ -110,7 +114,8 @@ const Spin = () => {
           })
           const participantCopy = participants
           participantCopy.push(dataWIthMessage.result)
-          setParticipants(participantCopy)
+          // setParticipants(participantCopy)
+          useStore.setState(participantCopy)
           setResponseLoading(false)
           break;
 
@@ -123,9 +128,10 @@ const Spin = () => {
           })
           const deletedParticipant = dataAndMessage.result
           if (deletedParticipant === undefined) throw new Error()
-          setParticipants((prev) => {
-            return prev.filter((participant) => participant._id !== deletedParticipant._id)
-          })
+          // setParticipants((prev) => {
+          //   return prev.filter((participant) => participant._id !== deletedParticipant._id)
+          // })
+          useStore.setState({participants: participants.filter((participant:participant) => participant._id !== deletedParticipant._id)})
           toggleDeleteModal()
           setResponseLoading(false)
           break
@@ -228,11 +234,12 @@ const Spin = () => {
     (async () => {
       const allParticipants = await fetchAllParticipants()
       allParticipants.sort((a: participant, b: participant) => a.serial - b.serial)
-      setParticipants(allParticipants)
+      useStore.setState({participants: allParticipants});
+      // setParticipants(allParticipants)
     })()
   }, [])
   useEffect(() => {
-    const notClaimedParticipantNames = participants.filter((participant) => !participant.claimed).map((participant) => participant.name)
+    const notClaimedParticipantNames = participants.filter((participant:participant) => !participant.claimed).map((participant:participant) => participant.name)
     setNotClaimedParticipantNames(notClaimedParticipantNames)
   }, [participants])
 
@@ -275,7 +282,7 @@ const Spin = () => {
       )
 
   return (
-    <div className={`member-container ${(showFormModal || showDeleteModal) && 'overflow-x-hidden overflow-y-hidden'}`}>
+    <div className={`member-container relative h-full ${(showFormModal || showDeleteModal) && 'overflow-x-hidden overflow-y-hidden'}`}>
       <MemberTable
         participants={participants}
         handleEdit={handleEdit}
@@ -287,7 +294,7 @@ const Spin = () => {
       {!loading && <button className='max-w-[500px] m-4 p-2 bg-teal-500 rounded-xl text-rose-900' onClick={() => setShowWheel((prev) => !prev)}>{`Click Me to ${showWheel ? 'Hide' : 'Show'} the Spinning wheel`}</button>}
 
       <div
-        className={`memberform absolute w-screen h-screen top-0 left-0 flex items-center justify-center border boder4 border-black modal ${showFormModal && 'appear'}`}
+        className={`memberform fixed w-screen h-full  top-0 left-0 flex items-center justify-center border boder4 border-black modal ${showFormModal && 'appear'}`}
       >
         <MemberForm
           handleChange={handleChange}
@@ -300,14 +307,14 @@ const Spin = () => {
       </div>
 
       {responseLoading && (
-        <div className={`absolute w-screen h-screen border border-black loading top-0 right-0 flex justify-center items-center`}>
+        <div className={`fixed w-screen h-screen border border-black loading top-0 right-0 flex justify-center items-center`}>
           <LoaderSpinner />
         </div>
       )}
 
       {/* {showDeleteModal && ( */}
       <div
-        className={`absolute w-screen h-screen modal ${showDeleteModal && 'appear'} top-0 left-0 flex items-center justify-center`}
+        className={`fixed w-screen h-screen modal ${showDeleteModal && 'appear'} top-0 left-0 flex items-center justify-center`}
       >
         <DeleteModal
           toggleDeleteModal={toggleDeleteModal}
@@ -319,7 +326,7 @@ const Spin = () => {
 
       {
         showConfirmation ? (
-          <div className='bg-sky-500/[.5] z-100 flex absolute h-screen w-screen top-0 left-0 items-center justify-center'>
+          <div className='bg-sky-500/[.5] z-100 flex fixed h-screen w-screen top-0 left-0 items-center justify-center'>
             <Confirmation
               confirmationMessage={confirmationMessage}
             />
