@@ -34,7 +34,7 @@ const MemberTable = ({ participants, handleEdit, handleDelete, toggleFormModal, 
             : (
                 !loading ? (<h1>No Members</h1>)
                     : (
-                        <h1>Loading...</h1>
+                        <h1 className='text-red-800'>Loading...</h1>
                     )
 
 

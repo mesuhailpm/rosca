@@ -78,6 +78,8 @@ const Spin = () => {
     }))
   }
 
+  const {isLoggedIn} = useStore()
+
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>, action: string, _id: string, formData: IndexState['formData']) => {
     if (e) e.preventDefault()
@@ -208,7 +210,7 @@ const Spin = () => {
   }
   useEffect(() => {
     handleToken()
-  }, [])
+  }, [isLoggedIn])
 
   useEffect(() => {
     if (confirmationMessage.message) {
@@ -305,10 +307,9 @@ const Spin = () => {
 
         />
       </div>
-
       {responseLoading && (
         <div className={`fixed w-screen h-screen border border-black loading top-0 right-0 flex justify-center items-center`}>
-          <LoaderSpinner />
+          <LoaderSpinner color='#000000'/>
         </div>
       )}
 
