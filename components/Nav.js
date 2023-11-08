@@ -1,7 +1,7 @@
 "use client";
 import React from "react";
 import Link from "next/link";
-import logo2 from "public/assets/images/logo2.png";
+import logo from "public/assets/images/logo.png";
 import Image from "next/image";
 import { useStore } from "@src/store";
 import { useState, useEffect } from "react";
@@ -88,7 +88,7 @@ const Nav = () => {
       }}
     >
       <Link href="/" className="">
-        <Image src={logo2} width={100} alt="logo" />
+        <Image src={logo} width={100} alt="logo" />
       </Link>
 
       {isLoggedIn === true ? (
