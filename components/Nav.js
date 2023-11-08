@@ -11,6 +11,8 @@ const Nav = () => {
   const { isLoggedIn } = useStore();
   const [HasLoggedIn, setHasLoggedIn] = useState(false);
   const pathname = usePathname()
+  console.log(pathname)
+
 
   // useEffect(
   //   () => {
@@ -91,7 +93,7 @@ const Nav = () => {
 
       {isLoggedIn === true ? (
         <div className="self-end flex">
-          {pathname !== "spin" && (
+          {pathname !== "/spin" && (
             <Link
               href="/spin"
               className="flex gap-1 items-center bg-blue-800 text-white tex-xxl rounded-md p-2 m-2 hover:bg-blue-700 border border-yello-100"
