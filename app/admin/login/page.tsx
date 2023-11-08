@@ -15,7 +15,7 @@ const AdminLogin = () => {
     message: '',
     success: true,
   })
-  
+
   const {isLoggedIn} = useStore()
 
   const [formData, setFomData] = useState({
@@ -34,7 +34,7 @@ const AdminLogin = () => {
     try {
       const response = await fetch('/api/login',{method: 'POST', body: JSON.stringify(formData)})
       const {message,token, userName} = await response.json();
-      
+
       if(response.ok) {
         localStorage.setItem('userObject', JSON.stringify({token, userName}));
         useStore.setState({isLoggedIn:true})
@@ -66,14 +66,14 @@ const AdminLogin = () => {
   const checkLoggedin =async () => {
     try {
       console.log('checking');
-      
+
       const userObject = await JSON.parse(localStorage.getItem('userObject') || '')
       const { token } = userObject
       console.log(token, ' is token in local storage');
-      
+
       // const isTokenValid = await verifyToken(token)
       const response = await fetch('/api/verifyToken', { method: 'POST', body: JSON.stringify(token) })
-      
+
       const decodedData = await response.json()
       console.log(decodedData, ' is decoded data from jsonwebtoken');
       if (response.ok) {
@@ -86,7 +86,7 @@ const AdminLogin = () => {
       }else{
         setVerifyLoading(false)
       }
-      
+
     } catch (error) {
       console.log(error)
       setVerifyLoading(false)
@@ -96,13 +96,13 @@ const AdminLogin = () => {
   useEffect(() => {
     (async() => {
       console.log('useEffect');
-      
+
       await checkLoggedin()
     })()
-  
-    
+
+
   }, [])
-  
+
   if(verifyLoading) return <div className='flex flex-col gap-4 bg-gray-200/50 items-center w-screen h-screen justify-center items-center'> <Spinner color='#000000'/><h1 className='text-black font-bold'>Verfying the details...</h1></div>
   if(redirectingLoading) return <div className='flex flex-col bg-gray-200/50 items-center w-screen h-screen justify-center items-center'><Spinner color='#000000'/><h1 className='text-black font-bold '>Welcome back, we are shipping you to dashboard...</h1></div>
 
