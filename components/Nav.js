@@ -14,27 +14,9 @@ const Nav = () => {
   console.log(pathname)
 
 
-  // useEffect(
-  //   () => {
-  //     if (isLoggedIn) {
-  //       setHasLoggedIn(true);
-  //     } else {
-  //       setHasLoggedIn(false);
-  //     }
-  //   },
-  //   [isLoggedIn, HasLoggedIn],
-  //   () => {
-  //     // This function will be called on the initial render of the component.
-  //     if (isLoggedIn) {
-  //       setHasLoggedIn(true);
-  //       if (!isLoggedIn) {
-  //         setHasLoggedIn(false);
-  //       }
-  //     }
-  //   }
-  // );
-  console.log(isLoggedIn, " is value of isLoggedIn");
-  console.log(HasLoggedIn, " is value of hasLoggedIn");
+
+  //console.logisLoggedIn, " is value of isLoggedIn");
+  //console.logHasLoggedIn, " is value of hasLoggedIn");
 
   const checkLoggedin = async () => {
     try {
@@ -44,7 +26,7 @@ const Nav = () => {
         localStorage.getItem("userObject") || ""
       );
       const { token } = userObject;
-      console.log(token, " is token in local storage");
+      //console.logtoken, " is token in local storage");
 
       // const isTokenValid = await verifyToken(token)
       const response = await fetch("/api/verifyToken", {
@@ -53,14 +35,9 @@ const Nav = () => {
       });
 
       const decodedData = await response.json();
-      console.log(decodedData, " is decoded data from jsonwebtoken");
+      //console.logdecodedData, " is decoded data from jsonwebtoken");
       if (response.ok) {
-        // setVerifyLoading(false)
-        // setRedirectingLoading(true)
-        // setTimeout(() =>{
-
-        //   location.href = '/spin';
-        // },2000)
+        // setVerifyLoading
         useStore.setState({ isLoggedIn: true });
       } else {
         useStore.setState({ isLoggedIn: false });
@@ -73,7 +50,7 @@ const Nav = () => {
 
   useEffect(() => {
     (async () => {
-      console.log("useEffect");
+      //console.log"useEffect");
 
       await checkLoggedin();
     })();

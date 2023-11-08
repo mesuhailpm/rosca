@@ -52,7 +52,7 @@ const Spin = () => {
   const [formData, setFormData] = useState<IndexState['formData']>(initialFomData)
 
   const handleEdit = async (serial: number, name: string, claimed: boolean, action: string, _id: string) => {
-    console.log(serial, name, claimed, ' from handleEdit')
+    //console.logserial, name, claimed, ' from handleEdit')
     toggleFormModal(action)
     setFormData({
       _id,
@@ -67,9 +67,9 @@ const Spin = () => {
     setIdToDelete(id)
     toggleDeleteModal()
   }
-  // console.log(participants, ' are participants');
+  // //console.logparticipants, ' are participants');
   const [showForm, setShowForm] = useState(false)
-  // console.log(notClaimedParticipantNames);
+  // //console.lognotClaimedParticipantNames);
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     setFormData((prevFormData) => ({
@@ -83,11 +83,11 @@ const Spin = () => {
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>, action: string, _id: string, formData: IndexState['formData']) => {
     if (e) e.preventDefault()
-    console.log(action, _id, 'is id', formData, ' is formData');
+    //console.logaction, _id, 'is id', formData, ' is formData');
     try {
       switch (action) {
         case edit:
-          console.log('action is edit and the id is ', _id)
+          //console.log'action is edit and the id is ', _id)
           setResponseLoading(true)
           const dataWithMessage = await updateParticipant(_id, JSON.stringify(formData))
           setconfirmationMessage({
@@ -95,9 +95,9 @@ const Spin = () => {
             success: true
           }
           )
-          console.log(confirmationMessage, ' is confirmationMessage');
+          //console.logconfirmationMessage, ' is confirmationMessage');
 
-          // console.log('Got updataed data with message', dataWithMessage.result);
+          // //console.log'Got updataed data with message', dataWithMessage.result);
 
           const updatedArray = participants.map((participant:participant) => {
             // console.log(participant);
@@ -139,11 +139,11 @@ const Spin = () => {
           break
         default:
           setResponseLoading(false)
-          console.log('this is default action');
+          //console.log'this is default action');
           break;
       }
     } catch (error) {
-      console.log(error, ' hanlde sumit failed nwith confirm message object', confirmationMessage)
+      //console.logerror, ' hanlde sumit failed nwith confirm message object', confirmationMessage)
       setResponseLoading(false)
       setconfirmationMessage((prev) => (
         { ...prev, success: false }
@@ -214,7 +214,7 @@ const Spin = () => {
 
   useEffect(() => {
     if (confirmationMessage.message) {
-      console.log(confirmationMessage);
+      //console.logconfirmationMessage);
 
       setShowCinfirmation(true);
       setShowDeleteModal(false)
@@ -226,7 +226,7 @@ const Spin = () => {
           success: false
         })
       }, 2000)
-      console.log(confirmationMessage, 'useEffect ran  is confirmation message');
+      //console.logconfirmationMessage, 'useEffect ran  is confirmation message');
     }
 
   }, [confirmationMessage.message])
@@ -248,7 +248,7 @@ const Spin = () => {
 
   if (showWheel) return loading ? (<>Loading...</>)
       : (
-        <div className='w-full flex flex-col items-center'>    
+        <div className='w-full flex flex-col items-center'>
 
           <h1 className='font-bold text-3xl'>ROSCA Wheel</h1>
           <h1>{`Can be spinned ${isOnlyOnce ? 'once' : 'multiple times'}`}</h1>
@@ -270,7 +270,7 @@ const Spin = () => {
 
               width={1000}
               height={2000}
-              
+
               />
             <h1 className='text-4xl font-pacifico' >Congratulations!</h1>
             <br/>
