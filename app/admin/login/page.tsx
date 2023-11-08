@@ -65,17 +65,17 @@ const AdminLogin = () => {
 
   const checkLoggedin =async () => {
     try {
-      console.log('checking');
+      //console.log'checking');
 
       const userObject = await JSON.parse(localStorage.getItem('userObject') || '')
       const { token } = userObject
-      console.log(token, ' is token in local storage');
+      //console.logtoken, ' is token in local storage');
 
       // const isTokenValid = await verifyToken(token)
       const response = await fetch('/api/verifyToken', { method: 'POST', body: JSON.stringify(token) })
 
       const decodedData = await response.json()
-      console.log(decodedData, ' is decoded data from jsonwebtoken');
+      //console.logdecodedData, ' is decoded data from jsonwebtoken');
       if (response.ok) {
         setVerifyLoading(false)
         setRedirectingLoading(true)
@@ -95,7 +95,7 @@ const AdminLogin = () => {
 
   useEffect(() => {
     (async() => {
-      console.log('useEffect');
+      //console.log'useEffect');
 
       await checkLoggedin()
     })()
