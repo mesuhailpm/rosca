@@ -15,7 +15,7 @@ const Spin = () => {
   // const [participant, setParticipant] = useState<IndexState['participant']>('')
   const [notClaimedParticipantNames, setNotClaimedParticipantNames] = useState<IndexState['notClaimedParticipantNames']>([])
   // const [participants, setParticipants] = useState<IndexState['participants']>([]); // array of objects
-  const {participants} = useStore()
+  const { participants } = useStore()
   const [winnerToBeDeclared, setWinnerToBeDeclared] = useState<IndexState['winnerToBeDeclared']>('')
   const [loading, setLoading] = useState<IndexState['loading']>(true)
   const [responseLoading, setResponseLoading] = useState<IndexState['loading']>(false)
@@ -78,7 +78,7 @@ const Spin = () => {
     }))
   }
 
-  const {isLoggedIn} = useStore()
+  const { isLoggedIn } = useStore()
 
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>, action: string, _id: string, formData: IndexState['formData']) => {
@@ -99,12 +99,12 @@ const Spin = () => {
 
           // //console.log'Got updataed data with message', dataWithMessage.result);
 
-          const updatedArray = participants.map((participant:participant) => {
+          const updatedArray = participants.map((participant: participant) => {
             // console.log(participant);
             return participant._id === dataWithMessage.result._id ? dataWithMessage.result : participant
           })
           // setParticipants(updtedArray)
-          useStore.setState({participants: updatedArray})
+          useStore.setState({ participants: updatedArray })
           setResponseLoading(false)
           break;
         case add:
@@ -133,7 +133,7 @@ const Spin = () => {
           // setParticipants((prev) => {
           //   return prev.filter((participant) => participant._id !== deletedParticipant._id)
           // })
-          useStore.setState({participants: participants.filter((participant:participant) => participant._id !== deletedParticipant._id)})
+          useStore.setState({ participants: participants.filter((participant: participant) => participant._id !== deletedParticipant._id) })
           toggleDeleteModal()
           setResponseLoading(false)
           break
@@ -184,7 +184,8 @@ const Spin = () => {
 
   const onFinished = (winner: string) => {
     setTimeout(() =>
-    declareWinner(winner),3000)};
+      declareWinner(winner), 3000)
+  };
 
   const handleToken = async () => {
     try {
@@ -193,10 +194,12 @@ const Spin = () => {
       // const isTokenValid = await verifyToken(tok en)
       const response = await fetch('api/verifyToken', { method: 'POST', body: JSON.stringify(token) })
       const decodedData = await response.json()
-      if(!response.ok){setTimeout(() => {
-        localStorage.removeItem('userObject')
-        location.href = '/';
-      }, 100)}
+      if (!response.ok) {
+        setTimeout(() => {
+          localStorage.removeItem('userObject')
+          location.href = '/';
+        }, 100)
+      }
       // console.log(decodedData, ' is decoded data from jsonwebtoken');
       // console.log(new Date());
       // console.log( new Date(decodedData.exp*1000).toLocaleString())
@@ -236,52 +239,52 @@ const Spin = () => {
     (async () => {
       const allParticipants = await fetchAllParticipants()
       allParticipants.sort((a: participant, b: participant) => a.serial - b.serial)
-      useStore.setState({participants: allParticipants});
+      useStore.setState({ participants: allParticipants });
       // setParticipants(allParticipants)
     })()
   }, [])
   useEffect(() => {
-    const notClaimedParticipantNames = participants.filter((participant:participant) => !participant.claimed).map((participant:participant) => participant.name)
+    const notClaimedParticipantNames = participants.filter((participant: participant) => !participant.claimed).map((participant: participant) => participant.name)
     setNotClaimedParticipantNames(notClaimedParticipantNames)
   }, [participants])
 
 
   if (showWheel) return loading ? (<>Loading...</>)
-      : (
-        <div className='w-full flex flex-col items-center'>
+    : (
+      <div className='w-full flex flex-col items-center justify-between '>
 
-          <h1 className='font-bold text-3xl'>ROSCA Wheel</h1>
-          <h1>{`Can be spinned ${isOnlyOnce ? 'once' : 'multiple times'}`}</h1>
-          <div><h1>Switch</h1><button className={` p-2 hover:font-bold rounded-md ${isOnlyOnce ? 'bg-red-500' : 'bg-green-500'}`} onClick={() => setIsOnlyOnce(prev => !prev)}> {`${isOnlyOnce ? 'Limited' : 'Free'}`} </button></div>
+        <h1 className="m-4 font-bold text-3xl" style={{ textShadow: 'rgb(209, 195, 172) 4px 0px 0px, rgb(209, 195, 172) 3.87565px 0.989616px 0px, rgb(209, 195, 172) 3.51033px 1.9177px 0px, rgb(209, 195, 172) 2.92676px 2.72656px 0px, rgb(209, 195, 172) 2.16121px 3.36588px 0px, rgb(209, 195, 172) 1.26129px 3.79594px 0px, rgb(209, 195, 172) 0.282949px 3.98998px 0px, rgb(209, 195, 172) -0.712984px 3.93594px 0px, rgb(209, 195, 172) -1.66459px 3.63719px 0px, rgb(209, 195, 172) -2.51269px 3.11229px 0px, rgb(209, 195, 172) -3.20457px 2.39389px 0px, rgb(209, 195, 172) -3.69721px 1.52664px 0px, rgb(209, 195, 172) -3.95997px 0.56448px 0px, rgb(209, 195, 172) -3.97652px -0.432781px 0px, rgb(209, 195, 172) -3.74583px -1.40313px 0px, rgb(209, 195, 172) -3.28224px -2.28625px 0px, rgb(209, 195, 172) -2.61457px -3.02721px 0px, rgb(209, 195, 172) -1.78435px -3.57996px 0px, rgb(209, 195, 172) -0.843183px -3.91012px 0px, rgb(209, 195, 172) 0.150409px -3.99717px 0px, rgb(209, 195, 172) 1.13465px -3.8357px 0px, rgb(209, 195, 172) 2.04834px -3.43574px 0px, rgb(209, 195, 172) 2.83468px -2.82216px 0px, rgb(209, 195, 172) 3.44477px -2.03312px 0px, rgb(209, 195, 172) 3.84068px -1.11766px 0px, rgb(209, 195, 172) 3.9978px -0.132717px 0px' }}>ഇത് നമ്മുടെ കുറി</h1>
+        <h1 className='m-4' style={{ textShadow: 'rgb(43, 191, 255) 4px 0px 0px, rgb(43, 191, 255) 3.87565px 0.989616px 0px, rgb(43, 191, 255) 3.51033px 1.9177px 0px, rgb(43, 191, 255) 2.92676px 2.72656px 0px, rgb(43, 191, 255) 2.16121px 3.36588px 0px, rgb(43, 191, 255) 1.26129px 3.79594px 0px, rgb(43, 191, 255) 0.282949px 3.98998px 0px, rgb(43, 191, 255) -0.712984px 3.93594px 0px, rgb(43, 191, 255) -1.66459px 3.63719px 0px, rgb(43, 191, 255) -2.51269px 3.11229px 0px, rgb(43, 191, 255) -3.20457px 2.39389px 0px, rgb(43, 191, 255) -3.69721px 1.52664px 0px, rgb(43, 191, 255) -3.95997px 0.56448px 0px, rgb(43, 191, 255) -3.97652px -0.432781px 0px, rgb(43, 191, 255) -3.74583px -1.40313px 0px, rgb(43, 191, 255) -3.28224px -2.28625px 0px, rgb(43, 191, 255) -2.61457px -3.02721px 0px, rgb(43, 191, 255) -1.78435px -3.57996px 0px, rgb(43, 191, 255) -0.843183px -3.91012px 0px, rgb(43, 191, 255) 0.150409px -3.99717px 0px, rgb(43, 191, 255) 1.13465px -3.8357px 0px, rgb(43, 191, 255) 2.04834px -3.43574px 0px, rgb(43, 191, 255) 2.83468px -2.82216px 0px, rgb(43, 191, 255) 3.44477px -2.03312px 0px, rgb(43, 191, 255) 3.84068px -1.11766px 0px, rgb(43, 191, 255) 3.9978px -0.132717px 0px' }}>{`Can be spinned ${isOnlyOnce ? 'once' : 'multiple times'}`}</h1>
+        <div className='m-10 flex flex-col items-center bg-white p-2'><h1 className='text-pink-500'>Switch</h1><button className={` p-2 hover:font-bold rounded-md ${isOnlyOnce ? 'bg-red-500 hover:bg-red-400' : 'bg-green-500 hover:bg-green-400'}`} onClick={() => setIsOnlyOnce(prev => !prev)}> {`${isOnlyOnce ? 'Limited' : 'Free'}`} </button></div>
 
-          {notClaimedParticipantNames?.length &&
-            <div className='hover:cursor-pointer'>
-              <Wheel
-                segments={notClaimedParticipantNames}
-                segColors={['#EE4040', '#F0CF50', '#815CD1', '#3DA5E0', '#34A24F', '#F9AA1F', '#EC3F3F', '#FF9000', '#FF9E80', '#00FF00', '#0000FF', '#800080', '#FFFF00', '#00FFFF', '#FF00FF', '#C0C0C0', '#FFFFFF', '#000000', '#808080', '#FF0000', '#00FF00']}
-                onFinished={(winner) => onFinished(winner)}
-                isOnlyOnce={isOnlyOnce}
-              />
-            </div>
-          }
-
-          {winnerToBeDeclared ? <div className='absolute t-0 l-0 h-screen w-screen bg-green-500 flex flex-col items-center justify-center'>
-            <Confetti
-
-              width={1000}
-              height={2000}
-
-              />
-            <h1 className='text-4xl font-pacifico' >Congratulations!</h1>
-            <br/>
-            <h1 className='text-bold text-xxl text-amber-700'>{`${winnerToBeDeclared} `}</h1>
+        {notClaimedParticipantNames?.length &&
+          <div className='hover:cursor-pointer m-1'>
+            <Wheel
+              segments={notClaimedParticipantNames}
+              segColors={['#EE4040', '#F8CF50', '#815CD1', '#3DA5E0', '#34A24F', '#F9AA1F', '#EC3F3F', '#FF9050', '#FF9E80', '#00FF00', '#0000FF', '#800080', '#F0F808', '#00FFFF', '#FF00FF', '#C0C0C0', '#FF34F5', '#000000', '#808080', '#FF0000', '#00FF02']}
+              onFinished={(winner) => onFinished(winner)}
+              isOnlyOnce={isOnlyOnce}
+            />
           </div>
-            :
-            <></>}
-            {!loading && <button className='max-w-[500px] m-4 p-2 bg-teal-500 rounded-xl text-rose-900' onClick={() => setShowWheel((prev) => !prev)}>{`Click Me to ${showWheel ? 'Hide' : 'Show'} the Spinning wheel`}</button>}
+        }
 
+        {winnerToBeDeclared ? <div className='absolute t-0 l-0 h-screen w-screen bg-green-500 flex flex-col items-center justify-center'>
+          <Confetti
+
+            width={1000}
+            height={2000}
+
+          />
+          <h1 className='text-4xl font-pacifico' >Congratulations!</h1>
+          <br />
+          <h1 className='text-bold text-xxl text-[#CCCCFF]'>{`${winnerToBeDeclared} `}</h1>
         </div>
-      )
+          :
+          <></>}
+        {!loading && <button className='max-w-[500px] m-4 p-2 bg-teal-500 rounded-xl text-rose-900' onClick={() => setShowWheel((prev) => !prev)}>{`Click Me to ${showWheel ? 'Hide' : 'Show'} the Spinning wheel`}</button>}
+
+      </div>
+    )
 
   return (
     <div className={`member-container relative h-full ${(showFormModal || showDeleteModal) && 'overflow-x-hidden overflow-y-hidden'}`}>
@@ -309,7 +312,7 @@ const Spin = () => {
       </div>
       {responseLoading && (
         <div className={`fixed w-screen h-screen border border-black loading top-0 right-0 flex justify-center items-center`}>
-          <LoaderSpinner color='#000000'/>
+          <LoaderSpinner color='#000000' />
         </div>
       )}
 
