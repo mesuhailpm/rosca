@@ -89,7 +89,7 @@ const Nav = () => {
 
       {isLoggedIn === true ? (
         <div className="self-end flex">
-          {window.location.href.split("/")[3] !== "spin" && (
+          {location.href.split("/")[3] !== "spin" && (
             <Link
               href="/spin"
               className="flex gap-1 items-center bg-blue-800 text-white tex-xxl rounded-md p-2 m-2 hover:bg-blue-700 border border-yello-100"

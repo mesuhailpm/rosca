@@ -81,7 +81,7 @@ const AdminLogin = () => {
         setRedirectingLoading(true)
         setTimeout(() =>{
 
-         window.location.href = '/spin';
+         location.href = '/spin';
         },2000)
       }else{
         setVerifyLoading(false)
