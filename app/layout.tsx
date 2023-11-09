@@ -8,6 +8,9 @@ const poppins = Poppins({ weight: '400', preload: false })
 export const metadata: Metadata = {
   title: 'Nammude Kuri- നമ്മുടെ കുറി',
   description: 'നമ്മുടെ കുറി ആപ്പ്',
+  manifest:'/manifest.json',
+  icons :{apple:'/icon-192x192.png'},
+  themeColor: '#FFFFFF'
 }
 
 export default function RootLayout({
