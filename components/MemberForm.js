@@ -20,7 +20,7 @@ const MemberForm = ({
         className="absolute right-[5%] top-[5%] p-1 rounded-md bg-teal-300 flex hover:text-red-500"
         onClick={toggleFormModal}
       >
-       <i class="fa fa-times" aria-hidden="true"></i>
+       <i className="fa fa-times" aria-hidden="true"></i>
 
       </button>
       <h1 className="text-center">{`${actionAsTitle} a member`}</h1>
