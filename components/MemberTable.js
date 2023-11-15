@@ -21,8 +21,8 @@ const MemberTable = ({ participants, handleEdit, handleDelete, toggleFormModal, 
                             <td>{serial}</td>
                             <td>{name}</td>
                             <td>{claimed === true ? 'Yes' : 'No'}</td>
-                            <td className='hover:text-yellow-500'><button onClick={() => handleEdit(serial, name, claimed, edit, _id)}><i class="fas fa-edit"></i></button></td>
-                            <td className='hover:text-red-500'><button onClick={() => handleDelete(_id)}><i class="fa-solid fa-trash"></i></button></td>
+                            <td className='hover:text-yellow-500'><button onClick={() => handleEdit(serial, name, claimed, edit, _id)}><i className="fas fa-edit"></i></button></td>
+                            <td className='hover:text-red-500'><button onClick={() => handleDelete(_id)}><i className="fa-solid fa-trash"></i></button></td>
                         </tr>)
                 }
                 )
