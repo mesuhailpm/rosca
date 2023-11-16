@@ -2,6 +2,7 @@
 import {useStore} from '@src/store';
 import {useState, useEffect } from 'react'
 import { fetchAllParticipants } from '@actions';
+import Link from 'next/link';
 
 
 export default function Home() {
@@ -64,6 +65,8 @@ export default function Home() {
           </tbody>
         </table>
       )}
+
+      <Link href={'/terms'} className="text-black font-bold">Click to see terms & conditions</Link>
 
     </div>
   );
