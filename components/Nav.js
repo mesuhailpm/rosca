@@ -11,7 +11,7 @@ const Nav = () => {
   const { isLoggedIn } = useStore();
   const [HasLoggedIn, setHasLoggedIn] = useState(false);
   const pathname = usePathname()
-  console.log(pathname)
+  // console.log(pathname)
 
 
 
@@ -20,7 +20,6 @@ const Nav = () => {
 
   const checkLoggedin = async () => {
     try {
-      console.log("checking");
 
       const userObject = await JSON.parse(
         localStorage.getItem("userObject") || ""
