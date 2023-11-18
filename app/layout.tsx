@@ -22,13 +22,13 @@ export default function RootLayout({
   return (
     <html lang="en">
       <head>
-        <link
+        <link //to access fontawesome resources used in the project
           rel="stylesheet"
           href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
         />
 
       </head>
-      <body className={poppins.className}>
+      <body className={`&{poppins.className} h-full min-h-screen flex flex-col` }>
         <Nav />
         {children}
         <Footer />
