@@ -1,6 +1,6 @@
 export const fetchAllParticipants = async () => {
   try {
-    const response = await fetch("api/participants/all",{
+    const response = await fetch("api/participants/all", {
       revalidate: 10, // revalidate the cache every 10 seconds
     });
     const data = await response.json();
@@ -46,11 +46,24 @@ export const deleteParticipant = async (id) => {
     const response = await fetch(`api/participants/delete/${id}`, {
       method: "DELETE",
     });
-    const data = await response.json();//{data: 'particpant object', message: 'successflly updated'}
+    const data = await response.json(); //{data: 'particpant object', message: 'successflly updated'}
     //console.logdata, ' is data returned');
     return data;
-
   } catch (error) {
     console.log(error);
+  }
+};
+
+export const initiateRegister = async(credentials) => {
+  try {
+    const response = await fetch(`/api/admin/register/`, 
+    {
+       method: "POST",
+       body: JSON.stringify(credentials)
+    });
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.log(error)
   }
 };
