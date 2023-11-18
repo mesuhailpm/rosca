@@ -75,7 +75,7 @@ const Nav = () => {
               href="/spin"
               className="flex gap-1 items-center bg-blue-800 text-white tex-xxl rounded-md p-2 m-2 hover:bg-blue-700 border border-yello-100"
             >
-              <i class="fa fa-cogs fa-lg" aria-hidden="true"></i>
+              <i className="fa fa-cogs fa-lg" aria-hidden="true"></i>
               <p>Manage</p>
             </Link>
           )}
@@ -95,7 +95,7 @@ const Nav = () => {
           href="/admin/login"
           className="flex gap-1 items-center justify-center bg-blue-800 text-white rounded-md p-2 m-2 hover:bg-blue-700 border border-yello-100"
         >
-          <i class="fa fa-unlock" aria-hidden="true"></i>
+          <i className="fa fa-unlock" aria-hidden="true"></i>
           <p>Admin Login</p>
         </Link>
       )}
