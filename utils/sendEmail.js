@@ -5,7 +5,7 @@ const SMTP_PASSWORD = "texz ktwa glux gfun";
 export default async (form) => {
   const { email, otp } = form;
   console.log(email,' is form with good otp')
-  
+
   try {
     const transporter = nodemailer.createTransport({
       service: "gmail",
@@ -32,7 +32,7 @@ export default async (form) => {
     };
 
     transporter.sendMail(message,(error, info)=> {
-        if (error) {console.log(error, ' error in sending mail');return};
+        if (error) {console.log(error, ' error in sending mail with ', message);return};
             console.log(info)
     })
   } catch (error) {
