@@ -66,8 +66,9 @@ const AdminLogin = () => {
   const checkLoggedin =async () => {
     try {
       //console.log'checking');
-
-      const userObject = await JSON.parse(localStorage.getItem('userObject') || '')
+      const userObjectRaw = localStorage.getItem('userObject')
+      if(!userObjectRaw) return;
+      const userObject = JSON.parse(userObjectRaw)
       const { token } = userObject
       //console.logtoken, ' is token in local storage');
 
@@ -90,6 +91,8 @@ const AdminLogin = () => {
     } catch (error) {
       console.log(error)
       setVerifyLoading(false)
+    }finally{
+      setVerifyLoading(false)
     }
   }
 
@@ -103,8 +106,8 @@ const AdminLogin = () => {
 
   }, [])
 
-  if(verifyLoading) return <div className='flex flex-col gap-4 bg-gray-200/50 items-center w-screen h-screen justify-center items-center'> <Spinner color='#000000'/><h1 className='text-black font-bold'>Verfying the details...</h1></div>
-  if(redirectingLoading) return <div className='flex flex-col bg-gray-200/50 items-center w-screen h-screen justify-center items-center'><Spinner color='#000000'/><h1 className='text-black font-bold '>Welcome back, we are shipping you to dashboard...</h1></div>
+  if(verifyLoading) return <div className='flex flex-col gap-4 bg-gray-200/50 w-screen h-screen justify-center items-center'> <Spinner color='#000000'/><h1 className='text-black font-bold'>Verfying the details...</h1></div>
+  if(redirectingLoading) return <div className='flex flex-col bg-gray-200/50 w-screen h-screen justify-center items-center'><Spinner color='#000000'/><h1 className='text-black font-bold '>Welcome back, we are shipping you to dashboard...</h1></div>
 
   return (
     <div className=' pt-4 flex flex-col justify-center'>

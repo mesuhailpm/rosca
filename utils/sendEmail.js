@@ -3,8 +3,8 @@ import generateHtml from '@utils/generateHtml';
 const SMTP_PASSWORD = "texz ktwa glux gfun";
 
 export default async (form) => {
-  const { email, otp } = form;
-  console.log(email,' is form with good otp')
+  const { email } = form;
+  // console.log(email,' is form with good otp')
 
   try {
     const transporter = nodemailer.createTransport({

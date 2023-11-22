@@ -3,15 +3,20 @@ import { model,models, Schema } from 'mongoose';
 const OTPSchema = new Schema({ 
     email:{
         type: 'string',
-        required: true,
+        unique: true,
         required: true
     },
     otp:{
         type: 'string',
         required: true,
     },
+    // save the new password to create admin later after verification
+    password:{
+        type: 'string',
+        required: true,
+    },
     createdAt:{
-        type: Schema.Types.Date,
+        type: Number,
         default: Date.now()
     },
     expiresAt: {
