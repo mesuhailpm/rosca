@@ -56,7 +56,7 @@ export const deleteParticipant = async (id) => {
 
 export const initiateRegister = async(credentials) => {
   try {
-    const response = await fetch(`/api/admin/register/`, 
+    const response = await fetch(`/api/admin/otp/`, 
     {
        method: "POST",
        body: JSON.stringify(credentials)
@@ -67,3 +67,27 @@ export const initiateRegister = async(credentials) => {
     console.log(error)
   }
 };
+export const verifyOTP = async(otpandadmin) => {
+  try {
+    
+    const response = await fetch(`/api/admin/verifyOtp/`, 
+    {
+       method: "POST",
+       body: JSON.stringify(otpandadmin)
+    });
+    const data = await response.json();
+    console.log(data,' is data');
+    return data;
+  } catch (error) {
+    console.log(error)
+  }
+};
+export const createAdmin = async ({email}) => {
+  try {
+    const response = await fetch(`/api/admin/create/${email}`)
+    const data = await response.json()
+    
+  } catch (error) {
+    
+  }
+}

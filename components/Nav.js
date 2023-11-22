@@ -21,9 +21,10 @@ const Nav = () => {
   const checkLoggedin = async () => {
     try {
 
-      const userObject = await JSON.parse(
-        localStorage.getItem("userObject") || ""
+      const userObject = JSON.parse(
+        localStorage.getItem("userObject")
       );
+      if (!userObject) return;
       const { token } = userObject;
       //console.logtoken, " is token in local storage");
 

@@ -1,0 +1,94 @@
+"use client";
+import React, { useEffect, useState } from "react";
+import OTPInput from "react-otp-input";
+import { verifyOTP, createAdmin } from "@actions";
+import Confirmation from '@components/Confirmation'
+import {useStore} from '@src/store'
+
+const Verify = () => {
+  const [otp, setOtp] = useState(0);
+  const [confirmationMessage, setConfirmationMessage] = useState({
+    message: "",
+    success: true,
+  });
+  const [showConfirmationMessage, setShowConfirmationMessage] = useState(false)
+  const numberOfInputs = 6;
+  const handleChange = (otp) => {
+    setOtp(otp);
+  };
+
+  useEffect(() => {
+    if(confirmationMessage.message.length){
+      setShowConfirmationMessage(true);
+      setTimeout(() => {
+        setConfirmationMessage({message:'', success: true});
+        setShowConfirmationMessage(false)
+      },1000)
+    }    
+  },[confirmationMessage.success, confirmationMessage.message])
+  const storedObjectRaw = localStorage.getItem("userObject");
+  const storedObject = JSON.parse(localStorage.getItem("userObject"));
+
+  const { pendingAdmin } = storedObject;
+  console.log(pendingAdmin, storedObject, " is admin to verify");
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    //create a loading
+    const data = await verifyOTP({ otp, admin: pendingAdmin });
+    console.log('sent otp with otp and admin to verify',{otp,admin:pendingAdmin});
+    console.log('got data',data);
+    if (data.success) {
+      setConfirmationMessage({
+        message: data.message,
+        success: true,
+      });
+      setTimeout(async()=>{
+        //create a new admin with password
+        const data = await createAdmin({email: pendingAdmin})
+        localStorage.setItem('userObject', JSON.stringify({token, userName}));
+        useStore.setState({isLoggedIn:true})
+        location.href ='/spin'
+      },100)
+      
+    } else {
+      console.log('otp validation failed')
+      setConfirmationMessage({
+        message: data.message,
+        success: false,
+      });
+    }
+  };
+
+  //   useEffect(() => {
+  //     if (otp.length === numberOfInputs) {
+  //       console.log(otp);
+  //       verifyOTP(otp);
+  //     }
+  //   }, [otp.length]);
+  // const setOtp = (e) => setotp(e.target.value)
+  return (
+    <div className="flex flex-col items-center bg-gray-200 ">
+      <h1 className="text-xl font-bold">Enter the OTP</h1>
+      <form
+        className="p-4 m-2 flex flex-col items-center"
+        onSubmit={handleSubmit}
+      >
+        <label htmlFor="otp">Enter OTP</label>
+        <OTPInput
+          value={otp}
+          onChange={handleChange}
+          numInputs={numberOfInputs}
+          renderInput={(props) => (
+            <input {...props} className="m-2" inputMode="number" />
+          )}
+          shouldAutoFocus={true}
+        />
+        <button type="submit">Submit</button>
+      </form>
+      {showConfirmationMessage && <div className='fixed top-0 right-0 flex flex-col gap-4 bg-gray-200/75 items-center w-screen h-screen justify-center'> <Confirmation confirmationMessage={confirmationMessage}/><h1 className='text-black font-bold'></h1></div>
+      }
+    </div>
+  );
+};
+
+export default Verify;

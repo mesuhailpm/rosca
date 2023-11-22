@@ -1,6 +1,6 @@
-'use client'
+'use client';
 import React, { ChangeEvent, FormEvent, useState } from 'react'
-import {initiateRegister} from '@actions'
+import { initiateRegister } from '@actions'
 import Confirmation from '@components/Confirmation'
 import Spinner from '@components/Spinner'
 
@@ -11,33 +11,41 @@ const RegisterAsAdmin = () => {
         confirmPassword: '',
     })
     const [loading, setLoading] = useState(false)
-    const [showConfirmation,setShowConfirmation] = useState(false)
-    const [confirmationMessage, setConfirmationMessage] = useState ({message:'', success: false})
+    const [showConfirmation, setShowConfirmation] = useState(false)
+    const [confirmationMessage, setConfirmationMessage] = useState({ message: '', success: false })
     const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
         setFomData((prevState) => {
             return { ...prevState, [event.target.name]: event.target.value }
 
         })
     }
-    const handleRegister =  async(event:FormEvent<HTMLFormElement>) => {
+    const handleRegister = async (event: FormEvent<HTMLFormElement>) => {
         event.preventDefault()
         try {
             //...handle register
             setLoading(true)
-            const {message} = await initiateRegister(formData)
+            const { message } = await initiateRegister(formData)
             console.log(message)
-            setConfirmationMessage({message, success: true})
+            setConfirmationMessage({ message, success: true })
             setLoading(false)
             setShowConfirmation(true)
-            const storedUser :{} | null = localStorage.getItem('userObject')
-            localStorage.setItem('userObject', JSON.stringify({
-                ...storedUser,
-                pendingAdmin:formData.email,
-            }))
-            setTimeout(()=>{
-                pathname
+            const storedUserObjectRaw = localStorage.getItem('userObject')
+            if (storedUserObjectRaw) {
+                const userObject = JSON.parse(storedUserObjectRaw)
+                localStorage.setItem('userObject', JSON.stringify({
+                    ...userObject,
+                    pendingAdmin: formData.email,
+                })) 
+            }else{
+                localStorage.setItem('userObject', JSON.stringify({
+                    pendingAdmin: formData.email,
+                })) 
+            }
 
-            },1000)
+            setTimeout(() => {
+                location.href = 'verify'
+
+            }, 1000)
 
         } catch (error) {
             console.error(error)
@@ -53,17 +61,17 @@ const RegisterAsAdmin = () => {
                 <input type="text" name='email' value={formData.email} placeholder='Recommended to use mobile number' className='w-[300px] pl-4 pr-4 p-1 border border-green-500 rounded-sm' required
                     onChange={handleChange} />
                 <label className='font-bold' htmlFor="password">Password</label>
-                <input type="password" name='password' value={formData.password} placeholder='Enter your password' className='w-[300px] pl-4 pr-4 p-1 border border-green-500 rounded-sm' required  onChange={handleChange}/>
+                <input type="password" name='password' value={formData.password} placeholder='Enter your password' className='w-[300px] pl-4 pr-4 p-1 border border-green-500 rounded-sm' required onChange={handleChange} />
                 <label className='font-bold' htmlFor="password">Confirm Password</label>
-                <input type="password" name='confirmPassword' value={formData.confirmPassword} placeholder='Re-enter your password' className='w-[300px] pl-4 pr-4 p-1 border border-green-500 rounded-sm' required  onChange={handleChange} />
+                <input type="password" name='confirmPassword' value={formData.confirmPassword} placeholder='Re-enter your password' className='w-[300px] pl-4 pr-4 p-1 border border-green-500 rounded-sm' required onChange={handleChange} />
 
                 <button disabled={!((formData.email) && (formData.password) && (formData.password === formData.confirmPassword))} type='submit' className='border border-none bg-green-600 text-yellow-100 m-4 pl-4 pr-4 p-2 rounded-md hover:bg-green-500 hover:border-white'>Register</button>
             </form>
             {loading && (
-                <div className='fixed top-0 right-0 flex flex-col gap-4 bg-gray-200/50 items-center w-screen h-screen justify-center items-center'> <Spinner color='#000000'/><h1 className='text-black font-bold'>Validating the OTP...</h1></div>
+                <div className='fixed top-0 right-0 flex flex-col gap-4 bg-gray-200/50 items-center w-screen h-screen justify-center'> <Spinner color='#000000' /><h1 className='text-black font-bold'>Validating the OTP...</h1></div>
             )}
             {showConfirmation && (
-                                <div className='fixed top-0 right-0 flex flex-col gap-4 bg-gray-200/75 items-center w-screen h-screen justify-center items-center'> <Confirmation confirmationMessage={confirmationMessage}/><h1 className='text-black font-bold'></h1></div>
+                <div className='fixed top-0 right-0 flex flex-col gap-4 bg-gray-200/75 items-center w-screen h-screen justify-center'> <Confirmation confirmationMessage={confirmationMessage} /><h1 className='text-black font-bold'></h1></div>
 
             )}
         </div>
