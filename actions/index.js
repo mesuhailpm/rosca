@@ -62,7 +62,13 @@ export const initiateRegister = async(credentials) => {
        body: JSON.stringify(credentials)
     });
     const data = await response.json();
-    return data;
+    if (response.ok){
+    return data;}
+    else{
+      console.log('returning',{data})
+      return {data, error: true};
+
+    }
   } catch (error) {
     console.log(error)
   }
@@ -85,9 +91,10 @@ export const verifyOTP = async(otpandadmin) => {
 export const createAdmin = async ({email}) => {
   try {
     const response = await fetch(`/api/admin/create/${email}`)
-    const data = await response.json()
+    const data = await response.json(); console.log(data, ' is data')
+    return data;
     
   } catch (error) {
-    
+    console.log(error);
   }
 }

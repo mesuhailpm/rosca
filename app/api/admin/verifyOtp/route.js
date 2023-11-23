@@ -4,25 +4,26 @@ import connectToDb from "@utils/connectToDb";
 import brcypt from "bcrypt";
 
 export const POST = async (req) => {
-  console.log("first");
+  console.log("Inside verifyOTp roure");
   const { otp, admin: email } = await req.json();
 
   try {
-    console.log(email, ' is email');
-    await connectToDb;
+    console.log(email, ' is email to verify otp with');
+    await connectToDb();
     const adminExists = await Admin.findOne({ email });
     if (adminExists) {
-      throw new Error("admin already");
+      throw new Error("admin already so can't create new admin");
     }
-    const { otp: OTPInRecord } = await OTP.findOne({ email });
+    const OTPObjectinRecord = await OTP.findOne({ email });
+    const { otp: OTPInRecord }  = await OTP.findOne({ email });
     console.log(OTPInRecord, " is recoreded OTP in hashed format");
     const ismatching = await brcypt.compare(otp, OTPInRecord);
     console.log("value of ismathcing is", ismatching);
     if (ismatching) {
-      if (OTPInRecord.expiresAt < Date.now()) {
+      if (OTPObjectinRecord.expiresAt < Date.now()) {
         return new Response(JSON.stringify(
 
-            { message: "OTP has expired, Please try again", success: false },
+            { message: "OTP has expired, Please start over", success: false },
             { status: 402 }
             )
         );
