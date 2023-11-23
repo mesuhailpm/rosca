@@ -2,56 +2,69 @@
 import React, { useEffect, useState } from "react";
 import OTPInput from "react-otp-input";
 import { verifyOTP, createAdmin } from "@actions";
-import Confirmation from '@components/Confirmation'
-import {useStore} from '@src/store'
+import Confirmation from "@components/Confirmation";
+import { useStore } from "@src/store";
 
 const Verify = () => {
+  'use client';
   const [otp, setOtp] = useState(0);
   const [confirmationMessage, setConfirmationMessage] = useState({
     message: "",
     success: true,
   });
-  const [showConfirmationMessage, setShowConfirmationMessage] = useState(false)
+  const [showConfirmationMessage, setShowConfirmationMessage] = useState(false);
   const numberOfInputs = 6;
   const handleChange = (otp) => {
     setOtp(otp);
   };
 
   useEffect(() => {
-    if(confirmationMessage.message.length){
+    if (confirmationMessage.message.length) {
       setShowConfirmationMessage(true);
       setTimeout(() => {
-        setConfirmationMessage({message:'', success: true});
-        setShowConfirmationMessage(false)
-      },1000)
-    }    
-  },[confirmationMessage.success, confirmationMessage.message])
-  const storedObjectRaw = localStorage.getItem("userObject");
-  const storedObject = JSON.parse(localStorage.getItem("userObject"));
-
-  const { pendingAdmin } = storedObject;
-  console.log(pendingAdmin, storedObject, " is admin to verify");
+        setConfirmationMessage({ message: "", success: true });
+        setShowConfirmationMessage(false);
+      }, 1000);
+    }
+  }, [confirmationMessage.success, confirmationMessage.message]);
+  // 13console.log(pendingAdmin, storedObject, " is admin to verify, its from local storage");
   const handleSubmit = async (e) => {
     e.preventDefault();
+    const storedObjectRaw = localStorage.getItem("userObject");
+    const storedObject = JSON.parse(localStorage.getItem("userObject"));
+    
+    const { pendingAdmin } = storedObject;
     //create a loading
     const data = await verifyOTP({ otp, admin: pendingAdmin });
-    console.log('sent otp with otp and admin to verify',{otp,admin:pendingAdmin});
-    console.log('got data',data);
+    console.log("sent otp with otp and admin to verify ", {
+      otp,
+      admin: pendingAdmin,
+    });
+    console.log("got data", data);
     if (data.success) {
       setConfirmationMessage({
         message: data.message,
         success: true,
       });
-      setTimeout(async()=>{
+      setTimeout(async () => {
         //create a new admin with password
-        const data = await createAdmin({email: pendingAdmin})
-        localStorage.setItem('userObject', JSON.stringify({token, userName}));
-        useStore.setState({isLoggedIn:true})
-        location.href ='/spin'
-      },100)
-      
+        const data = await createAdmin({ email: pendingAdmin });
+        if (data.success) {
+          console.log(data);
+          setConfirmationMessage({
+            message: data.message,
+            success: true,
+          });
+          setTimeout(() => {
+            location.href = "/admin/login";
+          }, 1000);
+        } else {
+          console.log();
+          setConfirmationMessage({ message: data.message, success: false });
+        }
+      }, 2000);
     } else {
-      console.log('otp validation failed')
+      console.log("otp validation failed");
       setConfirmationMessage({
         message: data.message,
         success: false,
@@ -85,8 +98,13 @@ const Verify = () => {
         />
         <button type="submit">Submit</button>
       </form>
-      {showConfirmationMessage && <div className='fixed top-0 right-0 flex flex-col gap-4 bg-gray-200/75 items-center w-screen h-screen justify-center'> <Confirmation confirmationMessage={confirmationMessage}/><h1 className='text-black font-bold'></h1></div>
-      }
+      {showConfirmationMessage && (
+        <div className="fixed top-0 right-0 flex flex-col gap-4 bg-gray-200/75 items-center w-screen h-screen justify-center">
+          {" "}
+          <Confirmation confirmationMessage={confirmationMessage} />
+          <h1 className="text-black font-bold"></h1>
+        </div>
+      )}
     </div>
   );
 };

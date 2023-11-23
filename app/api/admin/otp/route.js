@@ -5,8 +5,15 @@ import OTP from "@models/OTP";
 import Admin from "@models/Admin";
 import bcrypt from "bcrypt";
 const durationInMinutes = 10;
+const {NEXT_PUBLIC_REGISTRATION_ALLOWED } = process.env;
 
 export const POST = async (req) => {
+  if (NEXT_PUBLIC_REGISTRATION_ALLOWED === 'false') {
+    console.log('NEXT_PUBLIC_REGISTRATION_ALLOWED is \'false\' please update it.')
+    return new Response(
+    JSON.stringify({ message: "Register is diabled. Please contact the owner" }),
+    { status: 501 }
+  );}
   try {
     await connectToDB();
     const formData = await req.json();
@@ -25,7 +32,6 @@ export const POST = async (req) => {
     if(existingOTP) await OTP.findOneAndRemove({email})
     const newOTPGenerated = generateOTP();
     console.log(newOTPGenerated, ' is correct OTP')
-()
     const hashedPassword = await bcrypt.hash(password, 10)
     const hashedOTP = await bcrypt.hash(newOTPGenerated.toString(), 10);
     console.log(hashedOTP, " is hashedOTP");

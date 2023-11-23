@@ -25,6 +25,18 @@ const RegisterAsAdmin = () => {
             //...handle register
             setLoading(true)
             const { message } = await initiateRegister(formData)
+            if (!message) {
+                console.log('returned error')
+                setShowConfirmation(true)
+                setConfirmationMessage(
+                    {
+                        message: 'Please contact the Owner',
+                        success: false
+                    }
+                )
+            
+                return;
+            }
             console.log(message)
             setConfirmationMessage({ message, success: true })
             setLoading(false)
@@ -35,11 +47,11 @@ const RegisterAsAdmin = () => {
                 localStorage.setItem('userObject', JSON.stringify({
                     ...userObject,
                     pendingAdmin: formData.email,
-                })) 
-            }else{
+                }))
+            } else {
                 localStorage.setItem('userObject', JSON.stringify({
                     pendingAdmin: formData.email,
-                })) 
+                }))
             }
 
             setTimeout(() => {
@@ -49,6 +61,12 @@ const RegisterAsAdmin = () => {
 
         } catch (error) {
             console.error(error)
+        }finally{
+            setLoading(false)
+            setTimeout(()=>{
+                setShowConfirmation(false)
+
+            },2000)
         }
 
     }
@@ -58,7 +76,7 @@ const RegisterAsAdmin = () => {
             <h1 className='text-center font-bold uppercase'>Register as admin</h1>
             <form action="" className='flex flex-col items-center mt-4 font-sans' onSubmit={handleRegister}>
                 <label className='font-bold' htmlFor="email">Email</label>
-                <input type="text" name='email' value={formData.email} placeholder='Recommended to use mobile number' className='w-[300px] pl-4 pr-4 p-1 border border-green-500 rounded-sm' required
+                <input type="text" name='email' value={formData.email} placeholder='Enter your e-mail' className='w-[300px] pl-4 pr-4 p-1 border border-green-500 rounded-sm' required
                     onChange={handleChange} />
                 <label className='font-bold' htmlFor="password">Password</label>
                 <input type="password" name='password' value={formData.password} placeholder='Enter your password' className='w-[300px] pl-4 pr-4 p-1 border border-green-500 rounded-sm' required onChange={handleChange} />
@@ -68,7 +86,7 @@ const RegisterAsAdmin = () => {
                 <button disabled={!((formData.email) && (formData.password) && (formData.password === formData.confirmPassword))} type='submit' className='border border-none bg-green-600 text-yellow-100 m-4 pl-4 pr-4 p-2 rounded-md hover:bg-green-500 hover:border-white'>Register</button>
             </form>
             {loading && (
-                <div className='fixed top-0 right-0 flex flex-col gap-4 bg-gray-200/50 items-center w-screen h-screen justify-center'> <Spinner color='#000000' /><h1 className='text-black font-bold'>Validating the OTP...</h1></div>
+                <div className='fixed top-0 right-0 flex flex-col gap-4 bg-gray-200/50 items-center w-screen h-screen justify-center'> <Spinner color='#000000' /><h1 className='text-black font-bold'>Sending the OTP...</h1></div>
             )}
             {showConfirmation && (
                 <div className='fixed top-0 right-0 flex flex-col gap-4 bg-gray-200/75 items-center w-screen h-screen justify-center'> <Confirmation confirmationMessage={confirmationMessage} /><h1 className='text-black font-bold'></h1></div>
