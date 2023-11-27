@@ -34,7 +34,7 @@ const RegisterAsAdmin = () => {
                         success: false
                     }
                 )
-            
+
                 return;
             }
             console.log(message)
@@ -61,12 +61,12 @@ const RegisterAsAdmin = () => {
 
         } catch (error) {
             console.error(error)
-        }finally{
+        } finally {
             setLoading(false)
-            setTimeout(()=>{
+            setTimeout(() => {
                 setShowConfirmation(false)
 
-            },2000)
+            }, 2000)
         }
 
     }
