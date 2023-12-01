@@ -91,7 +91,8 @@ const Nav = () => {
           </button>
         </div>
       ) : (
-        <Link
+         pathname !== '/admin/verify' &&
+          <Link
           href="/admin/login"
           className="flex gap-1 items-center justify-center bg-blue-800 text-white rounded-md p-2 m-2 hover:bg-blue-700 border border-yello-100"
         >

@@ -80,7 +80,7 @@ const Verify = () => {
   //   }, [otp.length]);
   // const setOtp = (e) => setotp(e.target.value)
   return (
-    <div className="flex flex-col items-center bg-gray-200 ">
+    <div className="flex flex-col items-center bg-gray-200 p-2">
       <h1 className="text-xl font-bold">Enter the OTP</h1>
       <form
         className="p-4 m-2 flex flex-col items-center"
@@ -96,7 +96,7 @@ const Verify = () => {
           )}
           shouldAutoFocus={true}
         />
-        <button type="submit">Submit</button>
+        <button className="bg-blue-800 text-fuchsia-100 p-2 m-2 hover:bg-blue-700  rounded-md" type="submit">Submit</button>
       </form>
       {showConfirmationMessage && (
         <div className="fixed top-0 right-0 flex flex-col gap-4 bg-gray-200/75 items-center w-screen h-screen justify-center">
