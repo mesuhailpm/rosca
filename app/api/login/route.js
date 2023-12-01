@@ -1,6 +1,7 @@
 import connectToDb from "@utils/connectToDb";
 import Admin from "@models/Admin";
 import {generateToken} from "@middleware/auth";
+import bcrypt from 'bcrypt'
 
 
 export const POST = async (req) => {
@@ -17,8 +18,8 @@ export const POST = async (req) => {
         }),
         { status: 400 }
       );
-    const isCorrectPassword = registeredAdmin.password === password;
-    // console.log(isCorrectPassword, "isCorrectPassword");
+    const isCorrectPassword = await bcrypt.compare(password, registeredAdmin.password)
+    
     if (!isCorrectPassword)
       return new Response(
         JSON.stringify({
