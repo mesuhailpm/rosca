@@ -119,6 +119,9 @@ const AdminLogin = () => {
         <input type="password" onChange={handleChange} name='password' value={formData.password} placeholder='Enter your password' className='w-[300px] pl-4 pr-4 p-1 border border-green-500 rounded-sm' required />
 
         <button type='submit' className='border border-none bg-green-700 text-yellow-100 m-4 pl-4 pr-4 p-2 rounded-md hover:bg-green-500 hover:border-white'>Login</button>
+        <Link
+        href="/forgot-password"
+         >Forgot password?</Link >
       <Link
         href="/admin/register"
         className="bg-green-900 p-2 text-yellow-100 m-2 hover:bg-green-700 flex-center"
