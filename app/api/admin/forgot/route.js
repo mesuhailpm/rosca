@@ -21,7 +21,7 @@ export const POST = async (req) => {
     console.log(email); 
     console.log(" this is from api route inside forgot");
     // return if the user aleady exists
-    const alreadyRegistered = await Admin.findOne({ email });
+    const alreadyRegistered = await Admin.findOne({ userName:email });
     if (!alreadyRegistered) {
       console.log('no admin to verify');
       return new Response(
@@ -53,5 +53,9 @@ export const POST = async (req) => {
     );
   } catch (error) {
     console.log(error, " is the error in register api route");
+    return new Response(
+      JSON.stringify({ message: `something went wrong`}),
+      { status: 403}
+    )
   }
 };

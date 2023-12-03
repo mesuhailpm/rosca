@@ -24,8 +24,9 @@ const Nav = () => {
       const userObject = JSON.parse(
         localStorage.getItem("userObject")
       );
-      if (!userObject) return;
+      if (!userObject) throw new Error;
       const { token } = userObject;
+      if (!token) throw new Error;
       //console.logtoken, " is token in local storage");
 
       // const isTokenValid = await verifyToken(token)
@@ -43,7 +44,7 @@ const Nav = () => {
         useStore.setState({ isLoggedIn: false });
       }
     } catch (error) {
-      console.log(error);
+      console.error(error);
       useStore.setState({ isLoggedIn: false });
     }
   };
