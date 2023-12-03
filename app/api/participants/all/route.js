@@ -1,5 +1,8 @@
 import connectToDb from '@utils/connectToDb'
 import Participant from '@models/Participant'
+//forcing the caching to be disabled
+export const dynamic = 'force-dynamic';
+
 export const GET = async () => {
     try {
         await connectToDb()
