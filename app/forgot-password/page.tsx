@@ -22,7 +22,26 @@ const ForgotPassword = () => {
         try {
             //...handle for got password request
             setLoading(true)
+            const storedUserObjectRaw = localStorage.getItem("userObject");
+
+            if (storedUserObjectRaw) {
+                const userObject = JSON.parse(storedUserObjectRaw)
+                localStorage.setItem('userObject', JSON.stringify({
+                    ...userObject,
+                    pendingAdmin: formData.email,
+                }))
+            } else {
+                localStorage.setItem('userObject', JSON.stringify({
+                    pendingAdmin: formData.email,
+                }))
+            }
+            
+
             const data = await initiateForgotPassword(formData)
+            console.log(data)
+            //if everything works and OTP send it get {message: 'some message'} otherwise will get {data: {message: 'some message}}
+
+            //handle undesired result
             if(data.data){
 
                 setConfirmationMessage(
@@ -31,16 +50,17 @@ const ForgotPassword = () => {
                         success: false
                     }
                 )
+                setShowConfirmation(true)
                 return;
             }
 
             // const { data } = await initiateForgotPassword(formData)
-
+            //handle desired result,sent OTP with a placeholder password
                 setShowConfirmation(true)
                 setConfirmationMessage(
                     {
                         message: data.message,
-                        success: false
+                        success: true
                     }
                 )
 
@@ -51,7 +71,7 @@ const ForgotPassword = () => {
 
 
             setTimeout(() => {
-                // location.href = '/admin/verify'
+                location.href = 'forgot-password/verify'
 
             }, 1000)
 
@@ -70,7 +90,7 @@ const ForgotPassword = () => {
     <section>
 
         <div className='bg-blue-300/50 h-screen pt-4'>
-            <h1 className='text-center font-bold uppercase'>Reset your passaword</h1>
+            <h1 className='text-center font-bold uppercase'>Reset your password</h1>
             <form className='flex flex-col items-center mt-4 font-sans' onSubmit={handleForgotPassword}>
                 <label className='font-bold' htmlFor="email">Enter your registered e-mail</label>
                 <input type="text" name='email' value={formData.email} placeholder='Enter your e-mail' className='w-[300px] pl-4 pr-4 p-1 border border-green-500 rounded-sm' required
