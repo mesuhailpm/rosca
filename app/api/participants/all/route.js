@@ -7,7 +7,7 @@ export const GET = async () => {
     try {
         await connectToDb()
         const allParticipants = await Participant.find()
-        console.log(allParticipants, ' inside GET')
+        // console.log(allParticipants, ' inside GET')
         return new Response(JSON.stringify({allParticipants,success: true, status: 200}))
         
     } catch (error) {
