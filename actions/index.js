@@ -54,46 +54,91 @@ export const deleteParticipant = async (id) => {
   }
 };
 
-export const initiateRegister = async(credentials) => {
+export const initiateRegister = async (credentials) => {
   try {
-    const response = await fetch(`/api/admin/otp/`, 
-    {
-       method: "POST",
-       body: JSON.stringify(credentials)
+    const response = await fetch(`/api/admin/otp/`, {
+      method: "POST",
+      body: JSON.stringify(credentials),
     });
     const data = await response.json();
-    if (response.ok){
-    return data;}
-    else{
-      console.log('returning',{data})
-      return {data, error: true};
-
+    if (response.ok) {
+      return data;
+    } else {
+      console.log("returning", { data });
+      return { data, error: true };
     }
   } catch (error) {
-    console.log(error)
+    console.log(error);
   }
 };
-export const verifyOTP = async(otpandadmin) => {
+
+export const initiateForgotPassword = async (credentials) => {
   try {
-    
-    const response = await fetch(`/api/admin/verifyOtp/`, 
-    {
-       method: "POST",
-       body: JSON.stringify(otpandadmin)
+    const response = await fetch(`/api/admin/forgot/`, {
+      method: "POST",
+      body: JSON.stringify(credentials),
     });
     const data = await response.json();
-    console.log(data,' is data');
-    return data;
+    if (response.ok) {
+      return data;
+    } else {
+      console.log("returning", { data });
+      return { data, error: true };
+    }
   } catch (error) {
-    console.log(error)
+    console.log(error);
+    return { data: "nothing to return", error: true };
   }
 };
-export const createAdmin = async ({email}) => {
+
+export const verifyOTP = async (otpandadmin) => {
   try {
-    const response = await fetch(`/api/admin/create/${email}`)
-    const data = await response.json(); console.log(data, ' is data')
+    const response = await fetch(`/api/admin/verifyOtp/`, {
+      method: "POST",
+      body: JSON.stringify(otpandadmin),
+    });
+    const data = await response.json();
+    console.log(data, " is data");
     return data;
-    
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const verifyOtpForgot = async (otpandadmin) => {
+  try {
+    const response = await fetch(`/api/admin/verifyOtpForgot/`, {
+      method: "POST",
+      body: JSON.stringify(otpandadmin),
+    });
+    const data = await response.json();
+    console.log(data, " is data");
+    return data;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+
+export const createAdmin = async ({ email }) => {
+  try {
+    const response = await fetch(`/api/admin/create/${email}`);
+    const data = await response.json();
+    console.log(data, " is data");
+    return data;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const updateAdmin = async (credentials) => {
+
+  try {
+    console.log('email is ' + credentials.email);
+    const response = await fetch(`/api/admin/update/${credentials.email}`,{method: 'POST', body: JSON.stringify(credentials)});
+    const data = await response.json();
+    console.log(data, " is data");
+    return data;
   } catch (error) {
     console.log(error);
   }

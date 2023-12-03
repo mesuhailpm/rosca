@@ -31,59 +31,7 @@ const Verify = () => {
       }, 1000);
     }
   }, [confirmationMessage.success, confirmationMessage.message]);
-  // 13console.log(pendingAdmin, storedObject, " is admin to verify, its from local storage");
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    const storedObjectRaw = localStorage.getItem("userObject");
-    const storedObject = JSON.parse(localStorage.getItem("userObject"));
-
-    const { pendingAdmin } = storedObject;
-    //create a loading
-    const data = await verifyOTP({ otp, admin: pendingAdmin });
-    console.log("sent otp with otp and admin to verify ", {
-      otp,
-      admin: pendingAdmin,
-    });
-    console.log("got data", data);
-    if (data.success) {
-      setConfirmationMessage({
-        message: data.message,
-        success: true,
-      });
-      setTimeout(async () => {
-        //create a new admin with password
-        const data = await createAdmin({ email: pendingAdmin });
-        if (data.success) {
-          console.log(data);
-          setConfirmationMessage({
-            message: data.message,
-            success: true,
-          });
-          setTimeout(() => {
-            location.href = "/admin/login";
-          }, 1000);
-        } else {
-          console.log();
-          setConfirmationMessage({ message: data.message, success: false });
-        }
-      }, 2000);
-    } else {
-      console.log("otp validation failed");
-      setConfirmationMessage({
-        message: data.message,
-        success: false,
-      });
-    }
-  };
-
-  //   useEffect(() => {
-  //     if (otp.length === numberOfInputs) {
-  //       console.log(otp);
-  //       verifyOTP(otp);
-  //     }
-  //   }, [otp.length]);
-  // const setOtp = (e) => setotp(e.target.value)
-
+  // console.log(pendingAdmin, storedObject, " is admin to verify, its from local storage");
   useEffect(() => {
     const storedUserObjectRaw = localStorage.getItem("userObject");
     if (storedUserObjectRaw) {
@@ -101,8 +49,47 @@ const Verify = () => {
     setInitialLoading(false);
   }, []);
 
-  if(initialLoading) return <h1 className="text-2xl text-center text-orange-600 ">Loading...</h1>
+  
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    const storedObjectRaw = localStorage.getItem("userObject");
+    const storedObject = JSON.parse(localStorage.getItem("userObject"));
+    
+    const { pendingAdmin } = storedObject;
+    //create a loading
+    const data = await verifyOTP({ otp, admin: pendingAdmin });
+    console.log("sent otp with otp and admin to verify ", {
+      otp,
+      admin: pendingAdmin,
+    });
+    console.log("got data", data);
+    if (data.success) {
+      setConfirmationMessage({
+        message: data.message,
+        success: true,
+      });
 
+      setTimeout(() => {
+        location.href = "/admin/reset-password";
+      }, 1000);
+
+    } else {
+      console.log("otp validation failed");
+      setConfirmationMessage({
+        message: data.message,
+        success: false,
+      });
+    }
+  };
+
+  //   useEffect(() => {
+  //     if (otp.length === numberOfInputs) {
+  //       console.log(otp);
+  //       verifyOTP(otp);
+  //     }
+  //   }, [otp.length]);
+  // const setOtp = (e) => setotp(e.target.value)
+  if(initialLoading) return <h1 className="text-2xl text-center text-orange-600 ">Loading...</h1>
 
   if (storedUserObject.pendingAdmin === "unauthorized")
     return (
@@ -128,12 +115,7 @@ const Verify = () => {
           )}
           shouldAutoFocus={true}
         />
-        <button
-          className="bg-blue-800 text-fuchsia-100 p-2 m-2 hover:bg-blue-700  rounded-md"
-          type="submit"
-        >
-          Submit
-        </button>
+        <button className="bg-blue-800 text-fuchsia-100 p-2 m-2 hover:bg-blue-700  rounded-md" type="submit">Submit</button>
       </form>
       {showConfirmationMessage && (
         <div className="fixed top-0 right-0 flex flex-col gap-4 bg-gray-200/75 items-center w-screen h-screen justify-center">
