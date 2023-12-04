@@ -1,6 +1,7 @@
 import { model,models, Schema } from 'mongoose';
+import { OTPModelType } from '@types';
 
-const OTPSchema = new Schema({ 
+const OTPSchema = new Schema<OTPModelType>({ 
     email:{
         type: 'string',
         unique: true,
@@ -23,5 +24,5 @@ const OTPSchema = new Schema({
     }
 })
 
-const OTP = models.OTP || model('OTP', OTPSchema)
+const OTP = models.OTP || model<OTPModelType>('OTP', OTPSchema)
 export default OTP
