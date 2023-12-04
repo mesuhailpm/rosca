@@ -1,6 +1,7 @@
 import { model, models, Schema } from "mongoose";
+import { ParticpantModelType } from '@types';
 
-const participantSchema = new Schema({
+const participantSchema = new Schema<ParticpantModelType>({
   name: {
     type: String,
     required: true,
@@ -12,10 +13,9 @@ const participantSchema = new Schema({
   claimed: {
     type: Boolean,
     required: true,
-    default: false,
   },
 });
 
 const Participant =
-  models.Participant || model("Participant", participantSchema);
+  models.Participant || model<ParticpantModelType>("Participant", participantSchema);
 export default Participant;
