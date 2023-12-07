@@ -7,19 +7,17 @@ interface WheelProps {
   segments: Segment[];
   segColors?: Prize[];
   onFinished?: (winner: string) => void;
-  isOnlyOnce: boolean
 }
 type Segment = string | {label: string, value?: string}
 type Prize = string | { color: string}
 
-const Wheel: React.FC<WheelProps> = ({ segments, segColors, onFinished, isOnlyOnce }) => {
+const Wheel: React.FC<WheelProps> = ({ segments, segColors, onFinished }) => {
   // console.log(segments, 'are participan the wheels recieved')
   return (
     <WheelComponent
       segments={segments}
       segColors={segColors}
       onFinished={onFinished}
-      isOnlyOnce={isOnlyOnce}
       primaryColor="#880000"
       contrastColor="white"
       size={300}

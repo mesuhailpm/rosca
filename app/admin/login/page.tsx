@@ -38,7 +38,7 @@ const AdminLogin = () => {
       if (response.ok) {
         localStorage.setItem('userObject', JSON.stringify({ token, userName }));
         useStore.setState({ isLoggedIn: true })
-        location.href = '/spin'
+        location.href = '/admin'
       } else {
         setVerifyLoading(false)
         setconfirmationMessage({ message: message, success: false })
@@ -83,7 +83,7 @@ const AdminLogin = () => {
         setRedirectingLoading(true)
         setTimeout(() => {
 
-          location.href = '/spin';
+          location.href = '/admin';
         }, 2000)
       } else {
         setVerifyLoading(false)
