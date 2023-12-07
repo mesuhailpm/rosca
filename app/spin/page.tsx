@@ -233,6 +233,15 @@ const Spin = () => {
     }
 
   }, [confirmationMessage.message])
+  function shuffleArray(array: []) {
+    for (let i = array.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [array[i], array[j]] = [array[j], array[i]];
+    }
+    return array;
+  }
+  
+
 
 
   useEffect(() => {
@@ -245,7 +254,8 @@ const Spin = () => {
   }, [])
   useEffect(() => {
     const notClaimedParticipantNames = participants.filter((participant: participant) => !participant.claimed).map((participant: participant) => participant.name)
-    setNotClaimedParticipantNames(notClaimedParticipantNames)
+    const randomisedParticipants = shuffleArray(notClaimedParticipantNames)
+    setNotClaimedParticipantNames(randomisedParticipants)
   }, [participants])
 
 
