@@ -11,12 +11,10 @@ import { useStore } from '@src/store'
 import Link from 'next/link'
 
 const Dashboard = () => {
-  const [notClaimedParticipantNames, setNotClaimedParticipantNames] = useState<IndexState['notClaimedParticipantNames']>([])
   // const [participants, setParticipants] = useState<IndexState['participants']>([]); // array of objects
   const { participants } = useStore()
   const [loading, setLoading] = useState<IndexState['loading']>(true)
   const [responseLoading, setResponseLoading] = useState<IndexState['loading']>(false)
-  const [showWheel, setShowWheel] = useState(false)
   const [showFormModal, setShowFormModal] = useState(false)
   const [showDeleteModal, setShowDeleteModal] = useState(false)
   const [action, setAction] = useState('')
@@ -232,7 +230,6 @@ const Dashboard = () => {
         loading={loading}
 
       />
-      {!loading && <button className='max-w-[500px] m-4 p-2 bg-teal-500 rounded-xl text-rose-900' onClick={() => setShowWheel((prev) => !prev)}>{`Click Me to ${showWheel ? 'Hide' : 'Show'} the Spinning wheel`}</button>}
 
       <div
         className={`memberform fixed w-screen h-full  top-0 left-0 flex items-center justify-center border boder4 border-black modal ${showFormModal && 'appear'}`}
@@ -275,7 +272,7 @@ const Dashboard = () => {
         ) : <></>
       }
 
-      <Link href={'/spin'}><h2 className="text-2xl-text-violet-500">Click me to Spin the wheel and draw someone</h2></Link>
+      {!loading &&<Link href={'/spin'}><h2 className="bg-yellow-500 text-2xl-text-violet-500">Click me to Spin the wheel and draw someone</h2></Link>}
 
     </div>
   )

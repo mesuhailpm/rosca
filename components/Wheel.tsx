@@ -18,8 +18,8 @@ const Wheel: React.FC<WheelProps> = ({ segments, segColors, onFinished }) => {
       segments={segments}
       segColors={segColors}
       onFinished={onFinished}
-      primaryColor="#880000"
-      contrastColor="white"
+      primaryColor="#FFFFFF"
+      contrastColor="black"
       size={300}
       // upDuration={2000}
       // downDuration={1200}

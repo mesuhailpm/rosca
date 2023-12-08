@@ -1,12 +1,8 @@
 'use client'
-import React, { ChangeEvent, FormEvent, useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import Wheel from '@components/Wheel'
-import { fetchAllParticipants, addParticipant, updateParticipant, deleteParticipant } from '@actions'
+import { fetchAllParticipants } from '@actions'
 import '../../app/globals.css'
-import MemberForm from '@components/MemberForm'
-import DeleteModal from '@components/DeleteModal'
-import LoaderSpinner from '@components/Spinner'
-import Confirmation from '@components/Confirmation'
 import Confetti from 'react-confetti'
 import { useStore } from '@src/store'
 
@@ -16,37 +12,6 @@ const Spin = () => {
   // const [participants, setParticipants] = useState<IndexState['participants']>([]); // array of objects
   const { participants } = useStore()
   const [winnerToBeDeclared, setWinnerToBeDeclared] = useState<IndexState['winnerToBeDeclared']>('')
-  const [loading, setLoading] = useState<IndexState['loading']>(true)
-  const [responseLoading, setResponseLoading] = useState<IndexState['loading']>(false)
-  const [showFormModal, setShowFormModal] = useState(false)
-  const [showDeleteModal, setShowDeleteModal] = useState(false)
-  const [action, setAction] = useState('')
-  const [ideToDelete, setIdToDelete] = useState('')
-  const [showConfirmation, setShowCinfirmation] = useState(false);
-  let [confirmationMessage, setconfirmationMessage] = useState({
-    message: '',
-    success: true,
-  })
-
-  const toggleDeleteModal = () => setShowDeleteModal((prev) => !prev)
-  const edit = 'edit'
-  const add = 'add'
-  const remove = 'remove'
-  const initialFomData: IndexState['formData'] = {
-    _id: '',
-    serial: 0,
-    name: '',
-    claimed: false
-
-  }
-
-  const [formData, setFormData] = useState<IndexState['formData']>(initialFomData)
-
-
-
-  const { isLoggedIn } = useStore()
-
-
 
   const declareWinner = (winner: string) => {
     setWinnerToBeDeclared(winner)
@@ -55,7 +20,6 @@ const Spin = () => {
         setWinnerToBeDeclared('')
       }, 15000
     )
-
   }
 
   interface participant {
@@ -84,52 +48,8 @@ const Spin = () => {
       declareWinner(winner), 3000)
   };
 
-  const handleToken = async () => {
-    try {
-      const userObject = await JSON.parse(localStorage.getItem('userObject') || '')
-      const { token } = userObject
-      // const isTokenValid = await verifyToken(tok en)
-      const response = await fetch('api/verifyToken', { method: 'POST', body: JSON.stringify(token) })
-      const decodedData = await response.json()
-      if (!response.ok) {
-        setTimeout(() => {
-          localStorage.removeItem('userObject')
-          location.href = '/';
-        }, 100)
-      }
-      // console.log(decodedData, ' is decoded data from jsonwebtoken');
-      // console.log(new Date());
-      // console.log( new Date(decodedData.exp*1000).toLocaleString())
-      setLoading(false);
-    } catch (error) {
-      console.log(error)
-      setTimeout(() => {
-        location.href = '/';
-      }, 1000);
-    }
-  }
-  useEffect(() => {
-    handleToken()
-  }, [isLoggedIn])
 
-  useEffect(() => {
-    if (confirmationMessage.message) {
-      //console.logconfirmationMessage);
 
-      setShowCinfirmation(true);
-      setShowDeleteModal(false)
-      setShowFormModal(false)
-      setTimeout(() => {
-        setShowCinfirmation(false);
-        setconfirmationMessage({
-          message: '',
-          success: false
-        })
-      }, 2000)
-      //console.logconfirmationMessage, 'useEffect ran  is confirmation message');
-    }
-
-  }, [confirmationMessage.message])
   function shuffleArray(array: []) {
     for (let i = array.length - 1; i > 0; i--) {
       const j = Math.floor(Math.random() * (i + 1));
@@ -171,7 +91,7 @@ const Spin = () => {
           </div>
         }
 
-        {winnerToBeDeclared ? <div className='absolute t-0 l-0 h-screen w-screen bg-green-500 flex flex-col items-center justify-center'>
+        {winnerToBeDeclared ? <div className='absolute t-0 l-0 h-screen w-screen bg-green-400 flex flex-col items-center justify-center'>
           <Confetti
 
             width={1000}
@@ -180,20 +100,12 @@ const Spin = () => {
           />
           <h1 className='text-4xl font-pacifico' >Congratulations!</h1>
           <br />
-          <h1 className='text-bold text-xxl text-[#CCCCFF]'>{`${winnerToBeDeclared} `}</h1>
+          <h1 className='font-bold text-2xl text-[#49499c]'>{`${winnerToBeDeclared} `}</h1>
         </div>
           :
           <></>}
 
-      {
-        showConfirmation ? (
-          <div className='bg-sky-500/[.5] z-100 flex fixed h-screen w-screen top-0 left-0 items-center justify-center'>
-            <Confirmation
-              confirmationMessage={confirmationMessage}
-              />
-          </div>
-        ) :( <></>)
-      }
+
       </div>
 
 
