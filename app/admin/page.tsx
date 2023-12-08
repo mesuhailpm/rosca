@@ -1,6 +1,5 @@
 'use client'
 import React, { ChangeEvent, FormEvent, useEffect, useState } from 'react'
-import Wheel from '@components/Wheel'
 import { fetchAllParticipants, addParticipant, updateParticipant, deleteParticipant } from '@actions'
 import '../../app/globals.css'
 import MemberForm from '@components/MemberForm'
@@ -8,14 +7,13 @@ import DeleteModal from '@components/DeleteModal'
 import LoaderSpinner from '@components/Spinner'
 import Confirmation from '@components/Confirmation'
 import MemberTable from '@components/MemberTable'
-import Confetti from 'react-confetti'
 import { useStore } from '@src/store'
+import Link from 'next/link'
 
 const Dashboard = () => {
   const [notClaimedParticipantNames, setNotClaimedParticipantNames] = useState<IndexState['notClaimedParticipantNames']>([])
   // const [participants, setParticipants] = useState<IndexState['participants']>([]); // array of objects
   const { participants } = useStore()
-  const [winnerToBeDeclared, setWinnerToBeDeclared] = useState<IndexState['winnerToBeDeclared']>('')
   const [loading, setLoading] = useState<IndexState['loading']>(true)
   const [responseLoading, setResponseLoading] = useState<IndexState['loading']>(false)
   const [showWheel, setShowWheel] = useState(false)
@@ -23,12 +21,11 @@ const Dashboard = () => {
   const [showDeleteModal, setShowDeleteModal] = useState(false)
   const [action, setAction] = useState('')
   const [ideToDelete, setIdToDelete] = useState('')
-  const [showConfirmation, setShowCinfirmation] = useState(false);
+  const [showConfirmation, setShowConfirmation] = useState(false);
   let [confirmationMessage, setconfirmationMessage] = useState({
     message: '',
     success: true,
   })
-  const [isOnlyOnce, setIsOnlyOnce] = useState(true)
 
   const toggleDeleteModal = () => setShowDeleteModal((prev) => !prev)
   const edit = 'edit'
@@ -77,7 +74,7 @@ const Dashboard = () => {
     }))
   }
 
-  const { isLoggedIn } = useStore()
+  const { isLoggedIn }: any = useStore()
 
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>, action: string, _id: string, formData: IndexState['formData']) => {
@@ -94,15 +91,10 @@ const Dashboard = () => {
             success: true
           }
           )
-          //console.logconfirmationMessage, ' is confirmationMessage');
-
-          // //console.log'Got updataed data with message', dataWithMessage.result);
 
           const updatedArray = participants.map((participant: participant) => {
-            // console.log(participant);
             return participant._id === dataWithMessage.result._id ? dataWithMessage.result : participant
           })
-          // setParticipants(updtedArray)
           useStore.setState({ participants: updatedArray })
           setResponseLoading(false)
           break;
@@ -150,15 +142,7 @@ const Dashboard = () => {
     }
   }
 
-  const declareWinner = (winner: string) => {
-    setWinnerToBeDeclared(winner)
-    setTimeout(
-      () => {
-        setWinnerToBeDeclared('')
-      }, 15000
-    )
 
-  }
 
   interface participant {
     _id: string,
@@ -181,10 +165,6 @@ const Dashboard = () => {
     }
   }
 
-  const onFinished = (winner: string) => {
-    setTimeout(() =>
-      declareWinner(winner), 3000)
-  };
 
   const handleToken = async () => {
     try {
@@ -199,9 +179,6 @@ const Dashboard = () => {
           location.href = '/';
         }, 100)
       }
-      // console.log(decodedData, ' is decoded data from jsonwebtoken');
-      // console.log(new Date());
-      // console.log( new Date(decodedData.exp*1000).toLocaleString())
       setLoading(false);
     } catch (error) {
       console.log(error)
@@ -216,13 +193,10 @@ const Dashboard = () => {
 
   useEffect(() => {
     if (confirmationMessage.message) {
-      //console.logconfirmationMessage);
-
-      setShowCinfirmation(true);
-      setShowDeleteModal(false)
-      setShowFormModal(false)
+      setShowConfirmation(true);
+      setShowDeleteModal(false); setShowFormModal(false)
       setTimeout(() => {
-        setShowCinfirmation(false);
+        setShowConfirmation(false);
         setconfirmationMessage({
           message: '',
           success: false
@@ -232,14 +206,9 @@ const Dashboard = () => {
     }
 
   }, [confirmationMessage.message])
-  function shuffleArray(array: []) {
-    for (let i = array.length - 1; i > 0; i--) {
-      const j = Math.floor(Math.random() * (i + 1));
-      [array[i], array[j]] = [array[j], array[i]];
-    }
-    return array;
-  }
+
   
+
 
 
 
@@ -251,28 +220,7 @@ const Dashboard = () => {
       // setParticipants(allParticipants)
     })()
   }, [])
-  useEffect(() => {
-    const notClaimedParticipantNames = participants.filter((participant: participant) => !participant.claimed).map((participant: participant) => participant.name)
-    const randomisedParticipants = shuffleArray(notClaimedParticipantNames)
-    setNotClaimedParticipantNames(randomisedParticipants)
-  }, [participants])
 
-
-  if (showWheel) return loading ? (<>Loading...</>)
-    : (
-      <div className='w-full flex flex-col items-center justify-between '>
-
-        <h1 className="m-4 font-bold text-3xl" style={{ textShadow: 'rgb(209, 195, 172) 4px 0px 0px, rgb(209, 195, 172) 3.87565px 0.989616px 0px, rgb(209, 195, 172) 3.51033px 1.9177px 0px, rgb(209, 195, 172) 2.92676px 2.72656px 0px, rgb(209, 195, 172) 2.16121px 3.36588px 0px, rgb(209, 195, 172) 1.26129px 3.79594px 0px, rgb(209, 195, 172) 0.282949px 3.98998px 0px, rgb(209, 195, 172) -0.712984px 3.93594px 0px, rgb(209, 195, 172) -1.66459px 3.63719px 0px, rgb(209, 195, 172) -2.51269px 3.11229px 0px, rgb(209, 195, 172) -3.20457px 2.39389px 0px, rgb(209, 195, 172) -3.69721px 1.52664px 0px, rgb(209, 195, 172) -3.95997px 0.56448px 0px, rgb(209, 195, 172) -3.97652px -0.432781px 0px, rgb(209, 195, 172) -3.74583px -1.40313px 0px, rgb(209, 195, 172) -3.28224px -2.28625px 0px, rgb(209, 195, 172) -2.61457px -3.02721px 0px, rgb(209, 195, 172) -1.78435px -3.57996px 0px, rgb(209, 195, 172) -0.843183px -3.91012px 0px, rgb(209, 195, 172) 0.150409px -3.99717px 0px, rgb(209, 195, 172) 1.13465px -3.8357px 0px, rgb(209, 195, 172) 2.04834px -3.43574px 0px, rgb(209, 195, 172) 2.83468px -2.82216px 0px, rgb(209, 195, 172) 3.44477px -2.03312px 0px, rgb(209, 195, 172) 3.84068px -1.11766px 0px, rgb(209, 195, 172) 3.9978px -0.132717px 0px' }}>ഇത് നമ്മുടെ കുറി</h1>
-        <h1 className='m-4' style={{ textShadow: 'rgb(43, 191, 255) 4px 0px 0px, rgb(43, 191, 255) 3.87565px 0.989616px 0px, rgb(43, 191, 255) 3.51033px 1.9177px 0px, rgb(43, 191, 255) 2.92676px 2.72656px 0px, rgb(43, 191, 255) 2.16121px 3.36588px 0px, rgb(43, 191, 255) 1.26129px 3.79594px 0px, rgb(43, 191, 255) 0.282949px 3.98998px 0px, rgb(43, 191, 255) -0.712984px 3.93594px 0px, rgb(43, 191, 255) -1.66459px 3.63719px 0px, rgb(43, 191, 255) -2.51269px 3.11229px 0px, rgb(43, 191, 255) -3.20457px 2.39389px 0px, rgb(43, 191, 255) -3.69721px 1.52664px 0px, rgb(43, 191, 255) -3.95997px 0.56448px 0px, rgb(43, 191, 255) -3.97652px -0.432781px 0px, rgb(43, 191, 255) -3.74583px -1.40313px 0px, rgb(43, 191, 255) -3.28224px -2.28625px 0px, rgb(43, 191, 255) -2.61457px -3.02721px 0px, rgb(43, 191, 255) -1.78435px -3.57996px 0px, rgb(43, 191, 255) -0.843183px -3.91012px 0px, rgb(43, 191, 255) 0.150409px -3.99717px 0px, rgb(43, 191, 255) 1.13465px -3.8357px 0px, rgb(43, 191, 255) 2.04834px -3.43574px 0px, rgb(43, 191, 255) 2.83468px -2.82216px 0px, rgb(43, 191, 255) 3.44477px -2.03312px 0px, rgb(43, 191, 255) 3.84068px -1.11766px 0px, rgb(43, 191, 255) 3.9978px -0.132717px 0px' }}>{`Can be spinned ${isOnlyOnce ? 'once' : 'multiple times'}`}</h1>
-        <div className='m-10 flex flex-col items-center bg-white p-2'><h1 className='text-pink-500'>Switch</h1><button className={` p-2 hover:font-bold rounded-md ${isOnlyOnce ? 'bg-red-500 hover:bg-red-400' : 'bg-green-500 hover:bg-green-400'}`} onClick={() => setIsOnlyOnce(prev => !prev)}> {`${isOnlyOnce ? 'Limited' : 'Free'}`} </button></div>
-
-        
-
-        
-        {!loading && <button className='max-w-[500px] m-4 p-2 bg-teal-500 rounded-xl text-rose-900' onClick={() => setShowWheel((prev) => !prev)}>{`Click Me to ${showWheel ? 'Hide' : 'Show'} the Spinning wheel`}</button>}
-
-      </div>
-    )
 
   return (
     <div className={`member-container relative h-full ${(showFormModal || showDeleteModal) && 'overflow-x-hidden overflow-y-hidden'}`}>
@@ -314,7 +262,6 @@ const Dashboard = () => {
           id={ideToDelete}
         />
       </div>
-      {/* )} */}
 
       {/* Pop up Alert after actions */}
 
@@ -328,11 +275,7 @@ const Dashboard = () => {
         ) : <></>
       }
 
-
-
-
-
-
+      <Link href={'/spin'}><h2 className="text-2xl-text-violet-500">Click me to Spin the wheel and draw someone</h2></Link>
 
     </div>
   )
