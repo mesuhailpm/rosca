@@ -126,6 +126,8 @@ const Verify = () => {
           renderInput={(props) => (
             <input {...props} className="m-2" inputMode="number" />
           )}
+          inputStyle={{
+            width: "20px"}}
           shouldAutoFocus={true}
         />
         <button
