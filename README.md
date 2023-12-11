@@ -4,10 +4,10 @@
 
 dependency mismatch
     configured vercel dependecy installing command in vercel to 'npm install --force' (or 'npm install --legacy-peer-deps)
-    on hosting on netlify shoudl be passing environment variable NPM_CONFIG_FORCE set to true 
+    on hosting on netlify shoudl be passing environment variable NPM_CONFIG_FORCE set to true
 
 
-
+icons tick and cross https://icons-for-free.com/
 
 
 
@@ -16,7 +16,7 @@ typescript branch is to make it fully typescript
 
 
 
-    
+
 This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
 ## Getting Started
