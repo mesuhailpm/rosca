@@ -1,8 +1,9 @@
 'use client';
-import React, { ChangeEvent, FormEvent, useState } from 'react'
+import React, { ChangeEvent, FormEvent, useEffect, useState } from 'react'
 import { initiateRegister } from '@actions'
 import Confirmation from '@components/Confirmation'
 import Spinner from '@components/Spinner'
+import checkLoggedIn from '@utils/checkLoggedIn';
 
 const RegisterAsAdmin = () => {
     const [formData, setFomData] = useState({
@@ -70,6 +71,14 @@ const RegisterAsAdmin = () => {
         }
 
     }
+    useEffect(()=>{
+        (async () =>{
+            const hasLoggedIn = await checkLoggedIn()
+            if(hasLoggedIn){
+                location.href='/admin/login'
+            }
+        })()
+    })
 
     return (
         <div className='bg-blue-300/50 h-screen pt-4'>
