@@ -6,6 +6,8 @@ import Image from "next/image";
 import { useStore } from "@src/store";
 import { useState, useEffect } from "react";
 import { usePathname } from "next/navigation";
+import checkLoggedIn from '@utils/checkLoggedIn'
+
 
 const Nav = () => {
   const { isLoggedIn } = useStore();
@@ -18,42 +20,18 @@ const Nav = () => {
   //console.logisLoggedIn, " is value of isLoggedIn");
   //console.logHasLoggedIn, " is value of hasLoggedIn");
 
-  const checkLoggedin = async () => {
-    try {
 
-      const userObject = JSON.parse(
-        localStorage.getItem("userObject")
-      );
-      if (!userObject) throw new Error;
-      const { token } = userObject;
-      if (!token) throw new Error;
-      //console.logtoken, " is token in local storage");
-
-      // const isTokenValid = await verifyToken(token)
-      const response = await fetch("/api/verifyToken", {
-        method: "POST",
-        body: JSON.stringify(token),
-      });
-
-      const decodedData = await response.json();
-      //console.logdecodedData, " is decoded data from jsonwebtoken");
-      if (response.ok) {
-        // setVerifyLoading
-        useStore.setState({ isLoggedIn: true });
-      } else {
-        useStore.setState({ isLoggedIn: false });
-      }
-    } catch (error) {
-      console.error(error);
-      useStore.setState({ isLoggedIn: false });
-    }
-  };
 
   useEffect(() => {
     (async () => {
       //console.log"useEffect");
 
-      await checkLoggedin();
+      const hasLoggedIn = await checkLoggedIn()
+      if(hasLoggedIn){
+        useStore.setState({ isLoggedIn: true });
+      }else{
+        useStore.setState({ isLoggedIn: false });
+      }
     })();
   }, []);
 
