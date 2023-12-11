@@ -3,8 +3,7 @@ import React from 'react';
 const MemberTable = ({ participants, handleEdit, handleDelete, toggleFormModal, loading }) => {
     const add = 'add'
     const edit = 'edit'
-    return (<div className='w-full'>
-        {participants.length ? (<table className='bg-slate-500 w-full table-auto'>
+    return (<table className='max-w-lg bg-slate-700 w-full table-auto'>
             <thead>
                 <tr className='bg-blue-900 text-white'>
                     <td>Sl No</td>
@@ -17,7 +16,7 @@ const MemberTable = ({ participants, handleEdit, handleDelete, toggleFormModal, 
                 {participants.map((participant, index) => {
                     const { serial, name, claimed, _id } = participant
                     return (
-                        <tr key={index} className={`${!(index % 2) && 'bg-sky-500'}`}>
+                        <tr key={index} className={`${!(index % 2) ? 'bg-sky-500 text-teal-100' :'text-slate-200'}`}>
                             <td>{serial}</td>
                             <td>{name}</td>
                             <td>{claimed === true ? 'Yes' : 'No'}</td>
@@ -31,18 +30,9 @@ const MemberTable = ({ participants, handleEdit, handleDelete, toggleFormModal, 
             </tbody>
 
         </table>)
-            : (
-                !loading ? (<h1>No Members</h1>)
-                    : (
-                        <h1 className='text-red-900 text-center '>Loading...</h1>
-                    )
-
-
-            )
         }
 
-    </div>
-    );
-};
+
+
 
 export default MemberTable;
