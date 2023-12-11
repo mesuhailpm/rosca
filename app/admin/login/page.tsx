@@ -4,6 +4,7 @@ import Link from 'next/link'
 import React, { ChangeEvent, FormEvent, useState, useEffect } from 'react'
 import Confirmation from '@components/Confirmation'
 import { useStore } from '@src/store'
+import checkLoggedIn from '@utils/checkLoggedIn'
 
 
 
@@ -64,44 +65,17 @@ const AdminLogin = () => {
   }, [confirmationMessage, formData]
   )
 
-  const checkLoggedin = async () => {
-    try {
-      //console.log'checking');
-      const userObjectRaw = localStorage.getItem('userObject')
-      if (!userObjectRaw) return;
-      const userObject = JSON.parse(userObjectRaw)
-      const { token } = userObject
-      //console.logtoken, ' is token in local storage');
-      if (!token) return new Error
-      // const isTokenValid = await verifyToken(token)
-      const response = await fetch('/api/verifyToken', { method: 'POST', body: JSON.stringify(token) })
-
-      const decodedData = await response.json()
-      //console.logdecodedData, ' is decoded data from jsonwebtoken');
-      if (response.ok) {
-        setVerifyLoading(false)
-        setRedirectingLoading(true)
-        setTimeout(() => {
-
-          location.href = '/admin';
-        }, 2000)
-      } else {
-        setVerifyLoading(false)
-      }
-
-    } catch (error) {
-      console.error(error)
-      setVerifyLoading(false)
-    } finally {
-      setVerifyLoading(false)
-    }
-  }
-
   useEffect(() => {
     (async () => {
       //console.log'useEffect');
 
-      await checkLoggedin()
+      const hasLoggedIn = await checkLoggedIn(setVerifyLoading, setRedirectingLoading)
+      if(hasLoggedIn){
+        setTimeout(() => {
+
+          location.href = '/admin';
+        }, 2000)
+      }
     })()
 
 

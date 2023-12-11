@@ -9,6 +9,7 @@ import Confirmation from '@components/Confirmation'
 import MemberTable from '@components/MemberTable'
 import { useStore } from '@src/store'
 import Link from 'next/link'
+import checkLoggedIn from '@utils/checkLoggedIn'
 
 const Dashboard = () => {
   // const [participants, setParticipants] = useState<IndexState['participants']>([]); // array of objects
@@ -165,26 +166,16 @@ const Dashboard = () => {
 
 
   const handleToken = async () => {
-    try {
-      const userObject = await JSON.parse(localStorage.getItem('userObject') || '')
-      const { token } = userObject
-      // const isTokenValid = await verifyToken(tok en)
-      const response = await fetch('api/verifyToken', { method: 'POST', body: JSON.stringify(token) })
-      const decodedData = await response.json()
-      if (!response.ok) {
-        setTimeout(() => {
-          localStorage.removeItem('userObject')
-          location.href = '/';
-        }, 100)
-      }
-      setLoading(false);
-    } catch (error) {
-      console.log(error)
-      setTimeout(() => {
-        location.href = '/';
-      }, 1000);
+
+    const hasLoggedIn = await checkLoggedIn(setLoading)
+    if (!hasLoggedIn) {
+
+      localStorage.removeItem('userObject')
+      location.href = '/admin/login';
     }
+
   }
+
   useEffect(() => {
     handleToken()
   }, [isLoggedIn])
@@ -200,36 +191,37 @@ const Dashboard = () => {
           success: false
         })
       }, 2000)
-      //console.logconfirmationMessage, 'useEffect ran  is confirmation message');
     }
 
   }, [confirmationMessage.message])
 
-  
+
 
 
 
 
   useEffect(() => {
     (async () => {
+      setLoading(true)
       const allParticipants = await fetchAllParticipants()
       allParticipants.sort((a: participant, b: participant) => a.serial - b.serial)
       useStore.setState({ participants: allParticipants });
-      // setParticipants(allParticipants)
+      setLoading(false)
+
     })()
   }, [])
 
 
   return (
-    <div className={`member-container relative h-full ${(showFormModal || showDeleteModal) && 'overflow-x-hidden overflow-y-hidden'}`}>
-      <MemberTable
+    <div className={`member-container flex flex-col items-center relative h-full ${(showFormModal || showDeleteModal) && 'overflow-x-hidden overflow-y-hidden'}`}>
+      {participants.length && (<MemberTable
         participants={participants}
         handleEdit={handleEdit}
         handleDelete={handleDelete}
         toggleFormModal={toggleFormModal}
         loading={loading}
 
-      />
+      />)}
 
       <div
         className={`memberform fixed w-screen h-full  top-0 left-0 flex items-center justify-center border boder4 border-black modal ${showFormModal && 'appear'}`}
@@ -272,7 +264,7 @@ const Dashboard = () => {
         ) : <></>
       }
 
-      {!loading &&<Link href={'/spin'}><h2 className="bg-yellow-500 text-2xl-text-violet-500">Click me to Spin the wheel and draw someone</h2></Link>}
+      {!loading && <Link href={'/spin'} className='self-start'><h2 className="bg-yellow-500 text-2xl-text-violet-500">Click me to Spin the wheel and draw someone</h2></Link>}
 
     </div>
   )
