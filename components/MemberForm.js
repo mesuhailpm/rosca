@@ -1,8 +1,9 @@
 import React from "react";
 
+import { handleChange } from '@helper/handleChange'
+
 const MemberForm = ({
   handleSubmit,
-  handleChange,
   formData,
   toggleFormModal,
   action,
