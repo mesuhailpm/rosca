@@ -5,32 +5,34 @@ import { fetchAllParticipants } from '@actions';
 import tickIcon from 'public/assets/images/tick.svg'
 import crossIcon from 'public/assets/images/cross.svg'
 import Image from 'next/image';
-import { useContext } from 'react';
-import DataContext from '../app/Proivder'
 
 
 
 
-export default function MainTable(props) {
-  // const {participants, setParticipants} = useStore()
-  const data = useContext(DataContext); // DataContext refers to the context provided by the Provider
+export default function MainTable() {
+  const {participants, setParticipants} = useStore()
 
   const[loading, setLoading] = useState(true)
-  console.log(useStore())
-  console.log(props, ' is props');
-  console.log(data)
+  const setParticipantsForStore = async () => {
+    const data = await fetchAllParticipants()
+    data.sort((a, b) => a.serial - b.serial)
+
+
+    useStore.setState({participants:data})
+  }
 
 
 
 
+  useEffect(()=>{
+    setParticipantsForStore()
+    console.log('useEffect ran');
 
-  // useEffect(()=>{
-  //   fetchParticipants()
-  // },[])
+  },[])
 
     return(
     <div>
-        {data?.length > 0 ? (
+        {participants?.length > 0 ? (
         <table className="md:self-start m-4 bg-[#96ffff] text-slate-950 border border-black table-auto font-raleway">
           <thead>
             <tr>

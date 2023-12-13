@@ -4,7 +4,6 @@ import './globals.css'
 import Nav from '@components/Nav'
 import Footer from '@components/Footer'
 import { useStore } from '@src/store'
-import Provider from './Proivder'
 
 const poppins = Poppins({ weight: '400', preload: false })
 
@@ -21,13 +20,7 @@ export default async function RootLayout({
 }: {
   children: React.ReactNode
 }) {
-  const response = await fetch('http://localhost:3000/api/participants/all')
-  const data = await response.json()
-  useStore.setState({
-    participants: data
-  })
 
-  // console.log(data, ' inside layout);
 
   return (
     <html lang="en">
@@ -40,9 +33,7 @@ export default async function RootLayout({
       </head>
       <body className={`&{poppins.className} h-full min-h-screen flex flex-col`}>
         <Nav />
-        <Provider data={data}>
           {children}
-        </Provider>
         <Footer />
       </body>
     </html>

@@ -4,19 +4,7 @@ import Link from 'next/link';
 import MainTable from 'components/MainTable'
 
 
-const  Home = async(props) => {
-  // const data = await fetchAllParticipants()
-  const response = await fetch('http://localhost:3000/api/participants/all')
-  const data = await response.json()
-  useStore.setState({
-    participants:data
-  })
-
-  console.log(props, ' props iside page.js');
-
-
-
-
+const  Home = async() => {
 
 
   // type Participant = {
