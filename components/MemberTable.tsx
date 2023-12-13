@@ -19,9 +19,7 @@ const MemberTable = ({}) => {
     success: true,
   })
   const toggleDeleteModal = () => setShowDeleteModal((prev) => !prev)
-  const edit = 'edit'
-  const add = 'add'
-  const remove = 'remove'
+  
   const initialFomData: IndexState['formData'] = {
     _id: '',
     serial: 0,

@@ -24,8 +24,6 @@ const Dashboard = () => {
         className={`memberform fixed w-screen h-full  top-0 left-0 flex items-center justify-center border boder4 border-black modal ${showFormModal && 'appear'}`}
       >
         <MemberForm
-          handleChange={handleChange}
-          handleSubmit={handleSubmit}
           formData={formData}
           toggleFormModal={toggleFormModal}
           action={action}
