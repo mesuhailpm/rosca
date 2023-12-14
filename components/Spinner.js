@@ -1,9 +1,15 @@
 'use client'
+import { useStore } from '@src/store';
 import React from 'react'
 import {Watch} from 'react-loader-spinner';
 
 
+
+
 const Spinner = ({color}) => {
+  const { responseLoading } = useStore
+
+  if (responseLoading) 
   return (
     <Watch
   height="80"

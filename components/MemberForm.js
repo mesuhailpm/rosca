@@ -1,22 +1,19 @@
-
-'use client';
+"use client";
 import React, { useState } from "react";
 
-import { handleChange,handleSubmit } from '@helper'
+import { handleChange, handleSubmit } from "@helper";
 import { useStore } from "@src/store";
 
-
-
-const MemberForm = ({
-  action,
-}) => {
-  const { formData,toggleFormModal } = useStore();
+const MemberForm = ({}) => {
+  const { formData, toggleFormModal, showFormModal  } = useStore();
+  const {serial, claimed,name} = formData;
+  const [action, setAction] = useState("");
   const actionAsTitle = `${action[0]?.toUpperCase()}${action.slice(1)}`;
   const submitButtonLabel = action === "edit" ? "Update" : "Create";
 
   return (
-        <form
-      className="relative bg-red-400 flex flex-col gap-1 p-4 rounded-md"
+    <form
+      className={`relative bg-red-400 flex flex-col gap-1 p-4 rounded-md ${showFormModal && 'appear'}`}
       onSubmit={(e) => handleSubmit(e, action, _id, formData)}
     >
       <button
@@ -24,8 +21,7 @@ const MemberForm = ({
         className="absolute right-[5%] top-[5%] p-1 rounded-md bg-teal-300 flex hover:text-red-500"
         onClick={toggleFormModal}
       >
-       <i className="fa fa-times" aria-hidden="true"></i>
-
+        <i className="fa fa-times" aria-hidden="true"></i>
       </button>
       <h1 className="text-center">{`${actionAsTitle} a member`}</h1>
       <label htmlFor="serial">Serial</label>
