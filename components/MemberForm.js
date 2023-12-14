@@ -1,18 +1,21 @@
-import React from "react";
 
-import { handleChange } from '@helper/handleChange'
+'use client';
+import React, { useState } from "react";
+
+import { handleChange,handleSubmit } from '@helper'
+import { useStore } from "@src/store";
+
+
 
 const MemberForm = ({
-  handleSubmit,
-  formData,
-  toggleFormModal,
   action,
 }) => {
-  const { _id, serial, name, claimed } = formData;
+  const { formData,toggleFormModal } = useStore();
   const actionAsTitle = `${action[0]?.toUpperCase()}${action.slice(1)}`;
   const submitButtonLabel = action === "edit" ? "Update" : "Create";
+
   return (
-    <form
+        <form
       className="relative bg-red-400 flex flex-col gap-1 p-4 rounded-md"
       onSubmit={(e) => handleSubmit(e, action, _id, formData)}
     >
