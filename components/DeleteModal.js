@@ -1,10 +1,11 @@
 'use client'
 import { useStore } from '@src/store'
 import React from 'react'
-import { handleSubmit } from '@helper'
+
+
 
 const DeleteModal = ({}) => {
-  const  {toggleDeleteModal, idTodelete, showDeleteModal} = useStore()
+  const  {toggleDeleteModal, idTodelete, showDeleteModal, handleSubmit} = useStore()
   if(showDeleteModal)
   return (
     <div className=' flex bg-orange-400 flex-col gap-1 p-4 rounded-md items-center'>

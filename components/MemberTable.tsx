@@ -10,9 +10,7 @@ import { State, Participants, Participant } from '@types';
 const MemberTable = ({}) => {
   const [loading, setLoading] = useState<IndexState['loading']>(true)
   const [responseLoading, setResponseLoading] = useState<IndexState['loading']>(false)
-  const [showFormModal, setShowFormModal] = useState(false)
   const [showDeleteModal, setShowDeleteModal] = useState(false)
-  const [action, setAction] = useState('')
   const [ideToDelete, setIdToDelete] = useState('')
   const [showConfirmation, setShowConfirmation] = useState(false);
   let [confirmationMessage, setconfirmationMessage] = useState({
@@ -21,6 +19,10 @@ const MemberTable = ({}) => {
   })
   const toggleDeleteModal = () => setShowDeleteModal((prev) => !prev)
 
+  const {participants, toggleFormModal, showFormModal, formData} = useStore() as State
+  console.log(showFormModal);
+
+
   const initialFomData: IndexState['formData'] = {
     _id: '',
     serial: 0,
@@ -28,24 +30,25 @@ const MemberTable = ({}) => {
     claimed: false
 
   }
-  const toggleFormModal = (action: string) => {
-    setShowFormModal((prev) => !prev)
-    setFormData(initialFomData)
-    if (!showFormModal) { setAction(action) }//setAction when closing modal is causing error ' object can't be react child'
+  // const toggleFormModal = (action: string) => {
+  //   setShowFormModal((prev) => !prev)
+  //   setFormData(initialFomData)
+  //   if (!showFormModal) { setAction(action) }//setAction when closing modal is causing error ' object can't be react child'
 
-  }
+  // }
 
-  const [formData, setFormData] = useState<IndexState['formData']>(initialFomData)
 
   const handleEdit = async (serial: number, name: string, claimed: boolean, action: string, _id: string) => {
-    //console.logserial, name, claimed, ' from handleEdit')
+    console.log(serial, name, claimed,action,_id, ' from handleEdit')
     toggleFormModal(action)
-    setFormData({
-      _id,
-      serial,
-      name,
-      claimed
+    useStore.setState({
+      formData:{
+        _id,
+        serial,
+        name,
+        claimed
 
+      },action,_id
     })
   }
 
@@ -119,7 +122,6 @@ const MemberTable = ({}) => {
   }, [])
 
 
-    const {participants} = useStore() as State
     const add = 'add'
     const edit = 'edit'
 
