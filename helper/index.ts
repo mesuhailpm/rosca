@@ -3,10 +3,11 @@
 import { ChangeEvent, FormEvent, useState } from "react";
 import { useStore } from "@src/store";
 import { addParticipant, deleteParticipant, updateParticipant } from "@actions";
+import { Participant, State } from "@types";
 
 
 
-const { responseLoading: boolean, confirmationMessage:{}, participants } = useStore()
+const { responseLoading, confirmationMessage, participants } = useStore() as State
 
 
 const edit = 'edit'
@@ -52,8 +53,8 @@ export const handleSubmit = async (e: FormEvent<HTMLFormElement>, action: string
           message: dataWithMessage.message,
           success: true
         })
-        
-        const updatedArray = participants.map((participant: participant) => {
+
+        const updatedArray = participants.map((participant: Participant) => {
           return participant._id === dataWithMessage.result._id ? dataWithMessage.result : participant
         })
         useStore.setState({ participants: updatedArray })
@@ -85,7 +86,7 @@ export const handleSubmit = async (e: FormEvent<HTMLFormElement>, action: string
         // setParticipants((prev) => {
         //   return prev.filter((participant) => participant._id !== deletedParticipant._id)
         // })
-        useStore.setState({ participants: participants.filter((participant: participant) => participant._id !== deletedParticipant._id) })
+        useStore.setState({ participants: participants.filter((participant: Participant) => participant._id !== deletedParticipant._id) })
         toggleDeleteModal()
         useStore.setState({responseLoading: false})
         break

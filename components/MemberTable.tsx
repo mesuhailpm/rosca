@@ -1,9 +1,10 @@
 'use client'
 import { useStore } from '@src/store';
 import { fetchAllParticipants, addParticipant, updateParticipant, deleteParticipant } from '@actions'
-
+import checkLoggedIn from '@utils/checkLoggedIn'
 
 import React, { ChangeEvent, FormEvent, useEffect, useState } from 'react'
+import { State, Participants, Participant } from '@types';
 
 
 const MemberTable = ({}) => {
@@ -19,7 +20,7 @@ const MemberTable = ({}) => {
     success: true,
   })
   const toggleDeleteModal = () => setShowDeleteModal((prev) => !prev)
-  
+
   const initialFomData: IndexState['formData'] = {
     _id: '',
     serial: 0,
@@ -84,7 +85,7 @@ const MemberTable = ({}) => {
 
   useEffect(() => {
     handleToken()
-  }, [isLoggedIn])
+  }, [])
 
   useEffect(() => {
     if (confirmationMessage.message) {
@@ -118,8 +119,7 @@ const MemberTable = ({}) => {
   }, [])
 
 
-    const { participants } = useStore()
-
+    const {participants} = useStore() as State
     const add = 'add'
     const edit = 'edit'
 
@@ -160,7 +160,7 @@ const MemberTable = ({}) => {
           }
           )
 
-          const updatedArray = participants.map((participant: participant) => {
+          const updatedArray = participants.map((participant: Participant) => {
             return participant._id === dataWithMessage.result._id ? dataWithMessage.result : participant
           })
           useStore.setState({ participants: updatedArray })
@@ -180,7 +180,7 @@ const MemberTable = ({}) => {
           setResponseLoading(false)
           break;
 
-        case remove:
+        case 'remove':
           setResponseLoading(true)
           const dataAndMessage = await deleteParticipant(_id)
           setconfirmationMessage({
@@ -220,7 +220,7 @@ const MemberTable = ({}) => {
             </thead>
             <tbody>
                 {participants?.map((participant, index) => {
-                    const { serial, name, claimed, _id } = participant
+                    const { serial, name, claimed, _id } = participant as Participant
                     return (
                         <tr key={index} className={`${!(index % 2) ? 'bg-sky-500 text-teal-100' :'text-slate-200'}`}>
                             <td>{serial}</td>

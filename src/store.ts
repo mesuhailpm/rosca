@@ -1,25 +1,8 @@
 import { create } from "zustand";
+import { State, Participants } from "@types";
 
 
-type Participant = {
-  name: string,
-  serial: number,
-  claimed: boolean
-}
-type Participants = Participant[]
 
-interface State {
-  isLoggedIn: boolean;
-  Participants: Participants; // Define Participant type here
-  responseLoading: boolean;
-  confirmationMessage: ConfirmationMessage;
-  showDeleteModal: boolean;
-}
-
-interface ConfirmationMessage {
-  message: string;
-  success: boolean;
-}
 
 export const useStore = create((set) => ({
   isLoggedIn: false,
@@ -29,6 +12,10 @@ export const useStore = create((set) => ({
     message:'',
     success: false
   },
+  formData:{
+    _id:'', serial:0, name:'', claimed:false
+  },
+  showFormModal: false,
   showDeleteModal:false,
   toggleDeleteModal:()=>{
     set((state:State)=>({

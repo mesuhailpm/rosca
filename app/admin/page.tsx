@@ -1,11 +1,10 @@
-'use client'
 import '../../app/globals.css'
 import MemberForm from '@components/MemberForm'
 import DeleteModal from '@components/DeleteModal'
 import LoaderSpinner from '@components/Spinner'
 import Confirmation from '@components/Confirmation'
 import MemberTable from '@components/MemberTable'
-import { useStore } from '@src/store'
+// import { useStore } from '@src/store'
 import Link from 'next/link'
 import checkLoggedIn from '@utils/checkLoggedIn'
 
@@ -15,18 +14,17 @@ const Dashboard = () => {
 
 
   return (
-    <div className={`member-container flex flex-col items-center relative h-full ${(showFormModal || showDeleteModal) && 'overflow-x-hidden overflow-y-hidden'}`}>
+    <div className={`member-container flex flex-col items-center relative h-full '$'{(showFormModal || showDeleteModal) && ' overflow-x-hidden overflow-y-hidden '}`}>
       { <MemberTable
 
       />}
 
       <div
-        className={`memberform fixed w-screen h-full  top-0 left-0 flex items-center justify-center border boder4 border-black modal ${showFormModal && 'appear'}`}
+        className={`memberform fixed w-screen h-full  top-0 left-0 flex items-center justify-center border boder4 border-black modal '$'{ showFormModal && 'appear'}`}
       >
         <MemberForm
-          formData={formData}
-          toggleFormModal={toggleFormModal}
-          action={action}
+
+          // action={action}
 
         />
       </div>
