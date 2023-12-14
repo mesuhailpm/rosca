@@ -9,7 +9,7 @@ import { updateParticipant, addParticipant, deleteParticipant, fetchAllParticipa
 export const useStore = create((set) => ({
   isLoggedIn: false,
   participants: [],
-  responseLoading: true,
+  responseLoading: false,
   idTodelete: { type: String, default: 0 },
   confirmationMessage: {
     message: '',
@@ -18,6 +18,7 @@ export const useStore = create((set) => ({
   formData: {
     _id: '', serial: 0, name: '', claimed: false
   },
+  action:'',
   showConfirmation: false,
   showFormModal: false,
   showDeleteModal: false,
@@ -26,6 +27,12 @@ export const useStore = create((set) => ({
       showDeleteModal: !state.showDeleteModal
     }))
   },
+  toggleFormModal:() => {
+    set((state: State) => ({
+      showFormModal: !state.showFormModal
+    }))
+  }
+  ,
   login: () => {
     set(() => ({
       isLoggedIn: true,
@@ -41,9 +48,10 @@ export const useStore = create((set) => ({
       participants: data
     }))
   },
-  handleSubmit: () => async (e: FormEvent<HTMLFormElement>, action: string, _id: string, formData: any) => {
-    if (e) e.preventDefault()
-    //console.logaction, _id, 'is id', formData, ' is formData');
+  _id:'',
+  handleSubmit: (e:FormEvent<HTMLFormElement>) => async (e: FormEvent<HTMLFormElement>, action: string, _id: string, formData: any) => {
+    // if (e) e.preventDefault()
+    console.log(action, _id, 'is id', formData, ' is formData');
     try {
       switch (action) {
         case 'edit':

@@ -35,6 +35,3 @@ export const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
   })
 
 }
-
-
-

@@ -35,4 +35,9 @@ export interface State {
     responseLoading: boolean;
     confirmationMessage: ConfirmationMessage;
     showDeleteModal: boolean;
+    toggleFormModal: Function;
+    showFormModal: Function;
+    formData:{};
+    action:'edit'|'remove'|'update';
+    _id: string;
 }

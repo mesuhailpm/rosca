@@ -19,19 +19,13 @@ const Dashboard = () => {
 
       />}
 
-      <div
-        className={`memberform fixed w-screen h-full  top-0 left-0 flex items-center justify-center border boder4 border-black modal '$'{ showFormModal && 'appear'}`}
-      >
+
         <MemberForm
 
           // action={action}
 
         />
-      </div>
-      {/* {responseLoading && ( */}
-        <div className={`fixed w-screen h-screen border border-black loading top-0 right-0 flex justify-center items-center`}>
           <LoaderSpinner color='#000000' />
-        </div>
       {/* )} */}
 
       {/* Popup for deletion*/}
