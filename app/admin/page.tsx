@@ -28,36 +28,34 @@ const Dashboard = () => {
 
         />
       </div>
-      {responseLoading && (
+      {/* {responseLoading && ( */}
         <div className={`fixed w-screen h-screen border border-black loading top-0 right-0 flex justify-center items-center`}>
           <LoaderSpinner color='#000000' />
         </div>
-      )}
+      {/* )} */}
 
       {/* Popup for deletion*/}
-      <div
+      {/* <div
         className={`fixed w-screen h-screen modal ${showDeleteModal && 'appear'} top-0 left-0 flex items-center justify-center`}
-      >
+      > */}
         <DeleteModal
-          toggleDeleteModal={toggleDeleteModal}
-          handleSubmit={handleSubmit}
-          id={ideToDelete}
         />
-      </div>
+      {/* </div> */}
 
       {/* Pop up Alert after actions */}
 
       {
-        showConfirmation ? (
-          <div className='bg-sky-500/[.5] z-100 flex fixed h-screen w-screen top-0 left-0 items-center justify-center'>
+        // showConfirmation ? (
             <Confirmation
-              confirmationMessage={confirmationMessage}
+              // confirmationMessage={confirmationMessage}
             />
-          </div>
-        ) : <></>
+        // ) : <></>
       }
 
-      {!loading && <Link href={'/spin'} className='self-start'><h2 className="bg-yellow-500 text-2xl-text-violet-500">Click me to Spin the wheel and draw someone</h2></Link>}
+      {/* {!loading &&  */}
+      <Link href={'/spin'} className='self-start'><h2 className="bg-yellow-500 text-2xl-text-violet-500">Click me to Spin the wheel and draw someone</h2>
+      </Link>
+      {/* } */}
 
     </div>
   )
