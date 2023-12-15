@@ -15,18 +15,9 @@ const Dashboard = () => {
 
   return (
     <div className={`member-container flex flex-col items-center relative h-full '$'{(showFormModal || showDeleteModal) && ' overflow-x-hidden overflow-y-hidden '}`}>
-      { <MemberTable
-
-      />}
-
-
-        <MemberForm
-
-          // action={action}
-
-        />
-          <LoaderSpinner color='#000000' />
-      {/* )} */}
+      <MemberTable/>
+      <MemberForm/>
+      <LoaderSpinner color='#000000' />
 
       {/* Popup for deletion*/}
       {/* <div

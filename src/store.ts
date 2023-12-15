@@ -1,38 +1,74 @@
 import { create } from "zustand";
-import { State, Participants, Participant } from "@types";
+import { State, Participants, Participant, FormData, Action } from "@types";
 import { FormEvent } from "react";
 import { updateParticipant, addParticipant, deleteParticipant, fetchAllParticipants, } from "@actions";
 
+const initialFormData = {
+  _id: '',
+  serial: 0,
+  name: '',
+  claimed: false
 
+}
 
 
 export const useStore = create((set) => ({
+  formData: initialFormData,
+  setFormData: (formData: FormData) =>{
+    set(()=>({
+      formData: formData
+    }))
+  
+  },
   isLoggedIn: false,
-  participants: [],
+  participants: [/*{_id:'12fdrtrggdfge', name:'kunju', serial: 2, claimed: true}*/
+],
+  setParticipants: (participants: Participants) => {
+    set((state: State)=>(
+      {participants: participants}
+    ))
+    
+  },
   responseLoading: false,
   idTodelete: { type: String, default: 0 },
   confirmationMessage: {
     message: '',
     success: false
   },
-  formData: {
-    _id: '', serial: 0, name: '', claimed: false
-  },
   action:'',
   showConfirmation: false,
+  setShowConfirmation:(flag: boolean)=>{
+    set(() => ({
+      showConfirmation: flag
+    }))
+  },
+
+
   showFormModal: false,
+  setShowFormModal:(flag: boolean)=>{
+    set(() => ({
+      showFormModal: flag
+    }))
+  },
+  toggleShowFormModal:(action?: Action) => {
+    set((state: State) => ({
+      showFormModal: !state.showFormModal,
+      action: action
+    }))
+  }
+  ,
+
   showDeleteModal: false,
-  toggleDeleteModal: () => {
+  toggleShowDeleteModal: () => {
     set((state: State) => ({
       showDeleteModal: !state.showDeleteModal
     }))
   },
-  toggleFormModal:() => {
-    set((state: State) => ({
-      showFormModal: !state.showFormModal
-    }))
-  }
-  ,
+  
+  
+
+
+  
   login: () => {
     set(() => ({
       isLoggedIn: true,
@@ -43,15 +79,16 @@ export const useStore = create((set) => ({
       isLoggedIn: false,
     }));
   },
-  setParticipants: (data: Participants) => {
-    set(() => ({
-      participants: data
-    }))
-  },
+  // setParticipants: (data: Participants) => {
+  //   set(() => ({
+  //     participants: data
+  //   }))
+  // },
   _id:'',
-  handleSubmit: (e:FormEvent<HTMLFormElement>) => async (e: FormEvent<HTMLFormElement>, action: string, _id: string, formData: any) => {
-    // if (e) e.preventDefault()
-    console.log(action, _id, 'is id', formData, ' is formData');
+  handleSubmit: async (e: FormEvent<HTMLFormElement>, action: string, _id: string, formData: any) => {
+    console.log('first')
+    if (e) e.preventDefault()
+    console.log(e,action, _id, 'is id', formData, ' is formData');
     try {
       switch (action) {
         case 'edit':
@@ -61,11 +98,18 @@ export const useStore = create((set) => ({
           }))
           // useStore.setState({responseLoading: true})
           const dataWithMessage = await updateParticipant(_id, JSON.stringify(formData))
+          console.log(dataWithMessage)
           set(() => ({
             confirmationMessage: {
               message: dataWithMessage.message,
               success: true
             }
+          }));
+          set(() => ({
+            responseLoading: false
+          }));
+          set(() => ({
+            showConfirmation: true
           }));
           // useStore.setState({
           //   confirmationMessage: {
@@ -122,7 +166,7 @@ export const useStore = create((set) => ({
         //   //   return prev.filter((participant) => participant._id !== deletedParticipant._id)
         //   // })
         //   useStore.setState({ participants: participants.filter((participant: Participant) => participant._id !== deletedParticipant._id) })
-        //   toggleDeleteModal()
+        //   toggleShowDeleteModal()
         //   useStore.setState({ responseLoading: false })
         //   break
         default:

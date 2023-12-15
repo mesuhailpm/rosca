@@ -7,10 +7,11 @@ import { useStore } from "@src/store";
 import { useState, useEffect } from "react";
 import { usePathname } from "next/navigation";
 import checkLoggedIn from '@utils/checkLoggedIn'
+import { State } from "@types";
 
 
 const Nav = () => {
-  const { isLoggedIn } = useStore();
+  const { isLoggedIn } = useStore() as State;
   const [HasLoggedIn, setHasLoggedIn] = useState(false);
   const pathname = usePathname()
   // console.log(pathname)
