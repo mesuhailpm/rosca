@@ -3,6 +3,7 @@ export type ParticpantModelType = {
     serial: Number,
     claimed: Boolean
 }
+export type Action = 'edit' | 'remove' | 'add'
 
 export type AdminModelType = {
     userName: String,
@@ -28,16 +29,26 @@ export type ConfirmationMessage = {
     message: string;
     success: boolean;
 }
+export type FormData = {
+    name: string, _id: string, serial: number, claimed: boolean
+}
 
 export interface State {
     isLoggedIn: boolean;
     participants: Participants; // Define Participant type here
+    setParticipants: (participants: Participants) => void;
     responseLoading: boolean;
+    showConfirmation: boolean;
     confirmationMessage: ConfirmationMessage;
     showDeleteModal: boolean;
-    toggleFormModal: Function;
-    showFormModal: Function;
-    formData:{};
-    action:'edit'|'remove'|'update';
+    toggleShowDeleteModal:()=>void;
+    showFormModal: boolean;
+    setShowFormModal: (flag: boolean)=> void;
+    toggleShowFormModal: ( action?:Action)=>void;
+    formData:FormData;
+    setFormData: (form: FormData) => void;
+    handleSubmit: Function;
+    action:Action;
     _id: string;
+    idTodelete:string;
 }

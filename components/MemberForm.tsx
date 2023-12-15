@@ -1,32 +1,47 @@
 "use client";
-import React, { useState } from "react";
-
-import { handleChange } from "@helper";
+import React, { ChangeEvent, useEffect, useState } from "react";
 import { useStore } from "@src/store";
+import { State } from "@types";
 
 const MemberForm = ({ }) => {
-  const { formData, toggleFormModal, showFormModal, handleSubmit, action,_id } = useStore();
-  const { serial, claimed, name } = formData;
-  const actionAsTitle = `${action[0]?.toUpperCase()}${action.slice(1)}`;
+  const { formData, toggleShowFormModal, showFormModal, handleSubmit, action, _id } = useStore() as State;
+  const [componentActionTitle, setComponentActionTitle] = useState(action)
+  const actionAsTitle = componentActionTitle && (`${componentActionTitle[0]?.toUpperCase()}${componentActionTitle.slice(1)}`)
   const submitButtonLabel = action === "edit" ? "Update" : "Create";
 
-  console.log(showFormModal);
+  const [componentFormData, setComponentFormData] = useState(formData)
+  const { serial, claimed, name } = componentFormData;
+
+  const handleChange = (e: ChangeEvent<HTMLInputElement>| ChangeEvent<HTMLSelectElement>) => {
+    setComponentFormData((prev) => {
+      return {
+        ...prev,
+        [e.target.name]: e.target.value
+      }
+    })
+
+  }
+
+  console.log(action,componentActionTitle)
+useEffect(()=>{
+  setComponentFormData(formData)
+  setComponentActionTitle(action)
+  
+},[formData,action])
   if (showFormModal) {
 
     return (
       <div
         className={`fixed w-screen h-screen top-0 left-0 flex items-center justify-center  modal ${showFormModal && 'appear'}`}
       >
-
-
         <form
           className={`relative bg-red-400 flex flex-col gap-1 p-4 rounded-md`}
-          onSubmit={(e) => {console.log('d');e.preventDefault();console.log(action,_id, formData); handleSubmit(action, _id, formData)}}
+          onSubmit={(e)=>handleSubmit(e,action,_id,formData)}
         >
           <button
             type="button"
             className="absolute right-[5%] top-[5%] p-1 rounded-md bg-teal-300 flex hover:text-red-500"
-            onClick={toggleFormModal}
+            onClick={()=>toggleShowFormModal()}
           >
             <i className="fa fa-times" aria-hidden="true"></i>
           </button>
@@ -54,11 +69,11 @@ const MemberForm = ({ }) => {
             id="claimed"
             name="claimed"
             onChange={handleChange}
-            value={claimed}
+            value={claimed.toString()}
           >
             <option value="">Please select an option</option>
-            <option value={true}>Yes</option>
-            <option value={false}>No</option>
+            <option value={true.toString()}>Yes</option>
+            <option value={false.toString()}>No</option>
           </select>
           <br />
           <button

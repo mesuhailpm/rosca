@@ -5,9 +5,10 @@ import completeIcon from "public/assets/images/complete-icon.png";
 import errorIcon from "public/assets/images/incorrect-icon.png";
 import Image from "next/image";
 import { useStore } from "@src/store";
+import { State } from "@types";
 
 const Confirmation = ({}) => {
-  const { confirmationMessage, showConfirmation } = useStore();
+  const { confirmationMessage, showConfirmation } = useStore() as State;
   const { success, message } = confirmationMessage;
   const icon = success ? completeIcon : errorIcon;
 
@@ -20,7 +21,7 @@ const Confirmation = ({}) => {
             src={icon}
             width={40}
             className="border border-black rounded-full"
-            alt="success/failur logo"
+            alt="success/failure logo"
           />
         </div>
       </div>

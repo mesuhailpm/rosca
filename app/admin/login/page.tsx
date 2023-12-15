@@ -81,7 +81,7 @@ const AdminLogin = () => {
 
   }, [])
 
-  if (verifyLoading) return <div className='flex flex-col gap-4 bg-gray-200/50 w-screen h-screen justify-center items-center'> <Spinner color='#000000' /><h1 className='text-black font-bold'>Verfying the details...</h1></div>
+  if (verifyLoading) return <div className='flex flex-col gap-4 bg-gray-200/50 w-screen h-screen justify-center items-center'> <Spinner color='#000000' /><h1 className='text-black font-bold'>verifying the details...</h1></div>
   if (redirectingLoading) return <div className='flex flex-col bg-gray-200/50 w-screen h-screen justify-center items-center'><Spinner color='#000000' /><h1 className='text-black font-bold '>Welcome back, we are shipping you to dashboard...</h1></div>
 
   return (
