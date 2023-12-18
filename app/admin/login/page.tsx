@@ -107,7 +107,7 @@ const AdminLogin = () => {
           Request to be an admin
         </Link>
       </form>
-      {showConfirmation ? <Confirmation confirmationMessage={confirmationMessage} /> : <></>}
+      <Confirmation />
     </div>
   )
 }

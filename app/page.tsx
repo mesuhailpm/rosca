@@ -1,7 +1,8 @@
 import {useStore} from '@src/store';
 import { fetchAllParticipants } from '@actions';
 import Link from 'next/link';
-import MainTable from 'components/MainTable'
+import MainTable from '@components/MainTable'
+import { Participants } from '@types';
 
 
 const  Home = async() => {
@@ -19,7 +20,7 @@ const  Home = async() => {
   // }
       const fetchParticipants = async ()=>{
         try {
-          const fetchedParticipants = await fetchAllParticipants();
+          const fetchedParticipants:Participants = await fetchAllParticipants();
           fetchedParticipants.sort((a, b) => a.serial - b.serial)
           useStore.setState({participants: fetchedParticipants});
 
@@ -46,7 +47,7 @@ const  Home = async() => {
       />
 
 
-      <Link href={'/terms'} className="items-self-end hover:text-blue-100 text-black font-bold text-slate-100 underline">Click to see terms & conditions</Link>
+      <Link href={'/terms'} className="items-self-end hover:text-blue-100 font-bold text-slate-100 underline">Click to see terms & conditions</Link>
 
     </div>
   );
