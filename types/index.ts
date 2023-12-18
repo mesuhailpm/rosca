@@ -46,7 +46,7 @@ export interface State {
     endResponseLoading: ()=>void;
     showConfirmation: boolean;
     confirmationMessage: ConfirmationMessage;
-    runConfirmation:(messageObject:ConfirmationMessage)=>void;
+    runConfirmation:(messageObject:ConfirmationMessage,time?:number)=>void;
     showDeleteModal: boolean;
     toggleShowDeleteModal:()=>void;
     showFormModal: boolean;
@@ -55,6 +55,5 @@ export interface State {
     formData:FormData;
     setFormData: (form: FormData) => void;
     action:Action;
-    _id: string;
     idTodelete:string;
 }

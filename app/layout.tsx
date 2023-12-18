@@ -5,6 +5,7 @@ import Nav from '@components/Nav'
 import Footer from '@components/Footer'
 import { useStore } from '@src/store'
 
+
 const poppins = Poppins({ weight: '400', preload: false })
 
 export const metadata: Metadata = {
@@ -33,7 +34,7 @@ export default async function RootLayout({
       </head>
       <body className={`&{poppins.className} h-full min-h-screen flex flex-col`}>
         <Nav />
-          {children}
+        {children}
         <Footer />
       </body>
     </html>
