@@ -9,7 +9,7 @@ export const fetchAllParticipants = async () => {
   }
 };
 export const updateParticipant = async (id, formData) => {
-  //console.logid, formData, ' from updateParticipant actions');
+  console.log(id, formData, ' from updateParticipant actions');
   try {
     const response = await fetch(`api/participants/edit/${id}`, {
       method: "POST",
