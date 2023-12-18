@@ -17,9 +17,8 @@ const MemberTable = ({ }) => {
     message: '',
     success: true,
   })
-  const toggleShowDeleteModal = () => setShowDeleteModal((prev) => !prev)
 
-  const { participants, toggleShowFormModal, showFormModal, formData, setShowFormModal, setFormData } = useStore() as State
+  const { participants,toggleShowDeleteModal, toggleShowFormModal, showFormModal, formData, setShowFormModal, setFormData } = useStore() as State
 
 
   const initialFomData: IndexState['formData'] = {
@@ -162,7 +161,7 @@ const MemberTable = ({ }) => {
       }
       )
       }
-      <tr className='bg-purple-500'><td colSpan={5} align='center'><button className='p-2 pr-4 pl-4 rounded-md bg-green-800 text-yellow-100 hover:text-green-500' onClick={() => toggleShowFormModal(add)}>Want to add a member? click here</button></td></tr>
+      <tr className='bg-purple-500'><td colSpan={5} align='center'><button className='p-2 pr-4 pl-4 rounded-md bg-green-800 text-yellow-100 hover:text-green-500' onClick={() =>{setFormData(initialFomData);  toggleShowFormModal(add)}}>Want to add a member? click here</button></td></tr>
     </tbody>
 
   </table>)

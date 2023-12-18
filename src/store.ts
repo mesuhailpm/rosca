@@ -1,5 +1,5 @@
-import { create } from "zustand";
-import { State, Participants, Participant, FormData, Action } from "@types";
+import { StateCreator, StoreMutatorIdentifier, create } from "zustand";
+import { State, Participants, Participant, FormData, Action, ConfirmationMessage, HandleSubmit } from "@types";
 import { FormEvent } from "react";
 import { updateParticipant, addParticipant, deleteParticipant, fetchAllParticipants, } from "@actions";
 
@@ -11,46 +11,71 @@ const initialFormData = {
 
 }
 
+const applyTimeout = (action: Function, time: number) => {
+  setTimeout(() => {
+    action()
+  }, time)
+}
 
-export const useStore = create((set) => ({
+export const useStore = create<State>((set) => ({
   formData: initialFormData,
-  setFormData: (formData: FormData) =>{
-    set(()=>({
+  setFormData: (formData: FormData) => {
+    set(() => ({
       formData: formData
     }))
-  
+
   },
   isLoggedIn: false,
   participants: [/*{_id:'12fdrtrggdfge', name:'kunju', serial: 2, claimed: true}*/
-],
+  ],
   setParticipants: (participants: Participants) => {
-    set((state: State)=>(
-      {participants: participants}
+    set((state: State) => (
+      { participants: participants }
     ))
-    
+
   },
   responseLoading: false,
-  idTodelete: { type: String, default: 0 },
+  startResponseLoading: () => {
+    set(() => ({ responseLoading: true }));
+  },
+  endResponseLoading: () => applyTimeout(() => set({ responseLoading: false }), 10),
+
+  idTodelete: '',
+
   confirmationMessage: {
     message: '',
     success: false
   },
-  action:'',
+  action: '',
   showConfirmation: false,
-  setShowConfirmation:(flag: boolean)=>{
+  setShowConfirmation: (flag: boolean) => {
     set(() => ({
       showConfirmation: flag
     }))
   },
+  runConfirmation: (messageObject: ConfirmationMessage) => {
+    set({ confirmationMessage: messageObject } as State)
+    applyTimeout(() => {
+      set({ showConfirmation: true } as State)
+    }, 10)
+    applyTimeout(() => {
+      set({
+        showConfirmation: false,
+        confirmationMessage: { message: '', success: false }
+      } as State)
+    }, 3000)
+
+
+  },
 
 
   showFormModal: false,
-  setShowFormModal:(flag: boolean)=>{
+  setShowFormModal: (flag: boolean) => {
     set(() => ({
       showFormModal: flag
     }))
   },
-  toggleShowFormModal:(action?: Action) => {
+  toggleShowFormModal: (action?: Action) => {
     set((state: State) => ({
       showFormModal: !state.showFormModal,
       action: action
@@ -61,14 +86,12 @@ export const useStore = create((set) => ({
   showDeleteModal: false,
   toggleShowDeleteModal: () => {
     set((state: State) => ({
-      showDeleteModal: !state.showDeleteModal
-    }))
+      showDeleteModal: !state.showDeleteModal,
+
+    } as State))
   },
-  
-  
 
 
-  
   login: () => {
     set(() => ({
       isLoggedIn: true,
@@ -84,106 +107,88 @@ export const useStore = create((set) => ({
   //     participants: data
   //   }))
   // },
-  _id:'',
-  handleSubmit: async (e: FormEvent<HTMLFormElement>, action: string, _id: string, formData: any) => {
-    console.log('first')
-    if (e) e.preventDefault()
-    console.log(e,action, _id, 'is id', formData, ' is formData');
-    try {
-      switch (action) {
-        case 'edit':
-          //console.log'action is edit and the id is ', _id)
-          set(() => ({
-            responseLoading: true
-          }))
-          // useStore.setState({responseLoading: true})
-          const dataWithMessage = await updateParticipant(_id, JSON.stringify(formData))
-          console.log(dataWithMessage)
-          set(() => ({
-            confirmationMessage: {
-              message: dataWithMessage.message,
-              success: true
-            }
-          }));
-          set(() => ({
-            responseLoading: false
-          }));
-          set(() => ({
-            showConfirmation: true
-          }));
-          // useStore.setState({
-          //   confirmationMessage: {
+  _id: '',
 
-          //     message: dataWithMessage.message,
-          //     success: true
-          //   }
-          // })
-
-          set((state: State) => ({
-            participants: state.participants.map((participant: Participant) => {
-              return participant._id === dataWithMessage.result._id ? dataWithMessage.result : participant
-            })
-
-          }));
-
-          // // const updatedArray = participants.map((participant: Participant) => {
-          // //   return participant._id === dataWithMessage.result._id ? dataWithMessage.result : participant
-          // // })
-          // useStore.setState({ participants: updatedArray })
-
-          set(() => ({
-            responseLoading: true
-          }))
-          // useStore.setState({ responseLoading: false })
-          break;
-
-
-
-        // case add:
-        //   useStore.setState({ responseLoading: true })
-        //   const dataWIthMessage = await addParticipant(formData)
-        //   useStore.setState({
-        //     message: dataWIthMessage.message,
-        //     success: true
-        //   })
-        //   const participantCopy = participants
-        //   participantCopy.push(dataWIthMessage.result)
-        //   // setParticipants(participantCopy)
-        //   useStore.setState(participantCopy)
-        //   useStore.setState({ responseLoading: false })
-        //   break;
-
-        // case remove:
-        //   useStore.setState({ responseLoading: true })
-        //   const dataAndMessage = await deleteParticipant(_id)
-        //   useStore.setState({
-        //     message: dataAndMessage.message,
-        //     success: true
-        //   })
-        //   const deletedParticipant = dataAndMessage.result
-        //   if (deletedParticipant === undefined) throw new Error()
-        //   // setParticipants((prev) => {
-        //   //   return prev.filter((participant) => participant._id !== deletedParticipant._id)
-        //   // })
-        //   useStore.setState({ participants: participants.filter((participant: Participant) => participant._id !== deletedParticipant._id) })
-        //   toggleShowDeleteModal()
-        //   useStore.setState({ responseLoading: false })
-        //   break
-        default:
-          set(() => ({
-            responseLoading: false
-          }))
-          // useStore.setState({ responseLoading: false })
-          //console.log'this is default action');
-          break;
-      }
-    } catch (error) {
-      //console.logerror, ' hanlde sumit failed nwith confirm message object', confirmationMessage)
-      useStore.setState({ responseLoading: false })
-      useStore.setState((
-        { message: 'It doesn\'t work', success: false }
-      ))
-    }
-  }
 
 }));
+
+export const handleSubmit: HandleSubmit = async (e: FormEvent<HTMLFormElement>, action: Action, _id: string, formData: FormData) => {
+  e.preventDefault();
+  console.log('first')
+  const { startResponseLoading, runConfirmation, endResponseLoading, participants, setParticipants } = useStore() as State;
+
+  console.log(e, action, _id, 'is id', formData, ' is formData');
+  try {
+    switch (action) {
+      case 'edit':
+        //console.log'action is edit and the id is ', _id)`
+        startResponseLoading();
+        // useStore.setState({responseLoading: true})
+        const dataWithMessage: { result: Participant, message: string } = await updateParticipant(_id, JSON.stringify(formData))
+        console.log(dataWithMessage)
+        if (!dataWithMessage) throw new Error;
+        runConfirmation({ message: dataWithMessage.message, success: true })
+
+
+
+        setParticipants(participants.map((participant: Participant) => {
+          return participant._id === dataWithMessage.result._id ? dataWithMessage.result : participant
+        }));
+        //bard suggested to use immer and draft array before updating directly, should do if necessary
+
+        endResponseLoading();
+
+
+        break;
+
+
+
+      case 'add':
+        startResponseLoading()
+        const dataWIthMessage = await addParticipant(formData)
+        if (!dataWIthMessage) throw new Error;
+        runConfirmation({ message: dataWIthMessage.message, success: true })
+
+        const participantCopy = participants
+        participantCopy.push(dataWIthMessage.result)
+        setParticipants(participantCopy)
+        endResponseLoading();
+        break;
+
+      // case remove:
+      //   useStore.setState({ responseLoading: true })
+      //   const dataAndMessage = await deleteParticipant(_id)
+      //   useStore.setState({
+      //     message: dataAndMessage.message,
+      //     success: true
+      //   })
+      //   const deletedParticipant = dataAndMessage.result
+      //   if (deletedParticipant === undefined) throw new Error()
+      //   // setParticipants((prev) => {
+      //   //   return prev.filter((participant) => participant._id !== deletedParticipant._id)
+      //   // })
+      //   useStore.setState({ participants: participants.filter((participant: Participant) => participant._id !== deletedParticipant._id) })
+      //   toggleShowDeleteModal()
+      //   useStore.setState({ responseLoading: false })
+      //   break
+      // default:
+      //   set(() => ({
+      //     responseLoading: false
+      //   }))
+      //   // useStore.setState({ responseLoading: false })
+      //   //console.log'this is default action');
+      //   break;
+    }
+  } catch (error) {
+    //console.logerror, ' hanlde sumit failed nwith confirm message object', confirmationMessage)
+    endResponseLoading()
+    console.log('this from error message');
+
+    useStore.setState({ responseLoading: false });
+    useStore.setState((
+      { confirmationMessage: { message: 'It doesn\'t work', success: false } }
+    ))
+    useStore.setState({ showConfirmation: true });
+
+  }
+}
