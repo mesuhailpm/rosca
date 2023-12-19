@@ -1,13 +1,14 @@
-'use client';
 
 import { useStore } from "@src/store";
 import { updateParticipant, addParticipant, deleteParticipant } from "@actions";
-import { Action, FormData, HandleSubmit, Participant } from "@types";
+import { Action, FormData, HandleSubmit, Participant, Participants, State } from "@types";
+import { useEffect } from "react";
 
 
-const useSubmitForm:React.FC = () => {
-  const { startResponseLoading, endResponseLoading, setParticipants, runConfirmation, participants } = useStore()
-  const handleSubmit = async ( action: Action, _id:string,) => {
+const useSubmitForm = (values: { action: Action, _id: string } | { action: '', _id: '' }) => {
+  const { startResponseLoading, endResponseLoading, setParticipants, runConfirmation, participants } = useStore() as State
+  const { action, _id } = values
+  const handleSubmit = async (action: Action, _id: string,) => {
     // if (e) e.preventDefault();
     console.log('first')
 
@@ -90,9 +91,18 @@ const useSubmitForm:React.FC = () => {
     }
 
   }
+  useEffect(() => {
+    if (values.action) {
+      submitForm()
+    }
+  }, [action, _id]);
+  const submitForm = () => {
+    // useStore.setState({isLoggedIn: false});
+    handleSubmit(action, _id)
+  }
 
 
-  return null
+  return { submitForm }
 
 }
 
