@@ -97,10 +97,7 @@ const RegisterAsAdmin = () => {
             {loading && (
                 <div className='fixed top-0 right-0 flex flex-col gap-4 bg-gray-200/50 items-center w-screen h-screen justify-center'> <Spinner color='#000000' /><h1 className='text-black font-bold'>Sending the OTP...</h1></div>
             )}
-            {showConfirmation && (
-                <div className='fixed top-0 right-0 flex flex-col gap-4 bg-gray-200/75 items-center w-screen h-screen justify-center'> <Confirmation confirmationMessage={confirmationMessage} /><h1 className='text-black font-bold'></h1></div>
-
-            )}
+            
         </div>
     )
 }
