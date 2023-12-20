@@ -2,12 +2,17 @@
 import { useStore } from "@src/store";
 import { updateParticipant, addParticipant, deleteParticipant } from "@actions";
 import { Action, FormData, HandleSubmit, Participant, Participants, State } from "@types";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
+type valueProp = {
+  action: Action | '',
+  _id:string
+}
 
-const useSubmitForm = (values: { action: Action, _id: string } | { action: '', _id: '' }) => {
+const useSubmitForm = ({ action, _id }: valueProp) => {
   const { startResponseLoading, endResponseLoading, setParticipants, runConfirmation, participants } = useStore() as State
-  const { action, _id } = values
+
+  const [value, setValue] = useState<valueProp>()
   const handleSubmit = async (action: Action, _id: string,) => {
     // if (e) e.preventDefault();
     console.log('first')
@@ -92,7 +97,7 @@ const useSubmitForm = (values: { action: Action, _id: string } | { action: '', _
 
   }
   useEffect(() => {
-    if (values.action) {
+    if (value?.action) {
       submitForm()
     }
   }, [action, _id]);
@@ -102,7 +107,7 @@ const useSubmitForm = (values: { action: Action, _id: string } | { action: '', _
   }
 
 
-  return { submitForm }
+  return { submitForm, setValue }
 
 }
 
