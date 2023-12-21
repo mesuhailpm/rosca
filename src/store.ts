@@ -25,6 +25,11 @@ export const useStore = create<State>((set) => ({
   },
 
   isLoggedIn: false,
+  
+  participantsLoading:true,
+  setParticipantsLoading:(flag: boolean)=>{
+    set({participantsLoading: flag});
+  },
   participants: [/*{_id:'12fdrtrggdfge', name:'kunju', serial: 2, claimed: true}*/
   ],
   setParticipants: (participants: Participants) => {
@@ -83,6 +88,9 @@ export const useStore = create<State>((set) => ({
   ,
 
   showDeleteModal: false,
+  setShowDeleteModal:(flag:boolean)=>{
+    set({showDeleteModal: flag})
+  },
   toggleShowDeleteModal: () => {
     set((state: State) => ({
       showDeleteModal: !state.showDeleteModal,

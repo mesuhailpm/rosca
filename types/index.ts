@@ -41,6 +41,8 @@ export interface State {
     isLoggedIn: boolean;
     participants: Participants; // Define Participant type here
     setParticipants: (participants: Participants) => void;
+    participantsLoading: boolean;
+    setParticipantsLoading:(flag: boolean)=>void;
     responseLoading: boolean;
     startResponseLoading: ()=>void;
     endResponseLoading: ()=>void;
@@ -48,6 +50,7 @@ export interface State {
     confirmationMessage: ConfirmationMessage;
     runConfirmation:(messageObject:ConfirmationMessage,time?:number)=>void;
     showDeleteModal: boolean;
+    setShowDeleteModal:(flag:boolean)=>void;
     toggleShowDeleteModal:()=>void;
     showFormModal: boolean;
     setShowFormModal: (flag: boolean)=> void;
