@@ -1,82 +1,20 @@
 "use client";
 import React, { ChangeEvent, FormEvent, useEffect, useState } from "react";
 import { useStore } from "@src/store";
-import { Action, HandleSubmit, Participant, State } from "@types";
-import { addParticipant, deleteParticipant, updateParticipant } from "@actions";
-import { FormData } from "@types";
+import { State } from "@types";
+import useSubmitForm from "@hooks/useSubmitForm";
 
-const MemberForm = ({ }) => {
+const MemberForm = () => {
   const { formData, toggleShowFormModal, showFormModal, action } = useStore() as State;
   const [componentActionTitle, setComponentActionTitle] = useState(action)
   const actionAsTitle = componentActionTitle && (`${componentActionTitle[0]?.toUpperCase()}${componentActionTitle.slice(1)}`)
   const submitButtonLabel = action === "edit" ? "Update" : "Create";
-  const { startResponseLoading, runConfirmation, endResponseLoading, participants, setParticipants, setShowFormModal, toggleShowDeleteModal } = useStore() as State;
 
   const [componentFormData, setComponentFormData] = useState(formData)
   const { serial, claimed, name } = componentFormData;
+  const { setValue } = useSubmitForm()
 
-  const handleSubmit: HandleSubmit = async (e: FormEvent<HTMLFormElement>, action: Action, _id: string, formData: FormData) => {
-    e.preventDefault();
-    console.log('first')
 
-    console.log(e, action, _id, 'is id', formData, ' is formData');
-    try {
-      switch (action) {
-        case 'edit':
-          //console.log'action is edit and the id is ', _id)`
-          startResponseLoading();
-          // useStore.setState({responseLoading: true})
-          const dataWithMessage: { result: Participant, message: string } = await updateParticipant(_id, JSON.stringify(formData))
-          console.log(dataWithMessage)
-          if (!dataWithMessage) throw new Error;
-          runConfirmation({ message: dataWithMessage.message, success: true })
-
-          setParticipants(participants.map((participant: Participant) => {
-            return participant._id === dataWithMessage.result._id ? dataWithMessage.result : participant
-          }));
-          //bard suggested to use immer and draft array before updating directly, should do if necessary
-          setShowFormModal(false)
-          endResponseLoading();
-          break;
-
-        case 'add':
-          startResponseLoading()
-          const dataWIthMessage = await addParticipant(formData)
-          if (!dataWIthMessage) throw new Error;
-          runConfirmation({ message: dataWIthMessage.message, success: true })
-
-          const participantCopy = participants
-          participantCopy.push(dataWIthMessage.result)
-          setParticipants(participantCopy)
-          setShowFormModal(false)
-          endResponseLoading();
-          break;
-
-        case 'remove':
-          startResponseLoading()
-          const dataAndMessage: { message: string, result: Participant } = await deleteParticipant(_id)
-          if (!dataAndMessage) throw new Error;
-          runConfirmation({
-            message: dataAndMessage.message,
-            success: true
-          })
-          const deletedParticipant = dataAndMessage.result
-          if (deletedParticipant === undefined) throw new Error
-          
-          setParticipants(participants.filter((participant) => participant._id !== deletedParticipant._id))
-          toggleShowDeleteModal();
-          break;
-        default:
-          endResponseLoading()
-          break;
-      }
-    } catch (error) {
-      endResponseLoading()
-      console.log('this from error message');
-      runConfirmation({message:'Something went wrong', success: false})
-
-    }
-  }
 
 
   const handleChange = (e: ChangeEvent<HTMLInputElement> | ChangeEvent<HTMLSelectElement>) => {
@@ -103,7 +41,8 @@ const MemberForm = ({ }) => {
       >
         <form
           className={`relative bg-red-400 flex flex-col gap-1 p-4 rounded-md`}
-          onSubmit={(e) => handleSubmit(e, action, formData._id, componentFormData)}
+          // onSubmit={(e) => handleSubmit(e, action, formData._id, componentFormData)} //remove this
+          onSubmit={(e) => { e.preventDefault(); setValue({ action, _id: formData._id, formData: componentFormData }) }}
         >
           <button
             type="button"

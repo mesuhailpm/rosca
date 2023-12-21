@@ -1,39 +1,25 @@
 'use client'
 import { useStore } from '@src/store';
-import { fetchAllParticipants, addParticipant, updateParticipant, deleteParticipant } from '@actions'
+import { fetchAllParticipants } from '@actions'
 import checkLoggedIn from '@utils/checkLoggedIn'
 
 import React, { ChangeEvent, FormEvent, useEffect, useState } from 'react'
-import { State, Participants, Participant, Action } from '@types';
+import { State, Participant, Action, Participants, FormData } from '@types';
 
 
 const MemberTable = ({ }) => {
-  const [loading, setLoading] = useState<IndexState['loading']>(true)
-  const [responseLoading, setResponseLoading] = useState<IndexState['loading']>(false)
-  const [showDeleteModal, setShowDeleteModal] = useState(false)
-  const [ideToDelete, setIdToDelete] = useState('')
-  const [showConfirmation, setShowConfirmation] = useState(false);
-  let [confirmationMessage, setconfirmationMessage] = useState({
-    message: '',
-    success: true,
-  })
 
-  const { participants,toggleShowDeleteModal, toggleShowFormModal, showFormModal, formData, setShowFormModal, setFormData } = useStore() as State
+  const { participants,toggleShowDeleteModal, toggleShowFormModal, showFormModal, formData, setShowFormModal, setFormData, startResponseLoading, participantsLoading, setParticipantsLoading } = useStore() as State
 
 
-  const initialFomData: IndexState['formData'] = {
+  const initialFomData:FormData = {
     _id: '',
     serial: 0,
     name: '',
     claimed: false
 
   }
-  // const toggleShowFormModal = (action: string) => {
-  //   setShowFormModal((prev) => !prev)
-  //   setFormData(initialFomData)
-  //   if (!showFormModal) { setAction(action) }//setAction when closing modal is causing error ' object can't be react child'
-
-  // }
+ 
 
 
   const handleEdit = async (serial: number, name: string, claimed: boolean, action: Action, _id: string) => {
@@ -43,31 +29,17 @@ const MemberTable = ({ }) => {
   }
 
   const handleDelete = (id: string) => {
-    setIdToDelete(id)
+    useStore.setState({idTodelete: id})
     toggleShowDeleteModal()
   }
-  // //console.logparticipants, ' are participants');
-  const [showForm, setShowForm] = useState(false)
-  // //console.lognotClaimedParticipantNames);
-
-  // const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
-  //   setFormData((prevFormData) => ({
-  //     ...prevFormData,
-  //     [e.target.name]: e.target.value
-  //   }))
-  // }
-
-
-
-
-
+ 
 
 
 
 
   const handleToken = async () => {
 
-    const hasLoggedIn = await checkLoggedIn(setLoading)
+    const hasLoggedIn = await checkLoggedIn()
     if (!hasLoggedIn) {
 
       localStorage.removeItem('userObject')
@@ -80,20 +52,6 @@ const MemberTable = ({ }) => {
     handleToken()
   }, [])
 
-  useEffect(() => {
-    if (confirmationMessage.message) {
-      setShowConfirmation(true);
-      setShowDeleteModal(false); setShowFormModal(false)
-      setTimeout(() => {
-        setShowConfirmation(false);
-        setconfirmationMessage({
-          message: '',
-          success: false
-        })
-      }, 2000)
-    }
-
-  }, [confirmationMessage.message])
 
 
 
@@ -102,11 +60,11 @@ const MemberTable = ({ }) => {
 
   useEffect(() => {
     (async () => {
-      setLoading(true)
-      const allParticipants = await fetchAllParticipants()
-      allParticipants.sort((a: participant, b: participant) => a.serial - b.serial)
+      setParticipantsLoading(true)
+      const allParticipants:Participants = await fetchAllParticipants()
+      allParticipants.sort((a, b) => a.serial - b.serial)
       useStore.setState({ participants: allParticipants });
-      setLoading(false)
+      setParticipantsLoading(false)
 
     })()
   }, [])
@@ -115,27 +73,8 @@ const MemberTable = ({ }) => {
   const add = 'add'
   const edit = 'edit'
 
-  interface participant {
-    _id: string,
-    name: string,
-    serial: number,
-    claimed: boolean,
 
-  }
-  interface IndexState {
-    participant: {};
-    participants: participant[];
-    notClaimedParticipantNames: string[];
-    winnerToBeDeclared: string;
-    loading: boolean;
-    formData: {
-      _id: string;
-      serial: number;
-      name: string;
-      claimed: boolean;
-    }
-  }
-
+  if(participantsLoading) return <h1 className='text-2xl font-bold text-white'>Loading...</h1>
 
 
   return (<table className='max-w-lg bg-slate-700 w-full table-auto'>
