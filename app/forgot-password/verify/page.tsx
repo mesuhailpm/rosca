@@ -4,13 +4,17 @@ import OTPInput from "react-otp-input";
 import { verifyOTP, createAdmin } from "@actions";
 import Confirmation from "@components/Confirmation";
 import { useStore } from "@src/store";
+import { State } from "@types";
 
 const Verify = () => {
-  const [otp, setOtp] = useState(0);
+  const [otp, setOtp] = useState<number>(0);
+  const { runConfirmation } = useStore() as State
   const [confirmationMessage, setConfirmationMessage] = useState({
     message: "",
     success: true,
   });
+  const [formData, setFormData] = useState({})
+
   const [storedUserObject, setStoredUserObject] = useState({
     pendingAdmin: "unauthorized",
   });
@@ -18,8 +22,8 @@ const Verify = () => {
   const [initialLoading, setInitialLoading] = useState(true);
   const [showConfirmationMessage, setShowConfirmationMessage] = useState(false);
   const numberOfInputs = 6;
-  const handleChange = (otp) => {
-    setOtp(otp);
+  const handleChange = (otp: number) => {
+    setOtp(Number(otp));
   };
 
   useEffect(() => {
@@ -39,7 +43,7 @@ const Verify = () => {
       setStoredUserObject(parsedUserObject);
     }
     if (storedUserObject.pendingAdmin !== "unauthorized") {
-      setFomData((prev) => {
+      setFormData((prev) => {
         return {
           ...prev,
           email: storedUserObject.pendingAdmin,
@@ -49,13 +53,13 @@ const Verify = () => {
     setInitialLoading(false);
   }, []);
 
-  
-  const handleSubmit = async (e) => {
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const storedObjectRaw = localStorage.getItem("userObject");
-    const storedObject = JSON.parse(localStorage.getItem("userObject"));
-    
-    const { pendingAdmin } = storedObject;
+    const storedObject = JSON.parse(storedObjectRaw || '');
+
+    const { pendingAdmin }: { pendingAdmin: string } = storedObject;
     //create a loading
     const data = await verifyOTP({ otp, admin: pendingAdmin });
     console.log("sent otp with otp and admin to verify ", {
@@ -64,32 +68,29 @@ const Verify = () => {
     });
     console.log("got data", data);
     if (data.success) {
-      setConfirmationMessage({
+
+      runConfirmation({ 
         message: data.message,
         success: true,
-      });
-
-      setTimeout(() => {
-        location.href = "/admin/reset-password";
-      }, 1000);
+      },1000
+      ) 
+        setTimeout(() => {
+          location.href = "/admin/reset-password";
+        }, 1000);
 
     } else {
       console.log("otp validation failed");
-      setConfirmationMessage({
-        message: data.message,
-        success: false,
-      });
+      runConfirmation(
+
+        {
+          message: data.message,
+          success: false,
+        }
+        )
     }
   };
 
-  //   useEffect(() => {
-  //     if (otp.length === numberOfInputs) {
-  //       console.log(otp);
-  //       verifyOTP(otp);
-  //     }
-  //   }, [otp.length]);
-  // const setOtp = (e) => setotp(e.target.value)
-  if(initialLoading) return <h1 className="text-2xl text-center text-orange-600 ">Loading...</h1>
+  if (initialLoading) return <h1 className="text-2xl text-center text-orange-600 ">Loading...</h1>
 
   if (storedUserObject.pendingAdmin === "unauthorized")
     return (
@@ -107,7 +108,7 @@ const Verify = () => {
       >
         <label htmlFor="otp">Enter OTP</label>
         <OTPInput
-          value={otp}
+          value={otp.toString()}
           onChange={handleChange}
           numInputs={numberOfInputs}
           renderInput={(props) => (
