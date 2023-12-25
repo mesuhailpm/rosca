@@ -1,23 +1,18 @@
 'use client'
-import Spinner from '@components/Spinner'
 import Link from 'next/link'
 import React, { ChangeEvent, FormEvent, useState, useEffect } from 'react'
-import Confirmation from '@components/Confirmation'
 import { useStore } from '@src/store'
 import checkLoggedIn from '@utils/checkLoggedIn'
 
 
 
 const AdminLogin = () => {
-  const [verifyLoading, setVerifyLoading] = useState(true)
-  const [redirectingLoading, setRedirectingLoading] = useState(false)
-  const [showConfirmation, setShowCinfirmation] = useState(false);
-  let [confirmationMessage, setconfirmationMessage] = useState({
-    message: '',
-    success: true,
-  })
 
-  const { isLoggedIn } = useStore()
+
+  const { isLoggedIn, runConfirmation,startResponseLoading, endResponseLoading } = useStore()
+  const startRedirectingLoading = () => startResponseLoading('Welcome back, we are shipping you to dashboard...')
+  const startVerifyLoading = () => {startResponseLoading('Verfying the details...')}
+
 
   const [formData, setFomData] = useState({
     userName: '',
@@ -29,9 +24,10 @@ const AdminLogin = () => {
 
     })
   }
+
   const handleLogin = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault()
-    setVerifyLoading(true)
+    startResponseLoading('Verifying the details...')
     try {
       const response = await fetch('/api/login', { method: 'POST', body: JSON.stringify(formData) })
       const { message, token, userName } = await response.json();
@@ -41,36 +37,32 @@ const AdminLogin = () => {
         useStore.setState({ isLoggedIn: true })
         location.href = '/admin'
       } else {
-        setVerifyLoading(false)
-        setconfirmationMessage({ message: message, success: false })
+        console.log(message, token, userName);
+
+        runConfirmation(
+          { message: message, success: false }
+
+        )
+        endResponseLoading()
       }
       // console.log(message)
 
     } catch (error) {
       console.error(error)
-
+      endResponseLoading()
     }
   }
-  useEffect(() => {
 
-
-    if (confirmationMessage.message) {
-      setShowCinfirmation(true)
-      setTimeout(() => {
-        setconfirmationMessage({ message: '', success: false })
-        setShowCinfirmation(false)
-      }, 2000
-      )
-    }
-  }, [confirmationMessage, formData]
-  )
 
   useEffect(() => {
     (async () => {
       //console.log'useEffect');
 
-      const hasLoggedIn = await checkLoggedIn(setVerifyLoading, setRedirectingLoading)
+      const hasLoggedIn = await checkLoggedIn(
+        // startVerifyLoading, endResponseLoading, startRedirectingLoading
+        )
       if(hasLoggedIn){
+        startRedirectingLoading()
         setTimeout(() => {
 
           location.href = '/admin';
@@ -79,10 +71,9 @@ const AdminLogin = () => {
     })()
 
 
-  }, [])
+  }, [startResponseLoading])
 
-  if (verifyLoading) return <div className='flex flex-col gap-4 bg-gray-200/50 w-screen h-screen justify-center items-center'> <Spinner color='#000000' /><h1 className='text-black font-bold'>verifying the details...</h1></div>
-  if (redirectingLoading) return <div className='flex flex-col bg-gray-200/50 w-screen h-screen justify-center items-center'><Spinner color='#000000' /><h1 className='text-black font-bold '>Welcome back, we are shipping you to dashboard...</h1></div>
+  // if (startRedirectingLoading) return <div className='flex flex-col bg-gray-200/50 w-screen h-screen justify-center items-center'><Spinner color='#000000' /><h1 className='text-black font-bold '>Welcome back, we are shipping you to dashboard...</h1></div>
 
   return (
     <div className=' pt-4 flex flex-col justify-center'>
@@ -95,7 +86,7 @@ const AdminLogin = () => {
 
         <button type='submit' className='border border-none bg-green-700 text-yellow-100 m-4 pl-4 pr-4 p-2 rounded-md hover:bg-green-500 hover:border-white'>Login</button>
         <Link
-          href="/forgot-password"
+          href="/admin/forgot-password"
           className='underline text-blue-950'
         >
           Forgot password?
@@ -107,7 +98,6 @@ const AdminLogin = () => {
           Request to be an admin
         </Link>
       </form>
-      <Confirmation />
     </div>
   )
 }
