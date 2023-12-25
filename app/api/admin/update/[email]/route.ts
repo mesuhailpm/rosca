@@ -3,9 +3,10 @@ import sendEmail from "@utils/sendEmail";
 import OTP from "@models/OTP";
 import Admin from "@models/Admin";
 import bcrypt from "bcrypt";
+import { NextRequest } from "next/server";
 const durationInMinutes = 10;
 
-export const POST = async (req) => {
+export const POST = async (req:NextRequest) => {
   const {email, password} = await req.json()
 
   console.log(email, " is the admin's email this is from update admin");
@@ -41,7 +42,7 @@ export const POST = async (req) => {
       { status: 200 }
     );
 
-  } catch (error) {
+  } catch (error: any) {
     console.log(error.message, " is the error in register api route");
     return new Response(
       JSON.stringify({ message: "failed to change password ",success: false, error }),

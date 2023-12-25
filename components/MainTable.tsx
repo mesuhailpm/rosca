@@ -1,6 +1,6 @@
 'use client'
-import {useStore} from '@src/store';
-import {useState, useEffect } from 'react'
+import { useStore } from '@src/store';
+import { useState, useEffect } from 'react'
 import { fetchAllParticipants } from '@actions';
 import tickIcon from 'public/assets/images/tick.svg'
 import crossIcon from 'public/assets/images/cross.svg'
@@ -11,29 +11,36 @@ import { Participants, State } from '@types';
 
 
 export default function MainTable() {
-  const {participants, setParticipants} = useStore() as State
+  const { participants, setParticipants } = useStore() as State
 
-  const[loading, setLoading] = useState(true)
+  const [loading, setLoading] = useState(true)
   const setParticipantsForStore = async () => {
-    const data: Participants = await fetchAllParticipants()
-    data.sort((a, b) => a.serial - b.serial)
+    try {
 
+      const data: Participants = await fetchAllParticipants()
+      data.sort((a, b) => a.serial - b.serial)
 
-    setParticipants(data)
+      setParticipants(data)
+      setLoading(false)
+    } catch (error) {
+      console.log(error)
+    }
+
   }
 
 
 
 
-  useEffect(()=>{
+  useEffect(() => {
     setParticipantsForStore()
     console.log('useEffect ran');
 
-  },[])
+  }, [])
+  if (loading) return <h1 className="text-2xl text-white">Loading...</h1>
 
-    return(
+  return (
     <div>
-        {participants?.length > 0 ? (
+      {participants?.length > 0 ? (
         <table className="md:self-start m-4 bg-[#96ffff] text-slate-950 border border-black table-auto font-raleway">
           <thead>
             <tr>
@@ -52,14 +59,8 @@ export default function MainTable() {
             ))}
           </tbody>
         </table>
-      ):
-              loading ? (
-                <h1 className="text-2xl text-white">Loading...</h1>
-
-              ):
-              (
-                <h1 className="text-xxl uppercase">No Participants to Show</h1>
-              )
+      ) :
+        (<h1 className="text-xxl uppercase">No Participants to Show</h1>)
       }
 
 

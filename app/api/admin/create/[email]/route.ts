@@ -3,9 +3,10 @@ import sendEmail from "@utils/sendEmail";
 import OTP from "@models/OTP";
 import Admin from "@models/Admin";
 import bcrypt from "bcrypt";
+import { NextRequest } from "next/server";
 const durationInMinutes = 10;
 
-export const GET = async (req, { params }) => {
+export const GET = async (req: NextRequest, { params }:{params:{email:string}}) => {
   const email = params.email;
   console.log(email, " is the admin's email this is from create admin");
 
@@ -44,7 +45,7 @@ export const GET = async (req, { params }) => {
       { status: 200 }
     );
 
-  } catch (error) {
+  } catch (error: any) {
     console.log(error.message, " is the error in register api route");
     return new Response(
       JSON.stringify({ message: "failed to register you as an admin ",success: false, error }),

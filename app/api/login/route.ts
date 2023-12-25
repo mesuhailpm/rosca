@@ -2,9 +2,10 @@ import connectToDb from "@utils/connectToDb";
 import Admin from "@models/Admin";
 import {generateToken} from "@middleware/auth";
 import bcrypt from 'bcrypt'
+import { NextRequest } from "next/server";
 
 
-export const POST = async (req) => {
+export const POST = async (req:NextRequest) => {
   const { userName, password } = await req.json();
   try {
     // console.log(userName);
@@ -33,7 +34,7 @@ export const POST = async (req) => {
     return new Response(JSON.stringify({ message: "successful", token, userName: registeredAdmin.userName }), {
       status: 200,
     });
-  } catch (error) {
+  } catch (error: any) {
     return new Response(JSON.stringify({ message: error.message }), {
       status: 500,
     });

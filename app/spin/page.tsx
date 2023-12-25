@@ -11,8 +11,9 @@ const Spin = () => {
   // const [participant, setParticipant] = useState<IndexState['participant']>('')
   const [notClaimedParticipantNames, setNotClaimedParticipantNames] = useState<IndexState['notClaimedParticipantNames']>([])
   // const [participants, setParticipants] = useState<IndexState['participants']>([]); // array of objects
-  const { participants, isLoggedIn } = useStore()
+  const { participants, isLoggedIn,  } = useStore()
   const [winnerToBeDeclared, setWinnerToBeDeclared] = useState<IndexState['winnerToBeDeclared']>('')
+
 
   const declareWinner = (winner: string) => {
     setWinnerToBeDeclared(winner)

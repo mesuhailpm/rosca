@@ -27,7 +27,7 @@ const ResetAdminPassword = () => {
             //...handle register
             setLoading(true)
             console.log(formData);
-            
+
             const data = await updateAdmin(formData)
             if (!data.success) {
                 console.log('returned error')
@@ -65,7 +65,7 @@ const ResetAdminPassword = () => {
 
     }
     console.log(formData);
-    
+
 
 
     useEffect(() => {
@@ -87,7 +87,7 @@ const ResetAdminPassword = () => {
 
     }, [])
 
-    if(initialLoading) return <h1 className="text-2xl text-center text-orange-600 ">Loading...</h1>
+    if (initialLoading) return <h1 className="text-2xl text-center text-orange-600 ">Loading...</h1>
 
     if (storedUserObject.pendingAdmin === 'unauthorized') return (
         <div className='bg-blue-300/50 h-screen pt-4'>
@@ -112,10 +112,6 @@ const ResetAdminPassword = () => {
             </form>
             {loading && (
                 <div className='fixed top-0 right-0 flex flex-col gap-4 bg-gray-200/50 items-center w-screen h-screen justify-center'> <Spinner color='#000000' /><h1 className='text-black font-bold'>Sending the OTP...</h1></div>
-            )}
-            {showConfirmation && (
-                <div className='fixed top-0 right-0 flex flex-col gap-4 bg-gray-200/75 items-center w-screen h-screen justify-center'> <Confirmation confirmationMessage={confirmationMessage} /><h1 className='text-black font-bold'></h1></div>
-
             )}
         </div>
     )

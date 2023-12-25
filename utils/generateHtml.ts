@@ -1,7 +1,7 @@
 import logo from 'public/assets/images/logo.png'
-export default async ({email, otp}) => {
+export default async ({email, otp}:{email:string, otp:number}) => {
 
-console.log(otp,'I wo=ill generate html this is the otp')
+console.log(otp,'I wo=ill generate html this is the otp');
   const html = `
   <!DOCTYPE html>
   <html lang="en">

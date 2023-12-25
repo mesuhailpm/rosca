@@ -4,10 +4,11 @@ import sendEmail from "@utils/sendEmail";
 import OTP from "@models/OTP";
 import Admin from "@models/Admin";
 import bcrypt from "bcrypt";
+import { NextRequest } from "next/server";
 const durationInMinutes = 10;
 const {NEXT_PUBLIC_REGISTRATION_ALLOWED } = process.env;
 
-export const POST = async (req) => {
+export const POST = async (req: NextRequest) => {
   if (NEXT_PUBLIC_REGISTRATION_ALLOWED === 'false') {
     console.log('NEXT_PUBLIC_REGISTRATION_ALLOWED is \'false\' please update it.')
     return new Response(

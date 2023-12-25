@@ -10,7 +10,7 @@ type valueProp = {
   formData: FormData | {}
 }// some properties are redundant but passed blank for type validation, and actually unnecessary
 
-const initialValue = { action: '', _id: '', formData: {} }
+const initialValue = { action: '', _id: '', formData: {serial:0, name:'', _id:'', claimed: false} }
 const useSubmitForm = () => {
   const { startResponseLoading, endResponseLoading, setParticipants, runConfirmation, participants, toggleShowDeleteModal, setShowFormModal,setShowDeleteModal } = useStore() as State
 
@@ -25,7 +25,7 @@ const useSubmitForm = () => {
       switch (action) {
         case 'edit':
           startResponseLoading();
-          const dataWithMessage: { result: Participant, message: string } = await updateParticipant(_id, JSON.stringify(formData))
+          const dataWithMessage: { result: Participant, message: string } = await updateParticipant(_id, formData)
           console.log(dataWithMessage)
           if (!dataWithMessage) throw new Error;
           runConfirmation({ message: dataWithMessage.message, success: true })
