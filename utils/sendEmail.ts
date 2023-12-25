@@ -2,7 +2,7 @@ import nodemailer from "nodemailer";
 import generateHtml from '@utils/generateHtml';
 const SMTP_PASSWORD = "texz ktwa glux gfun";
 
-export default async (form) => {
+export default async (form:{email:string, otp:number}) => {
   const { email } = form;
   // console.log(email,' is form with good otp')
 
