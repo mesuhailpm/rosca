@@ -11,6 +11,7 @@ type Props = {
 }
 
 const OTPInputField = ({ email, expiresIn, otp, numberOfInputs, handleChange, handleSubmit }: Props) => {
+<<<<<<< HEAD
 
     if(!email) return(
     <>
@@ -18,6 +19,8 @@ const OTPInputField = ({ email, expiresIn, otp, numberOfInputs, handleChange, ha
     <h2 className='text-center font-serif md:text-xl'> Please let us know if you think that this is wrong!</h2>
     <h2 className='text-center font-serif font-bold md:text-3xl m-4'>Thank you 😊</h2>
     </>)
+=======
+>>>>>>> 852fddd4c4a9b2adf78cf90c6c44936b43cb2a77
     return (
         <>
             <h1 className="text-xl font-bold">Enter the OTP</h1>
@@ -52,4 +55,8 @@ const OTPInputField = ({ email, expiresIn, otp, numberOfInputs, handleChange, ha
 
 OTPInputField.propTypes = {}
 
+<<<<<<< HEAD
 export default OTPInputField
+=======
+export default OTPInputField
+>>>>>>> 852fddd4c4a9b2adf78cf90c6c44936b43cb2a77
