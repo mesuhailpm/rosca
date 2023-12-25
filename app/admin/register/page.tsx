@@ -1,9 +1,10 @@
 'use client';
 import React, { ChangeEvent, FormEvent, useEffect, useState } from 'react'
 import { initiateRegister } from '@actions'
-import Confirmation from '@components/Confirmation'
 import Spinner from '@components/Spinner'
 import checkLoggedIn from '@utils/checkLoggedIn';
+import { useStore } from '@src/store';
+import { State } from '@types';
 
 const RegisterAsAdmin = () => {
     const [formData, setFomData] = useState({
@@ -11,6 +12,8 @@ const RegisterAsAdmin = () => {
         password: '',
         confirmPassword: '',
     })
+
+    const {runConfirmation} = useStore() as State
     const [loading, setLoading] = useState(false)
     const [showConfirmation, setShowConfirmation] = useState(false)
     const [confirmationMessage, setConfirmationMessage] = useState({ message: '', success: false })
@@ -60,8 +63,12 @@ const RegisterAsAdmin = () => {
 
             }, 1000)
 
-        } catch (error) {
+        } catch (error: any) {
             console.error(error)
+            runConfirmation({
+                message: error.message,
+                success: false,
+            })
         } finally {
             setLoading(false)
             setTimeout(() => {
@@ -75,7 +82,7 @@ const RegisterAsAdmin = () => {
         (async () =>{
             const hasLoggedIn = await checkLoggedIn()
             if(hasLoggedIn){
-                location.href='/admin/login'
+                location.href='/login'
             }
         })()
     })
@@ -97,7 +104,7 @@ const RegisterAsAdmin = () => {
             {loading && (
                 <div className='fixed top-0 right-0 flex flex-col gap-4 bg-gray-200/50 items-center w-screen h-screen justify-center'> <Spinner color='#000000' /><h1 className='text-black font-bold'>Sending the OTP...</h1></div>
             )}
-            
+
         </div>
     )
 }
