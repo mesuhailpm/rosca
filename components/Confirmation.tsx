@@ -25,7 +25,8 @@ const Confirmation = ({}) => {
           />
         </div>
       </div>
-    );
+    )
+    return null
 };
 
 export default Confirmation;

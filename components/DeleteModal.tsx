@@ -15,12 +15,13 @@ const DeleteModal = () => {
       <div className='bg-orange-400 flex  flex-col  gap-2 rounded-2xl justify-center items-center p-4'>
 
         <h1 className=''>Are you sure delete the member?</h1>
-        <button className='bg-red-800 text-white w-3/5 rounded-lg' onClick={()=>setValue({action:'remove',_id:idTodelete, formData:{}})}>Yes</button>
+        <button className='bg-red-800 text-white w-3/5 rounded-lg' onClick={()=>setValue({action:'remove',_id:idTodelete, formData: {serial:0, name:'', _id:'', claimed: false}})}>Yes</button>
         <button className='bg-blue-800 text-white w-3/5 rounded-lg' onClick={toggleShowDeleteModal}>No</button>
       </div>
 
     </div>
   )
+  return null
 }
 
 export default DeleteModal
