@@ -7,7 +7,6 @@ import checkLoggedIn from '@utils/checkLoggedIn'
 
 
 const AdminLogin = () => {
-<<<<<<< HEAD:app/login/page.tsx
 
 
   const { isLoggedIn, runConfirmation,startResponseLoading, endResponseLoading } = useStore()
@@ -15,15 +14,6 @@ const AdminLogin = () => {
   const startVerifyLoading = () => {startResponseLoading('Verfying the details...')}
 
 
-=======
-  
-  
-  const { isLoggedIn, runConfirmation,startResponseLoading, endResponseLoading } = useStore()
-  const startRedirectingLoading = () => startResponseLoading('Welcome back, we are shipping you to dashboard...')
-  const startVerifyLoading = () => {startResponseLoading('Verfying the details...')}
-  
-  
->>>>>>> 852fddd4c4a9b2adf78cf90c6c44936b43cb2a77:app/admin/login/page.tsx
   const [formData, setFomData] = useState({
     userName: '',
     password: ''
@@ -31,14 +21,9 @@ const AdminLogin = () => {
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
     setFomData((prevState) => {
       return { ...prevState, [event.target.name]: event.target.value }
-      
+
     })
   }
-<<<<<<< HEAD:app/login/page.tsx
-
-=======
-  
->>>>>>> 852fddd4c4a9b2adf78cf90c6c44936b43cb2a77:app/admin/login/page.tsx
   const handleLogin = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault()
     startResponseLoading('Verifying the details...')
@@ -51,17 +36,11 @@ const AdminLogin = () => {
         useStore.setState({ isLoggedIn: true })
         location.href = '/admin'
       } else {
-<<<<<<< HEAD:app/login/page.tsx
         console.log(message, token, userName);
 
         runConfirmation(
           { message: message, success: false }
 
-=======
-        runConfirmation(
-          { message: message, success: false }
-          
->>>>>>> 852fddd4c4a9b2adf78cf90c6c44936b43cb2a77:app/admin/login/page.tsx
         )
         endResponseLoading()
       }
@@ -72,11 +51,6 @@ const AdminLogin = () => {
       endResponseLoading()
     }
   }
-<<<<<<< HEAD:app/login/page.tsx
-
-=======
-  
->>>>>>> 852fddd4c4a9b2adf78cf90c6c44936b43cb2a77:app/admin/login/page.tsx
 
   useEffect(() => {
     (async () => {
