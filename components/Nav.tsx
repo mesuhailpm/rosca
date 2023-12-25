@@ -73,11 +73,7 @@ const Nav = () => {
       ) : (
          (pathname !== '/admin/verify' && pathname !== '/admin/forgot-password/verify') &&
           (<Link
-<<<<<<< HEAD
           href="/login"
-=======
-          href="/admin/login"
->>>>>>> 852fddd4c4a9b2adf78cf90c6c44936b43cb2a77
           className="flex gap-1 items-center justify-center bg-blue-800 text-white rounded-md p-2 m-2 hover:bg-blue-700 border border-yello-100"
         >
           <i className="fa fa-unlock" aria-hidden="true"></i>
