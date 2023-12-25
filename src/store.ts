@@ -39,8 +39,9 @@ export const useStore = create<State>((set) => ({
 
   },
   responseLoading: false,
-  startResponseLoading: () => {
-    set(() => ({ responseLoading: true }));
+  loadingCaption:'',
+  startResponseLoading: (caption) => {
+    set(() => ({ responseLoading: true, loadingCaption: caption}));
   },
   endResponseLoading: () => applyTimeout(() => set({ responseLoading: false }), 10),
 
