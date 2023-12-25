@@ -17,7 +17,6 @@ const Nav = () => {
   // console.log(pathname)
 
 
-
   //console.logisLoggedIn, " is value of isLoggedIn");
   //console.logHasLoggedIn, " is value of hasLoggedIn");
 
@@ -34,7 +33,7 @@ const Nav = () => {
         useStore.setState({ isLoggedIn: false });
       }
     })();
-  }, []);
+  }, [isLoggedIn, useStore.setState]);
 
   return (
     <div
@@ -71,14 +70,14 @@ const Nav = () => {
           </button>
         </div>
       ) : (
-         pathname !== '/admin/verify' &&
-          <Link
-          href="/admin/login"
+         (pathname !== '/admin/verify' && pathname !== '/admin/forgot-password/verify') &&
+          (<Link
+          href="/login"
           className="flex gap-1 items-center justify-center bg-blue-800 text-white rounded-md p-2 m-2 hover:bg-blue-700 border border-yello-100"
         >
           <i className="fa fa-unlock" aria-hidden="true"></i>
           <p>Admin Login</p>
-        </Link>
+        </Link>)
       )}
     </div>
   );
