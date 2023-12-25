@@ -1,7 +1,7 @@
-import mongoose from "mongoose"
+import mongoose,{ConnectOptions} from "mongoose"
 const mongodbUri = process.env.NEXT_PUBLIC_MONGODB_URI
 
-let isConnected;
+let isConnected : boolean;
 export default async () => {
      if (isConnected === true) {
         console.log('mongodb is already connected');
@@ -10,10 +10,10 @@ export default async () => {
      }
     
     try {
-        await mongoose.connect(mongodbUri, {
+        await mongoose.connect(mongodbUri as string, {
             useNewUrlParser: true,
             useUnifiedTopology: true
-        })
+        } as ConnectOptions);
         isConnected = true;
         console.log('connected to database')
     }
