@@ -16,6 +16,7 @@ const Nav = () => {
   const pathname = usePathname()
   // console.log(pathname)
 
+  const {responseLoading, endResponseLoading } = useStore() as State;
 
 
   //console.logisLoggedIn, " is value of isLoggedIn");
@@ -71,14 +72,14 @@ const Nav = () => {
           </button>
         </div>
       ) : (
-         pathname !== '/admin/verify' &&
-          <Link
+         (pathname !== '/admin/verify' && pathname !== '/admin/forgot-password/verify') &&
+          (<Link
           href="/admin/login"
           className="flex gap-1 items-center justify-center bg-blue-800 text-white rounded-md p-2 m-2 hover:bg-blue-700 border border-yello-100"
         >
           <i className="fa fa-unlock" aria-hidden="true"></i>
           <p>Admin Login</p>
-        </Link>
+        </Link>)
       )}
     </div>
   );

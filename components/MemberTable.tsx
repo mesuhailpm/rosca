@@ -9,7 +9,8 @@ import { State, Participant, Action, Participants, FormData } from '@types';
 
 const MemberTable = ({ }) => {
 
-  const { participants,toggleShowDeleteModal, toggleShowFormModal, showFormModal, formData, setShowFormModal, setFormData, startResponseLoading, participantsLoading, setParticipantsLoading } = useStore() as State
+  const { participants,toggleShowDeleteModal, toggleShowFormModal, showFormModal, formData, setShowFormModal, setFormData, startResponseLoading,endResponseLoading, participantsLoading, setParticipantsLoading } = useStore() as State
+  const startRedirectingLoading = () => startResponseLoading('Welcome back, we are shipping you to dashboard...')
 
 
   const initialFomData:FormData = {

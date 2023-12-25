@@ -44,7 +44,8 @@ export interface State {
     participantsLoading: boolean;
     setParticipantsLoading:(flag: boolean)=>void;
     responseLoading: boolean;
-    startResponseLoading: ()=>void;
+    loadingCaption: string;
+    startResponseLoading: (caption?:string)=>void;
     endResponseLoading: ()=>void;
     showConfirmation: boolean;
     confirmationMessage: ConfirmationMessage;
