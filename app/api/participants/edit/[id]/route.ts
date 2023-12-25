@@ -1,6 +1,7 @@
 import connectToDb from "@utils/connectToDb";
 import Participant from "@models/Participant";
-export const POST = async (req, { params }) => {
+import { NextRequest } from "next/server";
+export const POST = async (req: NextRequest, { params }:{params:{id: string}}) => {
   try {
     const body = await req.json();
     console.log(body, " is body in backed post request");

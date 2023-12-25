@@ -1,5 +1,6 @@
 import jwt from 'jsonwebtoken'
-export const POST = async(req) => {
+import { NextRequest } from 'next/server';
+export const POST = async(req: NextRequest) => {
     const token = await req.json()
     try {
         // console.log(body, ' is jsonwebtoken body')

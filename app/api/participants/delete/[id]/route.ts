@@ -1,7 +1,8 @@
 import Participant from "@models/Participant";
 import connectToDb from "@utils/connectToDb";
+import { NextRequest } from "next/server";
 
-export const DELETE = async (req, { params }) => {
+export const DELETE = async (req: NextRequest, { params }:{params:{id:string}}) => {
   try {
     await connectToDb();
     console.log(params.id, "got in backend");
