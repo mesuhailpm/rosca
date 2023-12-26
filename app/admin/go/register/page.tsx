@@ -78,15 +78,7 @@ const RegisterAsAdmin = () => {
         }
 
     }
-    useEffect(()=>{
-        (async () =>{
-            const hasLoggedIn = await checkLoggedIn()
-            if(hasLoggedIn){
-                location.href='/admin/go/login'
-            }
-        })()
-    })
-
+    
     return (
         <div className='bg-blue-300/50 h-screen pt-4'>
             <h1 className='text-center font-bold uppercase'>Register as admin</h1>
