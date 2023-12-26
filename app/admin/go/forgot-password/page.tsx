@@ -36,7 +36,7 @@ const ForgotPassword = () => {
             startRedirectingLoading()
             setTimeout(() => {
 
-              location.href = '/admin';
+              location.href = '/admin/dashboard';
             }, 2000)
           }
         })()
