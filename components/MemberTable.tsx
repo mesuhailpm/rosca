@@ -44,7 +44,7 @@ const MemberTable = ({ }) => {
     if (!hasLoggedIn) {
 
       localStorage.removeItem('userObject')
-      location.href = 'login';
+      location.href = 'admin/go/login';
     }
 
   }
