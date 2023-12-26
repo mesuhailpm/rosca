@@ -47,7 +47,7 @@ const ResetAdminPassword = () => {
             setShowConfirmation(true)
 
             setTimeout(() => {
-                location.href = 'admin/go/login'
+                location.href = '/admin/go/login'
 
             }, 1000)
 
