@@ -1,4 +1,4 @@
-import '../../app/globals.css'
+import '../../../app/globals.css'
 import MemberForm from '@components/MemberForm'
 import DeleteModal from '@components/DeleteModal'
 import Confirmation from '@components/Confirmation'
