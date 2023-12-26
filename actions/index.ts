@@ -2,9 +2,9 @@ import { FormData, Participant } from "@types";
 
 export const fetchAllParticipants = async () => {
   try {
-    const response = await fetch("api/participants/all");
+    const response = await fetch("/api/participants/all");
     const data = await response.json();
-    //console.logdata.allParticipants, " are all participants");
+    // console.log(data.allParticipants, " are all participants");
     return data.allParticipants;
   } catch (error) {
     console.log(error);
@@ -15,7 +15,7 @@ type UpdateParticipant = (id: string, formData: FormData) => Promise<{ result: P
 export const updateParticipant: UpdateParticipant = async (id, formData) => {
   console.log(id, formData, ' from updateParticipant actions');
   try {
-    const response = await fetch(`api/participants/edit/${id}`, {
+    const response = await fetch(`/api/participants/edit/${id}`, {
       method: "POST",
       body: JSON.stringify(formData),
     });
@@ -33,7 +33,7 @@ type AddParticipant = (formData: FormData) => Promise<{ result: Participant, mes
 export const addParticipant: AddParticipant = async (formData) => {
   //console.logformData);
   try {
-    const response = await fetch(`api/participants/add`, {
+    const response = await fetch(`/api/participants/add`, {
       method: "POST",
       body: JSON.stringify(formData),
     });
@@ -50,7 +50,7 @@ type DeleteParticipant = (id: string) => Promise<{ result: Participant, message:
 export const deleteParticipant: DeleteParticipant = async (id) => {
   //console.logid,' got in action');
   try {
-    const response = await fetch(`api/participants/delete/${id}`, {
+    const response = await fetch(`/api/participants/delete/${id}`, {
       method: "DELETE",
     });
     const data = await response.json(); //{data: 'particpant object', message: 'successflly updated'}
@@ -70,9 +70,9 @@ export const initiateRegister: InitiateRegister = async (credentials) => {
       body: JSON.stringify(credentials),
     });
     const data = await response.json();
-    
+
       return data;
-  
+
   } catch (error) {
     console.log(error);
   }
