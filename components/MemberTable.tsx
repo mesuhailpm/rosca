@@ -34,31 +34,6 @@ const MemberTable = ({ }) => {
     toggleShowDeleteModal()
   }
 
-
-
-
-
-  const handleToken = async () => {
-
-    const hasLoggedIn = await checkLoggedIn()
-    if (!hasLoggedIn) {
-
-      localStorage.removeItem('userObject')
-      location.href = 'admin/go/login';
-    }
-
-  }
-
-  useEffect(() => {
-    handleToken()
-  }, [])
-
-
-
-
-
-
-
   useEffect(() => {
     (async () => {
       setParticipantsLoading(true)
