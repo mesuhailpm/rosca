@@ -16,9 +16,7 @@ const layout = ({ children }: { children: React.ReactNode }) => {
         const hasLoggedIn = await checkLoggedIn()
         if (hasLoggedIn) {
             useStore.setState({isLoggedIn:true})
-        }else{
-            localStorage.removeItem('userObject');
-            location.href='login'
+            location.href='admin/go/login'
         }
     }
 

@@ -34,7 +34,7 @@ const AdminLogin = () => {
       if (response.ok) {
         localStorage.setItem('userObject', JSON.stringify({ token, userName }));
         useStore.setState({ isLoggedIn: true })
-        location.href = '/admin'
+        location.href = '/admin/dashboard'
       } else {
         console.log(message, token, userName);
 
@@ -63,7 +63,7 @@ const AdminLogin = () => {
         startRedirectingLoading()
         setTimeout(() => {
 
-          location.href = '/admin';
+          location.href = '/admin/dashboard';
         }, 2000)
       }
     })()
@@ -84,7 +84,7 @@ const AdminLogin = () => {
 
         <button type='submit' className='border border-none bg-green-700 text-yellow-100 m-4 pl-4 pr-4 p-2 rounded-md hover:bg-green-500 hover:border-white'>Login</button>
         <Link
-          href="/admin/forgot-password"
+          href="/forgot-password"
           className='underline text-blue-950'
         >
           Forgot password?

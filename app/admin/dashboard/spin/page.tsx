@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from 'react'
 import Wheel from '@components/Wheel'
 import { fetchAllParticipants } from '@actions'
-import '../../app/globals.css'
+import '../../../../app/globals.css'
 import Confetti from 'react-confetti'
 import { useStore } from '@src/store'
 import checkLoggedIn from '@utils/checkLoggedIn'
