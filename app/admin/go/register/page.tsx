@@ -82,7 +82,7 @@ const RegisterAsAdmin = () => {
         (async () =>{
             const hasLoggedIn = await checkLoggedIn()
             if(hasLoggedIn){
-                location.href='/login'
+                location.href='/admin/go/login'
             }
         })()
     })
