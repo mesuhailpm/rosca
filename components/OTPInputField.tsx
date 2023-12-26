@@ -1,5 +1,4 @@
 import React, { FormEvent } from 'react'
-import PropTypes from 'prop-types'
 import OTPInput from 'react-otp-input'
 type Props = {
     email: string,
@@ -49,7 +48,5 @@ const OTPInputField = ({ email, expiresIn, otp, numberOfInputs, handleChange, ha
         </>
     )
 }
-
-OTPInputField.propTypes = {}
 
 export default OTPInputField
