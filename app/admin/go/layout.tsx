@@ -16,7 +16,7 @@ const layout = ({ children }: { children: React.ReactNode }) => {
         const hasLoggedIn = await checkLoggedIn()
         if (hasLoggedIn) {
             useStore.setState({isLoggedIn:true})
-            location.href='admin/go/login'
+            location.href='/admin/dashboard'
         }
     }
 
