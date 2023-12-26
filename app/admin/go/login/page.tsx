@@ -84,7 +84,7 @@ const AdminLogin = () => {
 
         <button type='submit' className='border border-none bg-green-700 text-yellow-100 m-4 pl-4 pr-4 p-2 rounded-md hover:bg-green-500 hover:border-white'>Login</button>
         <Link
-          href="/forgot-password"
+          href="/admin/go/forgot-password"
           className='underline text-blue-950'
         >
           Forgot password?
