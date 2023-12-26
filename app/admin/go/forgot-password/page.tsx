@@ -25,24 +25,7 @@ const ForgotPassword = () => {
         })
     }
 
-    useEffect(() => {
-        (async () => {
-          //console.log'useEffect');
 
-          const hasLoggedIn = await checkLoggedIn(
-            // startVerifyLoading, endResponseLoading, startRedirectingLoading
-            )
-          if(hasLoggedIn){
-            startRedirectingLoading()
-            setTimeout(() => {
-
-              location.href = '/admin/dashboard';
-            }, 2000)
-          }
-        })()
-
-
-      }, [startResponseLoading])
     const handleForgotPassword = async (event: FormEvent<HTMLFormElement>) => {
         event.preventDefault()
         try {
