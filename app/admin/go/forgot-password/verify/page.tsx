@@ -10,7 +10,7 @@ import OTPInputField from "@components/OTPInputField";
 const Verify = () => {
   const [otp, setOtp] = useState<string>("");
   const { runConfirmation, showConfirmation } = useStore() as State
-  
+
   useEffect(() => {
     console.log(showConfirmation)
   },[showConfirmation])
@@ -99,8 +99,8 @@ const Verify = () => {
 
   return (
     <div className="flex flex-col items-center bg-gray-200 p-2">
-      
-      <OTPInputField 
+
+      <OTPInputField
       email={storedUserObject.pendingAdmin}
       expiresIn={10}
       handleChange={handleChange}

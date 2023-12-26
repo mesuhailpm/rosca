@@ -52,7 +52,7 @@ const Nav = () => {
         <div className="self-end flex">
           {pathname !== "/admin" && (
             <Link
-              href="/admin"
+              href="/admin/dashboard"
               className="flex gap-1 items-center bg-blue-800 text-white tex-xxl rounded-md p-2 m-2 hover:bg-blue-700 border border-yello-100"
             >
               <i className="fa fa-cogs fa-lg" aria-hidden="true"></i>
@@ -71,9 +71,9 @@ const Nav = () => {
           </button>
         </div>
       ) : (
-         (pathname !== '/admin/verify' && pathname !== '/admin/forgot-password/verify') &&
+         (pathname !== '/admin/verify' && pathname !== '/forgot-password/verify') &&
           (<Link
-          href="/login"
+          href="/admin/go/login"
           className="flex gap-1 items-center justify-center bg-blue-800 text-white rounded-md p-2 m-2 hover:bg-blue-700 border border-yello-100"
         >
           <i className="fa fa-unlock" aria-hidden="true"></i>
