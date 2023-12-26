@@ -90,7 +90,7 @@ const AdminLogin = () => {
           Forgot password?
         </Link >
         <Link
-          href="/admin/register"
+          href="/admin/go/register"
           className="bg-green-900 p-2 text-yellow-100 m-2 hover:bg-green-700 flex-center"
         >
           Request to be an admin
