@@ -9,24 +9,35 @@ import { State } from '@types'
 
 
 const layout = ({ children }: { children: React.ReactNode }) => {
-    const { responseLoading, isLoggedIn } = useStore() as State
+    const { responseLoading, isLoggedIn, startResponseLoading } = useStore() as State
 
 
     const handleLoginLogout = async () => {
         const hasLoggedIn = await checkLoggedIn()
         if (hasLoggedIn) {
-            useStore.setState({isLoggedIn:true})
-            location.href='/admin/dashboard'
+            startRedirectingLoading()
+
+            setTimeout(() =>{
+
+                useStore.setState({isLoggedIn:true})
+                location.href='/admin/dashboard'
+            },1000)
         }
     }
+
+    const startRedirectingLoading = () => startResponseLoading('Welcome back, we are shipping you to dashboard...')
+
 
     useEffect(() => {
         handleLoginLogout()
     },[isLoggedIn]
     )
+
+
     return (
         <div className='p-2 '>
             {children}
+
             <Confirmation />
             <LoaderSpinner color='#000000' />
         </div>
