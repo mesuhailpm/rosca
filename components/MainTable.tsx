@@ -41,7 +41,7 @@ export default function MainTable() {
   return (
     <div>
       {participants?.length > 0 ? (
-        <table className="md:self-start m-4 bg-[#96ffff] text-slate-950 border border-black table-auto font-raleway">
+        <table className="md:self-start m-4 bg-[#96ffff] text-slate-950 border border-black table-auto md:w-[700px] font-raleway">
           <thead>
             <tr>
               <th>Serial</th>
