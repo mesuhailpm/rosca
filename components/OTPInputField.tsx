@@ -24,7 +24,7 @@ const OTPInputField = ({ email, expiresIn, otp, numberOfInputs, handleChange, ha
                 className="p-4 m-2 flex flex-col items-center"
                 onSubmit={handleSubmit}
             >
-                <h2 className="text-xl text-center">{`Please check your email for the OTP: `}<strong>'{`${email}`}'</strong> </h2>
+                <h2 className="text-xl text-center">{`Please check your email for the OTP: `}<strong>{`'${email}'`}</strong> </h2>
                 <h2 className="font-bold text-center">{`The OTP will expire in ${expiresIn} minutes`} </h2>
                 <OTPInput
                     value={otp.toString()}
