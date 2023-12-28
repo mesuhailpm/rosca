@@ -16,32 +16,32 @@ const Layout = ({ section }: LayoutProps) => {
     const handleLoginLogout = async () => {
         const hasLoggedIn = await checkLoggedIn()
 
-        if (hasLoggedIn) {
-            if (section === 'user') {
-                if (hasLoggedIn) {
-                    startRedirectingLoadingToAdmin()
+        if (section === 'user') {
+            if (hasLoggedIn) {
+                startRedirectingLoadingToAdmin()
+                useStore.setState({ isLoggedIn: true })
+                setTimeout(() => {
+
                     useStore.setState({ isLoggedIn: true })
-                    setTimeout(() => {
-
-                        useStore.setState({ isLoggedIn: true })
-                        location.href = '/admin/dashboard'
-                    }, 1000)
-                } else {
-                    localStorage.removeItem('userObject');
-                    location.href = '/admin/go/login'
-                }
-
+                    if (location.href !== '/admin/dashboard') location.href = '/admin/dashboard'
+                }, 1000)
+            } else {
+                localStorage.removeItem('userObject');
+                if(location.href !==  '/admin/go/login') location.href !==  '/admin/go/login'
             }
-            else {
-                if (hasLoggedIn) {
-                    useStore.setState({ isLoggedIn: true })
-                } else {
-                    startRedirectingLoadingToUser()
-                    localStorage.removeItem('userObject');
-                    location.href = '/admin/go/login'
-                }
+
+        } else {
+            if (hasLoggedIn) {
+                useStore.setState({ isLoggedIn: true })
+            } else {
+                useStore.setState({ isLoggedIn: false })
+
+                startRedirectingLoadingToUser()
+                localStorage.removeItem('userObject');
+                if(location.href !== '/admin/go/login') location.href = '/admin/go/login'
             }
         }
+
     }
 
 
