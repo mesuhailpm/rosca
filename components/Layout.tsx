@@ -7,8 +7,6 @@ type LayoutProps = {
     section: 'user' | 'admin'
 }
 
-
-
 const Layout = ({ section }: LayoutProps) => {
     const { isLoggedIn, startResponseLoading } = useStore() as State
 
