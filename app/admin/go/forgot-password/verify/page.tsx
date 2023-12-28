@@ -1,8 +1,6 @@
 "use client";
 import React, { useEffect, useState } from "react";
-import OTPInput from "react-otp-input";
 import { verifyOtpForgot, createAdmin } from "@actions";
-import Confirmation from "@components/Confirmation";
 import { useStore } from "@src/store";
 import { State } from "@types";
 import OTPInputField from "@components/OTPInputField";
@@ -14,14 +12,12 @@ const Verify = () => {
   useEffect(() => {
     console.log(showConfirmation)
   },[showConfirmation])
-  const [formData, setFormData] = useState({})
 
   const [storedUserObject, setStoredUserObject] = useState({
     pendingAdmin: "unauthorized",
   });
 
   const [initialLoading, setInitialLoading] = useState(true);
-  const numberOfInputs = 6;
   const handleChange = (otp: string) => {
     setOtp(otp);
   };
@@ -34,16 +30,9 @@ const Verify = () => {
       const parsedUserObject = JSON.parse(storedUserObjectRaw);
       setStoredUserObject(parsedUserObject);
     }
-    if (storedUserObject.pendingAdmin !== "unauthorized") {
-      setFormData((prev) => {
-        return {
-          ...prev,
-          email: storedUserObject.pendingAdmin,
-        };
-      });
-    }
+
     setInitialLoading(false);
-  }, []);
+  }, [storedUserObject.pendingAdmin]);
 
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
