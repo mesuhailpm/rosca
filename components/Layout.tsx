@@ -12,7 +12,8 @@ type LayoutProps = {
 const Layout = ({ section }: LayoutProps) => {
     const { isLoggedIn, startResponseLoading } = useStore() as State
 
-    const startRedirectingLoading = () => startResponseLoading('Welcome back, we are shipping you to dashboard...')
+    const startRedirectingLoadingToAdmin = () => startResponseLoading('Welcome back, we are shipping you to dashboard...')
+    const startRedirectingLoadingToUser = () => startResponseLoading('Unauthorized,  redirecting...')
 
     const handleLoginLogout = async () => {
         const hasLoggedIn = await checkLoggedIn()
@@ -20,7 +21,7 @@ const Layout = ({ section }: LayoutProps) => {
         if (hasLoggedIn) {
             if (section === 'user') {
                 if (hasLoggedIn) {
-                    startRedirectingLoading()
+                    startRedirectingLoadingToAdmin()
                     useStore.setState({ isLoggedIn: true })
                     setTimeout(() => {
 
@@ -37,6 +38,7 @@ const Layout = ({ section }: LayoutProps) => {
                 if (hasLoggedIn) {
                     useStore.setState({ isLoggedIn: true })
                 } else {
+                    startRedirectingLoadingToUser()
                     localStorage.removeItem('userObject');
                     location.href = '/admin/go/login'
                 }
