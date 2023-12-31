@@ -61,7 +61,7 @@ export const deleteParticipant: DeleteParticipant = async (id) => {
   }
 };
 
-type InitiateRegister = (formData: {email: string, password:string, confirmPassword: string}) => Promise<{ message: 'string' }>
+type InitiateRegister = (formData: {email: string, password:string, confirmPassword: string}) => Promise<{ message: string }>
 
 export const initiateRegister: InitiateRegister = async (credentials) => {
   try {
@@ -77,7 +77,7 @@ export const initiateRegister: InitiateRegister = async (credentials) => {
     console.log(error);
   }
 };
-type InitiateForgotPassword = (formData: {email:string}) => Promise<{ message: 'string' }>
+type InitiateForgotPassword = (formData: {email:string}) => Promise<{ message: string }>
 
 
 export const initiateForgotPassword: InitiateForgotPassword = async (credentials) => {
