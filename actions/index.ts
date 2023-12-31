@@ -1,4 +1,4 @@
-import { FormData, Participant } from "@types";
+import { AdminModelType, FormData, Participant } from "@types";
 
 export const fetchAllParticipants = async () => {
   try {
@@ -133,7 +133,7 @@ export const verifyOtpForgot: VerifyOtpForgot = async (otpandadmin) => {
   }
 };
 
-type CreateAdmin = (formData: {email: string}) => Promise<{ data: Participant, message: string }>
+type CreateAdmin = (formData: {email: string}) => Promise<{ newAdmin?: AdminModelType, message: string, success: boolean }>
 
 
 export const createAdmin: CreateAdmin = async ({ email }) => {
