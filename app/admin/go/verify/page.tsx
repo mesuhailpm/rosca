@@ -38,7 +38,10 @@ const Verify = () => {
         admin: pendingAdmin,
       });
       console.log("got data", data);
-      if (data.success) {
+
+      if (data.success)
+      //Email got verified
+      {
         runConfirmation({
           message: data.message,
           success: true,
@@ -47,33 +50,43 @@ const Verify = () => {
         setTimeout(async () => {
           //create a new admin with password
           const data = await createAdmin({ email: pendingAdmin });
-          
-            console.log(data);
-            runConfirmation({ message: data.message, success: true }, 1000)
-            setTimeout(() => {
-              location.href = "/admin/login";
-            }, 1000);
-           
-            console.log();          
-        }, 2000);
-      }else{
+
+          setTimeout(() => {
+            //if Admin is created successfully
+            if (data.success) {
+
+              runConfirmation({ message: data.message, success: true }, 3000)
+
+              setTimeout(() => {
+                location.href = "/admin/go/login";
+              }, 4000);
+
+            } else {
+              runConfirmation({ message: data.message, success: false }, 3000)
+            }
+
+          }, 3000 + 2000)
+
+          console.log(data);
+        }, 3000);
+      } else {
         console.log("otp validation failed");
         runConfirmation({
           message: data.message,
           success: false,
         });
 
-      } 
-      
-    }
-      catch (error) {
-        console.error(error);
-        runConfirmation({
-          message: "something went wrong",
-          success: false,
-        });
       }
-      
+
+    }
+    catch (error) {
+      console.error(error);
+      runConfirmation({
+        message: "something went wrong",
+        success: false,
+      });
+    }
+
   };
 
 
@@ -106,13 +119,13 @@ const Verify = () => {
 
   return (
     <div className="flex flex-col items-center bg-gray-200 p-2">
-      <OTPInputField 
-      email={storedUserObject.pendingAdmin}
-      expiresIn={10}
-      handleChange={handleChange}
-      handleSubmit={handleSubmit}
-      numberOfInputs={6}
-      otp={otp}
+      <OTPInputField
+        email={storedUserObject.pendingAdmin}
+        expiresIn={10}
+        handleChange={handleChange}
+        handleSubmit={handleSubmit}
+        numberOfInputs={6}
+        otp={otp}
       />
     </div>
   );
