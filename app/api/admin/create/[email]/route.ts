@@ -10,12 +10,7 @@ export const GET = async (req: NextRequest, { params }:{params:{email:string}}) 
   const email = params.email;
   console.log(email, " is the admin's email this is from create admin");
 
-  // try {
-    
-  // } catch (error) {
-    
-  // }
-  // return;
+
 
   try {
     await connectToDB();
@@ -38,7 +33,7 @@ export const GET = async (req: NextRequest, { params }:{params:{email:string}}) 
 
     return new Response(
       JSON.stringify({
-        newAdminToBeSaved,
+        newAdmin:newAdminToBeSaved,
         message: "Congrats! Now you are an admin. Please login",
         success:true,
       }),
