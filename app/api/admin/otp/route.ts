@@ -51,7 +51,7 @@ export const POST = async (req:NextRequest) => {
     await sendEmail({email,otp: newOTPGenerated});
     return new Response(
       JSON.stringify({ message: `OTP sent over ${email}` }),
-      { status: 200 }
+      { status: 200,headers:{"Set-Cookie":`pendingEmail=${email}; Http-Only; Max-Age:3600`} }
     );
   } catch (error) {
     console.log(error, " is the error in register api route");
