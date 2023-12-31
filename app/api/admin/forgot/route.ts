@@ -50,7 +50,8 @@ export const POST = async (req: NextRequest) => {
     console.log('sending fincal response');
     return new Response(
       JSON.stringify({ message: `OTP sent over ${email}` }),
-      { status: 200 }
+      //sending the email in coookie
+      { status: 200,headers:{"Set-Cookie":`pendingEmail=${email}; Http-Only; Max-Age:3600` }}
     );
   } catch (error) {
     console.log(error, " is the error in register api route");

@@ -28,7 +28,7 @@ const RegisterAsAdmin = () => {
         try {
             //...handle register
             setLoading(true)
-            const { message } = await initiateRegister(formData)
+            // const { message } = await initiateRegister(formData)//sending OTP to the email
             if (!message) {
                 console.log('returned error')
                 setShowConfirmation(true)
@@ -78,7 +78,7 @@ const RegisterAsAdmin = () => {
         }
 
     }
-    
+
     return (
         <div className='bg-blue-300/50 h-screen pt-4'>
             <h1 className='text-center font-bold uppercase'>Register as admin</h1>
