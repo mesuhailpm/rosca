@@ -26,7 +26,6 @@ const Layout = ({ section }: LayoutProps) => {
                     if (location.href !== '/admin/dashboard') location.href = '/admin/dashboard'
                 }, 1000)
             } else {
-                localStorage.removeItem('userObject');
                 if(location.href !==  '/admin/go/login') location.href !==  '/admin/go/login'
             }
 
@@ -37,7 +36,6 @@ const Layout = ({ section }: LayoutProps) => {
                 useStore.setState({ isLoggedIn: false })
 
                 startRedirectingLoadingToUser()
-                localStorage.removeItem('userObject');
                 if(location.href !== '/admin/go/login') location.href = '/admin/go/login'
             }
         }
