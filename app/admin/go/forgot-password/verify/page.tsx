@@ -45,7 +45,7 @@ const Verify = () => {
 
 
       const { pendingAdmin }: { pendingAdmin: string } = storedObject;
-      //create a loading
+      //verify the OTP and update the password
       const data = await verifyOtpForgot({ otp, admin: pendingAdmin });
       if (!data.success) { throw new Error(data.message) }
       console.log("sent otp with otp and admin to verify ", {
@@ -60,8 +60,8 @@ const Verify = () => {
       }, 3000
       )
       setTimeout(() => {
-        // location.href = "/admin/reset-password";
-      }, 4000);
+        location.href = "/admin/go/reset-password";
+      }, 3000);
 
     } catch (error: any) {
       console.log(error.message);

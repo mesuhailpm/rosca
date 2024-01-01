@@ -61,7 +61,7 @@ export const deleteParticipant: DeleteParticipant = async (id) => {
   }
 };
 
-type InitiateRegister = (formData: {email: string, password:string, confirmPassword: string}) => Promise<{ message: string }>
+type InitiateRegister = (formData: {email: string, password:string, confirmPassword: string}) => Promise<{ message: string, success:boolean, error?:Error }>
 
 export const initiateRegister: InitiateRegister = async (credentials) => {
   try {
@@ -70,6 +70,8 @@ export const initiateRegister: InitiateRegister = async (credentials) => {
       body: JSON.stringify(credentials),
     });
     const data = await response.json();
+    console.log(data);
+
 
       return data;
 
@@ -90,7 +92,6 @@ export const initiateForgotPassword: InitiateForgotPassword = async (credentials
     if (response.ok) {
       return data;
     } else {
-      console.log("returning", { data });
       return { data, error: true };
     }
   } catch (error) {
@@ -109,7 +110,6 @@ export const verifyOTP: VerifyOTP = async (otpandadmin) => {
       body: JSON.stringify(otpandadmin),
     });
     const data = await response.json();
-    console.log(data, " is data");
     return data;
   } catch (error) {
     console.log(error);
@@ -126,7 +126,6 @@ export const verifyOtpForgot: VerifyOtpForgot = async (otpandadmin) => {
       body: JSON.stringify(otpandadmin),
     });
     const data = await response.json();
-    console.log(data, " is data");
     return data;
   } catch (error) {
     console.log(error);
@@ -140,7 +139,6 @@ export const createAdmin: CreateAdmin = async ({ email }) => {
   try {
     const response = await fetch(`/api/admin/create/${email}`);
     const data = await response.json();
-    console.log(data, " is data");
     return data;
   } catch (error) {
     console.log(error);
@@ -154,8 +152,8 @@ export const updateAdmin: UpdateAdmin = async (credentials) => {
   try {
     console.log('email is ' + credentials.email);
     const response = await fetch(`/api/admin/update/${credentials.email}`, { method: 'POST', body: JSON.stringify(credentials) });
+
     const data = await response.json();
-    console.log(data, " is data");
     return data;
   } catch (error) {
     console.log(error);

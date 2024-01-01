@@ -4,17 +4,21 @@ import OTP from "@models/OTP";
 import Admin from "@models/Admin";
 import bcrypt from "bcrypt";
 import { NextRequest } from "next/server";
+import { cookies } from "next/headers";
 const durationInMinutes = 10;
 
+
+
 export const POST = async (req:NextRequest) => {
-  const {email, password} = await req.json()
+  const {password} = await req.json()
+  const email = cookies().get('pendingEmail')?.value
 
   console.log(email, " is the admin's email this is from update admin");
 
   // try {
-    
+
   // } catch (error) {
-    
+
   // }
   // return;
 
