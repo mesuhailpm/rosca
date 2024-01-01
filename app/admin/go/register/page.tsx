@@ -1,4 +1,5 @@
 'use client';
+
 import React, { ChangeEvent, FormEvent, useState } from 'react'
 import { initiateRegister } from '@actions'
 import { useStore } from '@src/store';
