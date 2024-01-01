@@ -50,10 +50,11 @@ export const POST = async (req:NextRequest) => {
     await newOTPDoc.save();
     await sendEmail({email,otp: newOTPGenerated});
     return new Response(
-      JSON.stringify({ message: `OTP sent over ${email}` }),
+      JSON.stringify({ message: `OTP sent over ${email}`,success:true }),
       { status: 200,headers:{"Set-Cookie":`pendingEmail=${email}; Http-Only; Max-Age:3600`} }
     );
   } catch (error) {
     console.log(error, " is the error in register api route");
+    return new Response(JSON.stringify({message:'Something went wrong',success:false,error}),{status:404})
   }
 };

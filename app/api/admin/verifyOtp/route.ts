@@ -19,7 +19,7 @@ type OTPDocument = {
 
 export const POST = async (req: NextRequest) => {
   console.log("Inside verifyOTp roure");
-  const { otp, admin }:{otp:number, admin:string} = await req.json();
+  const { otp }:{otp:number, admin:string} = await req.json();
   const email = cookies().get('pendingEmail')?.value
   try {
     console.log(email, ' is email to verify otp with');

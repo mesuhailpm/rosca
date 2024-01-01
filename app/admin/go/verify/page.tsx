@@ -9,12 +9,11 @@ const numberOfInputs = 6;
 
 const Verify = () => {
   const [otp, setOtp] = useState<string>("");
-  const { runConfirmation } = useStore()
+  const { runConfirmation, startResponseLoading, endResponseLoading } = useStore()
 
   const [storedUserObject, setStoredUserObject] = useState({
     pendingAdmin: "unauthorized",
   });
-  const [formData, setFormData] = useState({})
 
   const [initialLoading, setInitialLoading] = useState(true);
   const handleChange = (otp: string) => {
@@ -27,13 +26,15 @@ const Verify = () => {
     e.preventDefault();
 
     try {
+
+      //create a loading
+      startResponseLoading('Verifying the OTP')
       const storedObjectRaw = localStorage.getItem("userObject");
       const storedObject = JSON.parse(storedObjectRaw || '');
 
       const { pendingAdmin }: { pendingAdmin: string } = storedObject;
-      //create a loading
       const data = await verifyOTP({ otp, admin: pendingAdmin });
-      console.log("sent otp with otp and admin to verify ", {
+      console.log("Verifying the OTP the  ", {
         otp,
         admin: pendingAdmin,
       });
@@ -77,10 +78,12 @@ const Verify = () => {
         });
 
       }
+      endResponseLoading()
 
     }
     catch (error) {
       console.error(error);
+      endResponseLoading()
       runConfirmation({
         message: "something went wrong",
         success: false,
@@ -96,14 +99,7 @@ const Verify = () => {
       const parsedUserObject = JSON.parse(storedUserObjectRaw);
       setStoredUserObject(parsedUserObject);
     }
-    if (storedUserObject.pendingAdmin !== "unauthorized") {
-      setFormData((prev) => {
-        return {
-          ...prev,
-          email: storedUserObject.pendingAdmin,
-        };
-      });
-    }
+
     setInitialLoading(false);
   }, []);
 
