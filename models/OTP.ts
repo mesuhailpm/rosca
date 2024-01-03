@@ -1,7 +1,7 @@
 import { model,models, Schema } from 'mongoose';
 import { OTPModelType } from '@types';
 
-const OTPSchema = new Schema<OTPModelType>({ 
+const OTPSchema = new Schema<OTPModelType>({
     email:{
         type: 'string',
         unique: true,
@@ -17,7 +17,9 @@ const OTPSchema = new Schema<OTPModelType>({
         required: true,
     },
     createdAt:{
-        type: Number,
+        type: Date,
+        default: Date.now,
+        expires:60*60
     },
     expiresAt: {
         type: Number,
@@ -26,3 +28,5 @@ const OTPSchema = new Schema<OTPModelType>({
 
 const OTP = models.OTP || model<OTPModelType>('OTP', OTPSchema)
 export default OTP
+
+//added automatic deleteion of documents after 1 hour
