@@ -29,7 +29,11 @@ export const POST = async (req: NextRequest) => {
       throw new Error("admin already so can't create new admin");
     }
     const OTPObjectinRecord:OTPDocument = await OTP.findOne({ email }).exec();
+
     console.log( OTPObjectinRecord)
+    if (!OTPObjectinRecord){
+      return new Response(JSON.stringify({message: 'Request an OTP first'}),{status:404})
+    }
 
       const {otp: OTPInRecord, expiresAt } = OTPObjectinRecord
 

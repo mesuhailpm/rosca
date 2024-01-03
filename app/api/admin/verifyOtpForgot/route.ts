@@ -20,6 +20,11 @@ export const POST = async (req: NextRequest) => {
 
 
     const OTPObjectinRecord = await OTP.findOne({ email });
+    if (!OTPObjectinRecord){
+      {
+        return new Response(JSON.stringify({message: 'Request an OTP first'}),{status:404})
+      }
+    }
     const { otp: OTPInRecord } = await OTP.findOne({ email });
     console.log(OTPInRecord, " is recoreded OTP in hashed format");
     const ismatching = await brcypt.compare(otp.toString(), OTPInRecord);
