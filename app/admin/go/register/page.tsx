@@ -72,16 +72,16 @@ const RegisterAsAdmin = () => {
             <h1 className='text-center font-bold uppercase'>Register as admin</h1>
             <form action="" className='flex flex-col items-center mt-4 font-sans' onSubmit={handleRegister}>
                 <label className='font-bold' htmlFor="email">Email</label>
-                <input type="email" name='email' value={formData.email} placeholder='Enter your e-mail' className='w-[300px] pl-4 pr-4 p-1 border border-green-500 rounded-sm' required
+                <input type="email" name='email' value={formData.email} placeholder='Enter your e-mail' className='w-[300px] pl-4 pr-4 p-1 border border-green-500 rounded-md outline-none font-serif' required
                     onChange={handleChange} />
                 <label className='font-bold' htmlFor="password">Password</label>
-                <input type="password" name='password' value={formData.password} placeholder='Enter your password' className='w-[300px] pl-4 pr-4 p-1 border border-green-500 rounded-sm' required onChange={handleChange} />
+                <input type="password" name='password' value={formData.password} placeholder='Enter your password' className='w-[300px] pl-4 pr-4 p-1 border border-green-500 rounded-md outline-none font-serif' required onChange={handleChange} />
                 <label className='font-bold' htmlFor="password">Confirm Password</label>
-                <input type="password" name='confirmPassword' value={formData.confirmPassword} placeholder='Re-enter your password' className='w-[300px] pl-4 pr-4 p-1 border border-green-500 rounded-sm' required onChange={handleChange} />
+                <input type="password" name='confirmPassword' value={formData.confirmPassword} placeholder='Re-enter your password' className='w-[300px] pl-4 pr-4 p-1 border border-green-500 rounded-md outline-none font-serif' required onChange={handleChange} />
                 <br/>
                 <label className='font-bold' htmlFor="secret">Secret</label>
                 
-                <input type="text" name='secret' value={formData.secret} placeholder='Secret code provided by admin' className='w-[300px] pl-4 pr-4 p-1 border border-green-500 rounded-sm' required
+                <input type="text" name='secret' value={formData.secret} placeholder='Secret code provided by admin' className='w-[300px] pl-4 pr-4 p-1 border border-green-500 rounded-md outline-none font-serif italic' required
                     onChange={handleChange} />
 
 
