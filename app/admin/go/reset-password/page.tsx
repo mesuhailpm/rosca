@@ -1,8 +1,6 @@
 'use client';
 import React, { ChangeEvent, FormEvent, useEffect, useState } from 'react'
 import { updateAdmin } from '@actions'
-import Confirmation from '@components/Confirmation'
-import Spinner from '@components/Spinner'
 import { useStore } from '@src/store';
 
 const ResetAdminPassword = () => {
@@ -24,6 +22,7 @@ const ResetAdminPassword = () => {
     const handleUpdate = async (event: FormEvent<HTMLFormElement>) => {
         event.preventDefault()
         try {
+            startResponseLoading('Wait, we are working on...')
             //...handle register
             console.log(formData);
 
@@ -32,7 +31,6 @@ const ResetAdminPassword = () => {
             if (!data.success) {
                 console.log('returned error')
 
-                startResponseLoading('Wait, we are working on...')
                 runConfirmation({
                     message:'Please contact the Owner',
                     success:false})
@@ -42,8 +40,8 @@ const ResetAdminPassword = () => {
             }
             console.log(data)
 
-            runConfirmation({ message: data.message, success: true })
             endResponseLoading()
+            runConfirmation({ message: data.message, success: true })
 
             setTimeout(() => {
                 location.href = '/admin/go/login'
@@ -53,6 +51,7 @@ const ResetAdminPassword = () => {
 
         } catch (error) {
             console.error(error)
+            endResponseLoading()
             runConfirmation({
                 message:'Something went wrong',
                 success:false})
