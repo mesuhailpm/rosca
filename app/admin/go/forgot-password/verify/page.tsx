@@ -7,11 +7,9 @@ import OTPInputField from "@components/OTPInputField";
 
 const Verify = () => {
   const [otp, setOtp] = useState<string>("");
-  const { runConfirmation, showConfirmation } = useStore() as State
+  const { runConfirmation, startResponseLoading, endResponseLoading } = useStore() as State
 
-  useEffect(() => {
-    console.log(showConfirmation)
-  },[showConfirmation])
+
 
   const [storedUserObject, setStoredUserObject] = useState({
     pendingAdmin: "unauthorized",
@@ -23,7 +21,6 @@ const Verify = () => {
   };
 
 
-  // console.log(pendingAdmin, storedObject, " is admin to verify, its from local storage");
   useEffect(() => {
     const storedUserObjectRaw = localStorage.getItem("userObject");
     if (storedUserObjectRaw) {
@@ -43,6 +40,8 @@ const Verify = () => {
     const storedObject = JSON.parse(storedObjectRaw || '');
     try {
 
+      startResponseLoading('Verifying the OTP')
+
 
       const { pendingAdmin }: { pendingAdmin: string } = storedObject;
       //verify the OTP and update the password
@@ -54,6 +53,8 @@ const Verify = () => {
       });
       console.log("got data", data);
 
+      endResponseLoading();
+
       runConfirmation({
         message: data.message,
         success: true,
@@ -64,6 +65,7 @@ const Verify = () => {
       }, 3000);
 
     } catch (error: any) {
+      endResponseLoading()
       console.log(error.message);
       runConfirmation(
         {
