@@ -10,6 +10,7 @@ const RegisterAsAdmin = () => {
         email: '',
         password: '',
         confirmPassword: '',
+        secret:''
     })
 
     const { runConfirmation, startResponseLoading, endResponseLoading } = useStore() as State
@@ -23,6 +24,7 @@ const RegisterAsAdmin = () => {
         event.preventDefault()
         try {
             startResponseLoading('Sending the OTP')
+            //send an OTP to the email
 
             const { message, success, error } = await initiateRegister(formData)//sending OTP to the email
             if (error) {
@@ -51,7 +53,7 @@ const RegisterAsAdmin = () => {
             }
 
             setTimeout(() => {
-                location.href = '/admin/go/verify'
+               if(success) location.href = '/admin/go/verify'
 
             }, 1000)
 
@@ -76,6 +78,12 @@ const RegisterAsAdmin = () => {
                 <input type="password" name='password' value={formData.password} placeholder='Enter your password' className='w-[300px] pl-4 pr-4 p-1 border border-green-500 rounded-sm' required onChange={handleChange} />
                 <label className='font-bold' htmlFor="password">Confirm Password</label>
                 <input type="password" name='confirmPassword' value={formData.confirmPassword} placeholder='Re-enter your password' className='w-[300px] pl-4 pr-4 p-1 border border-green-500 rounded-sm' required onChange={handleChange} />
+                <br/>
+                <label className='font-bold' htmlFor="secret">Secret</label>
+                
+                <input type="text" name='secret' value={formData.secret} placeholder='Secret code provided by admin' className='w-[300px] pl-4 pr-4 p-1 border border-green-500 rounded-sm' required
+                    onChange={handleChange} />
+
 
                 <button disabled={!((formData.email) && (formData.password) && (formData.password === formData.confirmPassword))} type='submit' className='border border-none bg-green-600 text-yellow-100 m-4 pl-4 pr-4 p-2 rounded-md hover:bg-green-500 hover:border-white'>Register</button>
             </form>
