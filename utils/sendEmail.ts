@@ -14,7 +14,6 @@ export default async (form:{email:string, otp:number}) => {
         pass: SMTP_PASSWORD,
       },
     });
-    console.log(transporter, ' is the transporter created');
 
     // transporter.verify((error, result) =>{
     //   if (error) {
@@ -56,7 +55,7 @@ export default async (form:{email:string, otp:number}) => {
               console.error(err);
               reject(err);
           } else {
-              console.log(info);
+              console.log('email sent successfully');
               resolve(info);
           }
       });

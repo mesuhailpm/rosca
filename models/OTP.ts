@@ -3,12 +3,12 @@ import { OTPModelType } from '@types';
 
 const OTPSchema = new Schema<OTPModelType>({
     email:{
-        type: 'string',
+        type: String,
         unique: true,
         required: true
     },
     otp:{
-        type: 'string',
+        type: String,
         required: true,
     },
     // save the new password to create admin later after verification
@@ -19,10 +19,10 @@ const OTPSchema = new Schema<OTPModelType>({
     createdAt:{
         type: Date,
         default: Date.now,
-        expires:60*60
+        expires:60*60 //seconds
     },
     expiresAt: {
-        type: Number,
+        type: Date,
     }
 })
 
