@@ -9,6 +9,8 @@
 body{
   padding:0;
   background-image: url('../public/assets/images/bg.jpg');
+  background-blend-mode: color;
+  background-color: rgba(3, 8, 31, 0.331);
 
 }
 
