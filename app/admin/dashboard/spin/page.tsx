@@ -6,13 +6,12 @@ import '../../../../app/globals.css'
 import Confetti from 'react-confetti'
 import { useStore } from '@src/store'
 import checkLoggedIn from '@utils/checkLoggedIn'
+import { Participants } from '@types'
 
 const Spin = () => {
-  // const [participant, setParticipant] = useState<IndexState['participant']>('')
-  const [notClaimedParticipantNames, setNotClaimedParticipantNames] = useState<IndexState['notClaimedParticipantNames']>([])
-  // const [participants, setParticipants] = useState<IndexState['participants']>([]); // array of objects
-  const { participants, isLoggedIn,  } = useStore()
-  const [winnerToBeDeclared, setWinnerToBeDeclared] = useState<IndexState['winnerToBeDeclared']>('')
+  const [notClaimedParticipantNames, setNotClaimedParticipantNames] = useState<string[]>([])
+  const { participants, isLoggedIn, setParticipants } = useStore()
+  const [winnerToBeDeclared, setWinnerToBeDeclared] = useState<string>('')
 
 
   const declareWinner = (winner: string) => {
@@ -24,26 +23,7 @@ const Spin = () => {
     )
   }
 
-  interface participant {
-    _id: string,
-    name: string,
-    serial: number,
-    claimed: boolean,
 
-  }
-  interface IndexState {
-    participant: {};
-    participants: participant[];
-    notClaimedParticipantNames: string[];
-    winnerToBeDeclared: string;
-    loading: boolean;
-    formData: {
-      _id: string;
-      serial: number;
-      name: string;
-      claimed: boolean;
-    }
-  }
 
   const onFinished = (winner: string) => {
     setTimeout(() =>
@@ -65,14 +45,13 @@ const Spin = () => {
 
   useEffect(() => {
     (async () => {
-      const allParticipants = await fetchAllParticipants()
-      allParticipants.sort((a: participant, b: participant) => a.serial - b.serial)
-      useStore.setState({ participants: allParticipants });
-      // setParticipants(allParticipants)
+      const allParticipants: Participants = await fetchAllParticipants()
+      allParticipants.sort((a, b) => a.serial - b.serial)
+      setParticipants(allParticipants);
     })()
   }, [])
   useEffect(() => {
-    const notClaimedParticipantNames = participants.filter((participant: participant) => !participant.claimed).map((participant: participant) => participant.name)
+    const notClaimedParticipantNames = participants.filter((participant) => !participant.claimed).map((participant) => participant.name)
     const randomisedParticipants = shuffleArray(notClaimedParticipantNames)
     setNotClaimedParticipantNames(randomisedParticipants)
   }, [participants])
@@ -105,10 +84,10 @@ const Spin = () => {
       }
 
       {winnerToBeDeclared ? <div className='absolute t-0 l-0 h-screen w-screen bg-green-400 flex flex-col items-center justify-center'>
-          <Confetti
-            width={1000}
-            height={2000}
-          />
+        <Confetti
+          width={1000}
+          height={2000}
+        />
 
         <h1 className='text-4xl font-pacifico' >Congratulations!</h1>
         <br />
