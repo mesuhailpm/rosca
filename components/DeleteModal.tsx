@@ -11,7 +11,7 @@ const DeleteModal = () => {
   const {setValue} = useSubmit()
   if(showDeleteModal)
   return (
-    <div className='w-screen h-screen fixed top-0 left-0 border border-black justify-center flex flex-col gap-1 p-4 rounded-md items-center'>
+    <div className='w-screen h-screen fixed top-0 left-0 border border-black justify-center flex flex-col gap-1 p-4 rounded-md items-center modal appear' >
       <div className='bg-orange-400 flex  flex-col  gap-2 rounded-2xl justify-center items-center p-4'>
 
         <h1 className=''>Are you sure delete the member?</h1>
