@@ -13,11 +13,11 @@ export type AdminModelType = {
 }
 export type OTPModelType = {
     email: String,
-    otp: Number,
+    otp: String,
     password: String,
-    createdAt?: Number,
-    expiresAt?: Number
-} 
+    createdAt?: Date,
+    expiresAt?: Date
+}
 
 export type Participant = {
     _id: string | ''
@@ -34,7 +34,7 @@ export type ConfirmationMessage = {
 export type FormData = {
     name: string, _id: string, serial: number, claimed: boolean
 }
-export type HandleSubmit = (e:FormEvent<HTMLFormElement>,action:Action,_id: string, formData:FormData)=>void;
+export type HandleSubmit = (e: FormEvent<HTMLFormElement>, action: Action, _id: string, formData: FormData) => void;
 
 
 export interface State {
@@ -42,22 +42,22 @@ export interface State {
     participants: Participants; // Define Participant type here
     setParticipants: (participants: Participants) => void;
     participantsLoading: boolean;
-    setParticipantsLoading:(flag: boolean)=>void;
+    setParticipantsLoading: (flag: boolean) => void;
     responseLoading: boolean;
     loadingCaption: string;
-    startResponseLoading: (caption?:string)=>void;
-    endResponseLoading: ()=>void;
+    startResponseLoading: (caption?: string) => void;
+    endResponseLoading: () => void;
     showConfirmation: boolean;
     confirmationMessage: ConfirmationMessage;
-    runConfirmation:(messageObject:ConfirmationMessage,time?:number)=>void;
+    runConfirmation: (messageObject: ConfirmationMessage, time?: number) => void;
     showDeleteModal: boolean;
-    setShowDeleteModal:(flag:boolean)=>void;
-    toggleShowDeleteModal:()=>void;
+    setShowDeleteModal: (flag: boolean) => void;
+    toggleShowDeleteModal: () => void;
     showFormModal: boolean;
-    setShowFormModal: (flag: boolean)=> void;
-    toggleShowFormModal: ( action?:Action)=>void;
-    formData:FormData;
+    setShowFormModal: (flag: boolean) => void;
+    toggleShowFormModal: (action?: Action) => void;
+    formData: FormData;
     setFormData: (form: FormData) => void;
-    action:Action;
-    idTodelete:string;
+    action: Action;
+    idTodelete: string;
 }

@@ -5,6 +5,7 @@ import OTP from "@models/OTP";
 import Admin from "@models/Admin";
 import bcrypt from "bcrypt";
 import { NextRequest } from "next/server";
+import { OTPModelType } from "@types";
 const durationInMinutes = 10;
 const { NEXT_PUBLIC_REGISTRATION_ALLOWED } = process.env;
 
@@ -31,24 +32,28 @@ export const POST = async (req: NextRequest) => {
         { status: 400 }
       );
     }
+
+    //remove existing OTP from database if it exists
     const existingOTP = await OTP.find({ email })
     console.log(existingOTP);
     if (existingOTP) await OTP.findOneAndRemove({ email })
     const newOTPGenerated = generateOTP();
-    console.log(newOTPGenerated, ' is correct OTP')
+    console.log(newOTPGenerated, ' is OTP to be sent to user')
     const hashedOTP = await bcrypt.hash(newOTPGenerated.toString(), 10);
     console.log(hashedOTP, " is hashedOTP");
 
-    const newOTPDoc = new OTP({
+    const newOTPDoc = new OTP<OTPModelType>({
       email,
       otp: hashedOTP,
       password: 'passwordnotapplicable',
-      createdAt: Date.now(),
-      expiresAt: Date.now() + durationInMinutes * 60 * 1000,
+      createdAt: new Date(),
+      expiresAt: new Date(Date.now() + durationInMinutes * 60 * 1000)
     });
+    
+    
     await newOTPDoc.save();
     await sendEmail({ email, otp: newOTPGenerated });
-    console.log('sending fincal response');
+    console.log('sending final response');
     return new Response(
       JSON.stringify({ message: `OTP sent over ${email}`, success: true }),
       //sending the email in coookie
