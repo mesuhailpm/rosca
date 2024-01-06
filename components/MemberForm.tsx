@@ -33,8 +33,6 @@ const MemberForm = () => {
     setComponentActionTitle(action)
 
   }, [formData, action])
-  if (showFormModal) {
-
     return (
       <div
         className={`fixed w-screen h-screen top-0 left-0 flex items-center justify-center modal ${showFormModal && 'appear'}`}
@@ -94,7 +92,6 @@ const MemberForm = () => {
       </div>
 
     );
-  } else return null;
 };
 
 export default MemberForm;
