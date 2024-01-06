@@ -16,7 +16,7 @@ const Dashboard = () => {
     <div className={`member-container flex flex-col items-center relative h-full '$'{(showFormModal || showDeleteModal) && ' overflow-x-hidden overflow-y-hidden '}`}>
       <MemberTable />
       <MemberForm />
-      <Link href={'/admin/dashboard/spin'} className='self-start'><h2 className="bg-yellow-500 text-2xl-text-violet-500">Click me to Spin the wheel and draw someone</h2></Link>
+      <Link href={'/admin/dashboard/spin'} className='self-start'><h2 className="underline text-slate-100">Click me to Spin the wheel and draw someone</h2></Link>
     </div>
   )
 
