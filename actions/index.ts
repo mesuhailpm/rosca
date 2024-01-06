@@ -61,7 +61,7 @@ export const deleteParticipant: DeleteParticipant = async (id) => {
   }
 };
 
-type InitiateRegister = (formData: {email: string, password:string, confirmPassword: string}) => Promise<{ message: string, success:boolean, error?:Error }>
+type InitiateRegister = (formData: { email: string, password: string, confirmPassword: string }) => Promise<{ message: string, success: boolean, error?: Error }>
 
 export const initiateRegister: InitiateRegister = async (credentials) => {
   try {
@@ -73,13 +73,13 @@ export const initiateRegister: InitiateRegister = async (credentials) => {
     console.log(data);
 
 
-      return data;
+    return data;
 
   } catch (error) {
     console.log(error);
   }
 };
-type InitiateForgotPassword = (formData: {email:string}) => Promise<{ message: string }>
+type InitiateForgotPassword = (formData: { email: string }) => Promise<{ message: string, success?: true }>
 
 
 export const initiateForgotPassword: InitiateForgotPassword = async (credentials) => {
@@ -89,18 +89,14 @@ export const initiateForgotPassword: InitiateForgotPassword = async (credentials
       body: JSON.stringify(credentials),
     });
     const data = await response.json();
-    if (response.ok) {
-      return data;
-    } else {
-      return { data, error: true };
-    }
+    return data;
+
   } catch (error) {
     console.log(error);
-    return { data: "nothing to return", error: true };
   }
 };
 
-type VerifyOTP = (formData: {otp:string, admin: string}) => Promise<{ message: string, success:boolean}>
+type VerifyOTP = (formData: { otp: string, admin: string }) => Promise<{ message: string, success: boolean }>
 
 
 export const verifyOTP: VerifyOTP = async (otpandadmin) => {
@@ -116,7 +112,7 @@ export const verifyOTP: VerifyOTP = async (otpandadmin) => {
   }
 };
 
-type VerifyOtpForgot = (formData: {otp:string, admin:string}) => Promise<{ message: string, success:boolean}>
+type VerifyOtpForgot = (formData: { otp: string, admin: string }) => Promise<{ message: string, success: boolean }>
 
 
 export const verifyOtpForgot: VerifyOtpForgot = async (otpandadmin) => {
@@ -132,7 +128,7 @@ export const verifyOtpForgot: VerifyOtpForgot = async (otpandadmin) => {
   }
 };
 
-type CreateAdmin = (formData: {email: string}) => Promise<{ newAdmin?: AdminModelType, message: string, success: boolean }>
+type CreateAdmin = (formData: { email: string }) => Promise<{ newAdmin?: AdminModelType, message: string, success: boolean }>
 
 
 export const createAdmin: CreateAdmin = async ({ email }) => {
@@ -145,7 +141,7 @@ export const createAdmin: CreateAdmin = async ({ email }) => {
   }
 };
 
-type UpdateAdmin = (formData: {email: string}) => Promise<{ updatedAdmin: Participant, message: string, success: boolean, error?: true }>
+type UpdateAdmin = (formData: { email: string }) => Promise<{ updatedAdmin: Participant, message: string, success: boolean, error?: true }>
 
 export const updateAdmin: UpdateAdmin = async (credentials) => {
 
