@@ -40,8 +40,7 @@ const MemberForm = () => {
         className={`fixed w-screen h-screen top-0 left-0 flex items-center justify-center  modal ${showFormModal && 'appear'}`}
       >
         <form
-          className={`relative bg-red-400 flex flex-col gap-1 p-4 rounded-md`}
-          // onSubmit={(e) => handleSubmit(e, action, formData._id, componentFormData)} //remove this
+          className={`relative bg-red-400 flex flex-col gap-1 p-4 rounded-md border border-yellow-100`}
           onSubmit={(e) => { e.preventDefault(); setValue({ action, _id: formData._id, formData: componentFormData }) }}
         >
           <button
@@ -51,8 +50,8 @@ const MemberForm = () => {
           >
             <i className="fa fa-times" aria-hidden="true"></i>
           </button>
-          <h1 className="text-center">{`${actionAsTitle} a member${showFormModal}`}</h1>
-          <label htmlFor="serial">Serial</label>
+          <h1 className="text-center font-bold uppercase">{`${actionAsTitle} a member`}</h1>
+          <label htmlFor="serial" className="font-bold">Serial</label>
           <input
             type="number"
             id="serial"
@@ -60,22 +59,25 @@ const MemberForm = () => {
             max={30}
             maxLength={2}
             onChange={handleChange}
+            className="border border-black outline-none"
             value={String(serial)}
           />
-          <label htmlFor="name">Name</label>
+          <label htmlFor="name"  className="font-bold">Name</label>
           <input
             type="text"
             id="name"
             name="name"
             onChange={handleChange}
+            className="border border-black outline-none"
             value={name}
           />
-          <label htmlFor="claimed">Claimed</label>
+          <label htmlFor="claimed"  className="font-bold">Claimed</label>
           <select
             id="claimed"
             name="claimed"
             onChange={handleChange}
             value={claimed.toString()}
+            className="border border-black"
           >
             <option value="">Please select an option</option>
             <option value={true.toString()}>Yes</option>
