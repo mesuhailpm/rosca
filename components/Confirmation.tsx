@@ -14,7 +14,7 @@ const Confirmation = ({}) => {
 
   if (showConfirmation)
     return (
-      <div className="bg-sky-500/[.5] z-100 flex fixed h-screen w-screen top-0 left-0 items-center justify-center">
+      <div className="bg-sky-950/[.5] z-100 flex fixed h-screen w-screen top-0 left-0 items-center justify-center">
         <div className="fixed flex flex-col justify-center items-center border p-2 h-40 border-black rounded-xl gap-4 font-bold bg-white/75  self-center">
           <h1>{`${message}!`}</h1>
           <Image

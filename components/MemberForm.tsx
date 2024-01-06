@@ -37,7 +37,7 @@ const MemberForm = () => {
 
     return (
       <div
-        className={`fixed w-screen h-screen top-0 left-0 flex items-center justify-center  modal ${showFormModal && 'appear'}`}
+        className={`fixed w-screen h-screen top-0 left-0 flex items-center justify-center modal ${showFormModal && 'appear'}`}
       >
         <form
           className={`relative bg-red-400 flex flex-col gap-1 p-4 rounded-md border border-yellow-100`}
