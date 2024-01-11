@@ -30,13 +30,13 @@ const AdminLogin = () => {
     try {
       const response = await fetch('/api/login', { method: 'POST', body: JSON.stringify(formData) })
       const { message, token, userName } = await response.json();
+      console.log({message, token, userName})
 
       if (response.ok) {
         localStorage.setItem('userObject', JSON.stringify({ token, userName }));
         useStore.setState({ isLoggedIn: true })
-        location.href = '/admin/dashboard'
+        // location.href = '/admin/dashboard'
       } else {
-        console.log(message, token, userName);
 
         runConfirmation(
           { message: message, success: false }
