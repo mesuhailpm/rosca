@@ -16,17 +16,13 @@ const useSubmitForm = () => {
 
   const [value, setValue] = useState(initialValue)
   const { action, _id, formData } = value;
-  console.log(value, ' is value')
-  console.log(action, ' is action', _id, ' is id')
   const handleSubmit = async () => {
-    console.log('first')
 
     try {
       switch (action) {
         case 'edit':
           startResponseLoading();
           const dataWithMessage: { result: Participant, message: string } = await updateParticipant(_id, formData)
-          console.log(dataWithMessage)
           if (!dataWithMessage) throw new Error;
           runConfirmation({ message: dataWithMessage.message, success: true })
           setShowFormModal(false);
@@ -88,7 +84,6 @@ const useSubmitForm = () => {
 
   }
   useEffect(() => {
-    console.log('useEffect')
     if (action) {
       handleSubmit()
     }

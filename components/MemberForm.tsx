@@ -27,7 +27,6 @@ const MemberForm = () => {
 
   }
 
-  console.log(useStore())
   useEffect(() => {
     setComponentFormData(formData)
     setComponentActionTitle(action)
