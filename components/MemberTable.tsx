@@ -1,9 +1,8 @@
 'use client'
 import { useStore } from '@src/store';
 import { fetchAllParticipants } from '@actions'
-import checkLoggedIn from '@utils/checkLoggedIn'
 
-import React, { ChangeEvent, FormEvent, useEffect, useState } from 'react'
+import React, {  useEffect } from 'react'
 import { State, Participant, Action, Participants, FormData } from '@types';
 
 
@@ -24,7 +23,7 @@ const MemberTable = ({ }) => {
 
 
   const handleEdit = async (serial: number, name: string, claimed: boolean, action: Action, _id: string) => {
-    console.log(serial, name, claimed, action, _id, ' from handleEdit')
+    // console.log(serial, name, claimed, action, _id, ' from handleEdit')
     setFormData({ _id, serial, name, claimed });
     toggleShowFormModal(action)
   }
