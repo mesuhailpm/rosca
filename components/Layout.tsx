@@ -29,7 +29,7 @@ const Layout = ({ section }: LayoutProps) => {
                 if(location.href !==  '/admin/go/login') location.href !==  '/admin/go/login'
             }
 
-        } else {
+        } else { //measd section === 'admin' includes superadmin as well
             if (hasLoggedIn) {
                 useStore.setState({ isLoggedIn: true })
             } else {
