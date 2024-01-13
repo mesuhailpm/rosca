@@ -5,7 +5,6 @@ import { fetchAllParticipants } from '@actions'
 import '../../../../app/globals.css'
 import Confetti from 'react-confetti'
 import { useStore } from '@src/store'
-import checkLoggedIn from '@utils/checkLoggedIn'
 import { Participants } from '@types'
 
 const Spin = () => {
@@ -56,17 +55,7 @@ const Spin = () => {
     setNotClaimedParticipantNames(randomisedParticipants)
   }, [participants])
 
-  useEffect(() => {
-    (async () => {
 
-      const hasLoggedIn = await checkLoggedIn()
-      if (!hasLoggedIn) {
-        location.href = '/'
-
-      }
-
-    })()
-  }, [isLoggedIn])
 
   return (
     <div className='w-full flex flex-col items-center justify-between '>
