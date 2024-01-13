@@ -1,17 +1,17 @@
 import { FormEvent } from "react"
 
-export type ParticpantModelType = {
+export interface ParticpantModelType  {
     name: String,
     serial: Number,
     claimed: Boolean
 }
 export type Action = 'edit' | 'remove' | 'add' | ''
 
-export type AdminModelType = {
-    userName: String,
-    password: String
+export interface AdminModelType  {
+    userName: string,
+    password: string
 }
-export type OTPModelType = {
+export interface OTPModelType {
     email: String,
     otp: String,
     password: String,

@@ -1,6 +1,7 @@
 import { AdminModelType } from '@types';
-import { model, models, Schema } from 'mongoose';
-const adminSchema = new Schema<AdminModelType>({
+import { Document, Model, model, models, Schema } from 'mongoose';
+interface AdminDocument extends AdminModelType, Document {}
+const adminSchema:Schema<AdminDocument> = new Schema({
     userName: {
         required: true,
         type: String,
@@ -11,5 +12,9 @@ const adminSchema = new Schema<AdminModelType>({
     }
 })
 
-const Admin = models.Admin || model<AdminModelType>('Admin', adminSchema);
+
+
+
+
+const Admin:Model<AdminDocument> = models.Admin || model<AdminModelType>('Admin', adminSchema);
 export default Admin;
