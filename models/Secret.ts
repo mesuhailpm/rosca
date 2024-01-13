@@ -1,11 +1,12 @@
-import { } from '@types';
-import { model, models, Schema } from 'mongoose';
-const secretSchema = new Schema({
+import { Document, Model, model, models, Schema } from 'mongoose';
+
+interface SecretDocument extends Document { secret: string}
+const secretSchema:Schema<SecretDocument> = new Schema({
     secret: {
         required: true,
         type: String,
     }}
 ,{timestamps: true})
 
-const Secret = models.Secret || model('Secret', secretSchema);
+const Secret:Model<SecretDocument> = models.Secret || model('Secret', secretSchema);
 export default Secret;
