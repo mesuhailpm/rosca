@@ -8,16 +8,12 @@ import { useState, useEffect } from 'react'
 const AdminTable = ({ admindatafromserver }: { admindatafromserver: AdminModelType[] }) => {
     const [admins, setAdmins] = useState<Array<AdminModelType>>(admindatafromserver)
     const { runConfirmation, startResponseLoading, endResponseLoading } = useStore() as State
-    console.log(admindatafromserver)
 
 
 
 
     const handleDeleteAdmin = async (username: string) => {
-        if (confirm('Are you sure you want to delete the admin? This is not reversible')) 
-        
-        {
-
+        if (confirm('Are you sure you want to delete the admin? This is not reversible')) {
             try {
                 startResponseLoading('Fetching data...')
                 const response = await fetch(`/api/admin/delete/${username}`, { method: 'DELETE' })
@@ -37,11 +33,10 @@ const AdminTable = ({ admindatafromserver }: { admindatafromserver: AdminModelTy
                     setAdmins(newAdmins)
                 }
 
-
-
-            } catch (error) {
+            } catch (error: any) {
                 console.log(error)
                 endResponseLoading()
+                runConfirmation({ message: error, success: false })
             }
         }
 
@@ -71,15 +66,19 @@ const AdminTable = ({ admindatafromserver }: { admindatafromserver: AdminModelTy
 
     // }, [])
 
-    return (
-        <div className='flex flex-col w-fit m-2'>
-            Admins table
-            {admins?.length && (
+    if (admins?.length) {
 
-                <table className='bg-green-800/75 text-white'>
+
+        return (
+            <div className='flex flex-col w-fit m-2'>
+
+                <table className='bg-green-800/75 text-white m-4'>
                     <thead>
-                        <th>Admin</th>
-                        <th>Action</th>
+                        <tr>
+
+                            <th>Admin</th>
+                            <th>Action</th>
+                        </tr>
 
                     </thead>
 
@@ -95,9 +94,9 @@ const AdminTable = ({ admindatafromserver }: { admindatafromserver: AdminModelTy
                 </table>
 
 
-            )}
-        </div>
-    )
+            </div>
+        )
+    }
 }
 
 export default AdminTable
