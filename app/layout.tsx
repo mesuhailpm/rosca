@@ -1,7 +1,7 @@
 
 import type { Metadata } from 'next'
 import { Poppins } from 'next/font/google'
-import './globals.css'
+import '@app/globals.css'
 import Nav from '@components/Nav'
 import Footer from '@components/Footer'
 import { useStore } from '@src/store'
@@ -30,7 +30,7 @@ export default async function RootLayout({
         />
 
       </head>
-      <body className={`&{poppins.className} h-full min-h-screen flex flex-col`}>
+      <body className={`h-full min-h-screen flex flex-col`}>
         <Nav />
         {children}
         <Footer />
