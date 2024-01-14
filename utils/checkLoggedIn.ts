@@ -3,7 +3,6 @@
 
 const checkLoggedIn = async (startVerifyLoading?: () => void, endResponseLoading?:()=>void, setRedirectingLoading?: React.Dispatch<React.SetStateAction<boolean>>) => {
     try {
-        // const router = useRouter()
         startVerifyLoading && startVerifyLoading()
         const userObjectRaw = localStorage.getItem('userObject')
         if (!userObjectRaw)
@@ -20,10 +19,10 @@ const checkLoggedIn = async (startVerifyLoading?: () => void, endResponseLoading
         // console.log(decodedData)
         
         if(decodedData.superAdmin){
-
+        
             
-            if(location.pathname !== '/admin/superadmin') 
-            { location.href = '/admin/superadmin'}
+            if (location.pathname.startsWith('/admin/go')  || location.pathname === ('/admin/dashboard'))
+            { location.href = '/admin/dashboard/superadmin'}
             
         }
                 
