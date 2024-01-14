@@ -70,9 +70,9 @@ const AdminTable = ({ admindatafromserver }: { admindatafromserver: AdminModelTy
 
 
         return (
-            <div className='flex flex-col w-fit m-2'>
+            <div className='flex flex-col w-full m-2'>
 
-                <table className='bg-green-800/75 text-white m-4'>
+                <table className='self-center bg-green-800/75 text-white font-raleway m-4'>
                     <thead>
                         <tr>
 
@@ -84,9 +84,9 @@ const AdminTable = ({ admindatafromserver }: { admindatafromserver: AdminModelTy
 
                     <tbody>
                         {admins.map((admin, index) => (
-                            <tr key={index}>
-                                <td>{admin.userName}</td>
-                                <td className='cursor-pointer' onClick={() => handleDeleteAdmin(admin.userName)}>Delete</td>
+                            <tr key={index} className='' >
+                                <td className='hover:text-black hover:bg-white'>{admin.userName}</td>
+                                <td className='cursor-pointer hover:text-black hover:bg-white' onClick={() => handleDeleteAdmin(admin.userName)}>Delete</td>
                             </tr>
                         ))}
                     </tbody>
