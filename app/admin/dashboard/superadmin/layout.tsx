@@ -1,5 +1,4 @@
 import Confirmation from '@components/Confirmation'
-import DeleteModal from '@components/DeleteModal'
 import LoaderSpinner from '@components/Spinner'
 import Layout from '@components/Layout'
 import AdminTable from '@components/AdminTable'
@@ -10,7 +9,7 @@ import hidden from 'public/assets/images/hide.svg'
 
 
 console.log()
-const layout = async ({ children, req }: { children: React.ReactNode,req:any}) => {
+const layout = async ({ children }: { children: React.ReactNode}) => {
 
     console.log(process.env.NEXT_PUBLIC_SITE_URL, ' is base URL')
 
