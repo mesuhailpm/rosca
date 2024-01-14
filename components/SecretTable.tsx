@@ -12,7 +12,6 @@ const SecretTable = ({ secrets, eye, hidden }: { secrets: Array<{ secret: string
   const [secretInForm, setSecretInForm] = useState('')
   const [secretState, setSecretState] = useState(secretsData)
 
-  const [showSecretForm, setShowSecretForm] = useState(false)
 
   const { runConfirmation, startResponseLoading, endResponseLoading } = useStore()
 
@@ -41,8 +40,10 @@ const SecretTable = ({ secrets, eye, hidden }: { secrets: Array<{ secret: string
     }
   }
   const handleKeyDown = async (e: KeyboardEvent) => {
-    if (e.key === 'Enter')
+    if (e.key === 'Enter') {
       await handleAddSecret()
+      setSecretInForm('')
+    }
   }
   const toggleVisibility = (id: string) => {
     setSecretState(prev => {
@@ -63,8 +64,8 @@ const SecretTable = ({ secrets, eye, hidden }: { secrets: Array<{ secret: string
 
         console.log(data)
         endResponseLoading()
-        setSecretState((prev)=>(
-          prev.filter((secret)=> secret._id !== id)
+        setSecretState((prev) => (
+          prev.filter((secret) => secret._id !== id)
         ))
         runConfirmation({ message: data.message, success: true }, 4000)
 
@@ -76,13 +77,13 @@ const SecretTable = ({ secrets, eye, hidden }: { secrets: Array<{ secret: string
 
   }
   return (
-    <>
+    <div className='w-full flex flex-col items-center'>
 
-      <table className='bg-teal-600/75 text-white w-10 table-auto' >
+      <table className='self-center bg-teal-600/75 text-white table-auto w-fit m-2' >
         <thead>
           <tr>
             <th>Secrets</th>
-            <th>Do</th>
+            <th>Control</th>
 
           </tr>
         </thead>
@@ -105,7 +106,7 @@ const SecretTable = ({ secrets, eye, hidden }: { secrets: Array<{ secret: string
                 </div>
               </td>
               <td>
-                <button className='border border-black p-1 rounded-sm hover:bg-red-400' onClick={() => handleDelete(secret._id)}>
+                <button className='border font-bold p-1 rounded-md border-black bg-red-400 hover:bg-red-600' onClick={() => handleDelete(secret._id)}>
                   Delete
                 </button>
               </td>
@@ -114,9 +115,10 @@ const SecretTable = ({ secrets, eye, hidden }: { secrets: Array<{ secret: string
           ))}
         </tbody >
       </table>
-      {!showSecretForm && <button onClick={() => setShowSecretForm(true)}>Create a new secret</button>}
-      {showSecretForm && (<input type='text' name='secret' value={secretInForm} onKeyDown={handleKeyDown} onChange={handleChange}></input>)}
-    </>
+      <div className='bg-cyan-200 font-bold text-slate-900 border-none px-2'>Add Another Secret</div>
+      <input type='text' name='secret' value={secretInForm} onKeyDown={handleKeyDown} onChange={handleChange} className=' bg-cyan-200 outline-none px-2 m-2' placeholder="type your secret and press enter"/>
+      
+    </div>
   )
 }
 
