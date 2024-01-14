@@ -18,7 +18,7 @@ const checkLoggedIn = async (startVerifyLoading?: () => void, endResponseLoading
         // console.log(decodedData, ' is decoded data from jsonwebtoken, inside checkLoggedIn function');
         // console.log(decodedData)
         
-        if(decodedData.superAdmin){
+        if(decodedData.superAdmin){// User is a super admin
         
             
             if (location.pathname.startsWith('/admin/go')  || location.pathname === ('/admin/dashboard'))
@@ -26,8 +26,11 @@ const checkLoggedIn = async (startVerifyLoading?: () => void, endResponseLoading
             
         }
                 
-        else{
-            if(decodedData.userName && (location.pathname !== '/admin/dashboard')) {location.href = '/admin/dashboard'} 
+        else{ //user is a normal admin
+
+
+            //if current page is not a section admin not supposed to visit
+            if(decodedData.userName && (location.pathname.startsWith ('/admin/go') || location.pathname.startsWith('/admin/dashboard/superadmin') ) ) {location.href = '/admin/dashboard'} 
         }
 
         if (response.ok) {
