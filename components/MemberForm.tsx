@@ -12,7 +12,7 @@ const MemberForm = () => {
 
   const [componentFormData, setComponentFormData] = useState(formData)
   const { serial, claimed, name } = componentFormData;
-  const { setValue } = useSubmitForm()
+  const { serFormValue } = useSubmitForm()
 
 
 
@@ -38,7 +38,7 @@ const MemberForm = () => {
       >
         <form
           className={`relative bg-red-400 flex flex-col gap-1 p-4 rounded-md border border-yellow-100`}
-          onSubmit={(e) => { e.preventDefault(); setValue({ action, _id: formData._id, formData: componentFormData }) }}
+          onSubmit={(e) => { e.preventDefault(); serFormValue({ action, _id: formData._id, formData: componentFormData }) }}
         >
           <button
             type="button"
