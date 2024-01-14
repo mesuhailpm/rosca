@@ -33,7 +33,6 @@ export default function MainTable() {
 
   useEffect(() => {
     setParticipantsForStore()
-    console.log('useEffect ran');
 
   }, [])
   if (loading) return <h1 className="text-2xl text-white">Loading...</h1>
