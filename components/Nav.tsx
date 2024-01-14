@@ -12,11 +12,9 @@ import { State } from "@types";
 
 const Nav = () => {
   const { isLoggedIn } = useStore() as State;
-  const [HasLoggedIn, setHasLoggedIn] = useState(false);
   const pathname = usePathname()
   // console.log(pathname)
 
-  const {responseLoading, endResponseLoading } = useStore() as State;
 
   //console.logisLoggedIn, " is value of isLoggedIn");
   //console.logHasLoggedIn, " is value of hasLoggedIn");
@@ -34,7 +32,7 @@ const Nav = () => {
         useStore.setState({ isLoggedIn: false });
       }
     })();
-  }, [isLoggedIn, useStore.setState]);
+  }, [isLoggedIn, useStore.setState, pathname]);
 
   return (
     <div

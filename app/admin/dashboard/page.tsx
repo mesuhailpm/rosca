@@ -1,11 +1,10 @@
-import '../../../app/globals.css'
+import '@app/globals.css'
 import MemberForm from '@components/MemberForm'
 import DeleteModal from '@components/DeleteModal'
 import Confirmation from '@components/Confirmation'
 import MemberTable from '@components/MemberTable'
 // import { useStore } from '@src/store'
 import Link from 'next/link'
-import checkLoggedIn from '@utils/checkLoggedIn'
 
 const Dashboard = () => {
 
