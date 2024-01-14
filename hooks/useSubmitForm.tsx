@@ -4,7 +4,7 @@ import { updateParticipant, addParticipant, deleteParticipant } from "@actions";
 import { Action, FormData, HandleSubmit, Participant, Participants, State } from "@types";
 import { useEffect, useState } from "react";
 
-type valueProp = {
+type formValueProp = {
   action: Action | '',
   _id: string,
   formData: FormData | {}
@@ -14,8 +14,12 @@ const initialValue = { action: '', _id: '', formData: {serial:0, name:'', _id:''
 const useSubmitForm = () => {
   const { startResponseLoading, endResponseLoading, setParticipants, runConfirmation, participants, toggleShowDeleteModal, setShowFormModal,setShowDeleteModal } = useStore() as State
 
-  const [value, setValue] = useState(initialValue)
-  const { action, _id, formData } = value;
+  const [formValue, serFormValue] = useState(initialValue)
+  const { action, _id, formData } = formValue;
+  console.log('I got acation as : ', action);
+
+
+
   const handleSubmit = async () => {
 
     try {
@@ -87,9 +91,9 @@ const useSubmitForm = () => {
     if (action) {
       handleSubmit()
     }
-  }, [action, _id]);
+  }, [action, _id,serFormValue]);
   
-  return { value, setValue }
+  return { formValue, serFormValue }
 
 }
 
