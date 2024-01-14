@@ -3,6 +3,7 @@ import { useEffect } from 'react'
 import checkLoggedIn from '@utils/checkLoggedIn'
 import { useStore } from '@src/store'
 import { State } from '@types'
+import { usePathname } from 'next/navigation'
 type LayoutProps = {
     section: 'user' | 'admin'
 }
@@ -10,8 +11,10 @@ type LayoutProps = {
 const Layout = ({ section }: LayoutProps) => {
     const { isLoggedIn, startResponseLoading } = useStore() as State
 
+    const pathname = usePathname()
+
     const startRedirectingLoadingToAdmin = () => startResponseLoading('Welcome back, we are shipping you to dashboard...')
-    const startRedirectingLoadingToUser = () => startResponseLoading('Unauthorized,  redirecting...')
+    const startRedirectingLoadingToUser = () => startResponseLoading('Unauthorized,  redirecting to login...')
 
     const handleLoginLogout = async () => {
         const hasLoggedIn = await checkLoggedIn()
@@ -19,24 +22,16 @@ const Layout = ({ section }: LayoutProps) => {
         if (section === 'user') {
             if (hasLoggedIn) {
                 startRedirectingLoadingToAdmin()
-                useStore.setState({ isLoggedIn: true })
                 setTimeout(() => {
 
-                    useStore.setState({ isLoggedIn: true })
                     if (location.href !== '/admin/dashboard') location.href = '/admin/dashboard'
                 }, 1000)
-            } else {
-                if(location.href !==  '/admin/go/login') location.href !==  '/admin/go/login'
             }
 
-        } else { //measd section === 'admin' includes superadmin as well
-            if (hasLoggedIn) {
-                useStore.setState({ isLoggedIn: true })
-            } else {
-                useStore.setState({ isLoggedIn: false })
-
+        } else { //means that section === 'admin' includes superadmin as well
+            if (!hasLoggedIn) {
                 startRedirectingLoadingToUser()
-                if(location.href !== '/admin/go/login') location.href = '/admin/go/login'
+                if (location.href !== '/admin/go/login') location.href = '/admin/go/login'
             }
         }
 
@@ -45,8 +40,9 @@ const Layout = ({ section }: LayoutProps) => {
 
 
     useEffect(() => {
-        handleLoginLogout()
-    }, [isLoggedIn]
+        // if loggedIn state inside store is changed that means that logged in already checked hencenot calling checking once again
+        if (!isLoggedIn) { handleLoginLogout() }
+    }, [isLoggedIn, pathname]
     )
 
 
