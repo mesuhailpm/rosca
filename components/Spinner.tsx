@@ -26,7 +26,7 @@ const Spinner = ({ color }: SpinnerProps) => {
           visible={true}
           wrapperClass='loading top-1/2 left-1/2'
         />
-        <p className='text-2xl font-bold italic'>{loadingCaption}</p>
+        {loadingCaption && <p className='text-xxl font-bold '>{loadingCaption}</p>}
       </div>
     )
   } else {
