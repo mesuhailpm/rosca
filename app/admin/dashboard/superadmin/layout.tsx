@@ -43,10 +43,10 @@ const layout = async ({ children }: { children: React.ReactNode}) => {
             <AdminTable admindatafromserver={admindatafromserver.admins}/>
             <SecretTable secrets = {secretsFromServer.secrets} eye={eye} hidden={hidden} />
 
-            <Layout section='admin' />
+            {/* <Layout section='admin' /> */}
             {children}
-            <Confirmation />
-            <LoaderSpinner color='#000000' />
+            {/* <Confirmation /> */}
+            {/* <LoaderSpinner color='#000000' /> */}
         </div>
     )
 }
