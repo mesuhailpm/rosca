@@ -106,7 +106,7 @@ const SecretTable = ({ secrets, eye, hidden }: { secrets: Array<{ secret: string
                 </div>
               </td>
               <td className='border-none'>
-                <button className='border font-bold p-1 rounded-md border-black bg-red-400 hover:bg-red-600' onClick={() => handleDelete(secret._id)}>
+                <button className='border font-bold rounded-md border-none p-2 bg-rose-500 hover:bg-red-600' onClick={() => handleDelete(secret._id)}>
                   Delete
                 </button>
               </td>
