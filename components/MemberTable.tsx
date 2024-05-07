@@ -54,9 +54,9 @@ const MemberTable = ({ }) => {
   if(participantsLoading) return <h1 className='text-2xl font-bold text-white'>Loading...</h1>
 
 
-  return (<table className='max-w-lg bg-slate-700 w-full table-auto'>
+  return (<table className='max-w-lg bg-slate-700/5 w-full table-auto'>
     <thead>
-      <tr className='bg-blue-900 text-white'>
+      <tr className='bg-blue-900/75 text-white'>
         <td>Sl No</td>
         <td>Name</td>
         <td>Claimed</td>
@@ -67,12 +67,12 @@ const MemberTable = ({ }) => {
       {participants?.map((participant, index) => {
         const { serial, name, claimed, _id } = participant as Participant
         return (
-          <tr key={index} className={`${!(index % 2) ? 'bg-sky-500 text-teal-100' : 'text-slate-200'}`}>
+          <tr key={index} className={`${!(index % 2) ? 'bg-sky-500/75 text-teal-100' : 'text-slate-200'}`}>
             <td>{serial}</td>
-            <td className={noto_serif_malayalam.className}>{name}</td>
+            <td className={`${noto_serif_malayalam.className} hover:bg-slate-700`}>{name}</td>
             <td>{claimed === true ? 'Yes' : 'No'}</td>
-            <td className='hover:text-yellow-500'><button onClick={() => handleEdit(serial, name, claimed, edit, _id)}><i className="fas fa-edit"></i></button></td>
-            <td className='hover:text-red-500'><button onClick={() => handleDelete(_id)}><i className="fa-solid fa-trash"></i></button></td>
+            <td className='hover:text-yellow-700 text-yellow-300'><button onClick={() => handleEdit(serial, name, claimed, edit, _id)}><i className="fas fa-edit"></i></button></td>
+            <td className='hover:text-red-900 text-red-500'><button onClick={() => handleDelete(_id)}><i className="fa-solid fa-trash"></i></button></td>
           </tr>)
       }
       )
