@@ -1,9 +1,10 @@
 import React from "react";
 import { terms } from "../../utils/lib";
+import {noto_serif_malayalam} from '@fonts'
 
 const page = () => {
   return (
-    <main className="bg-slate-300 w-screen h-full p-5 flex flex-col items-center">
+    <main className={`bg-slate-300 w-screen h-full p-5 flex flex-col items-center ${noto_serif_malayalam.className}`}>
       <h1 className="font-bold text-3xl">
         നിയമാവലി
       </h1>
