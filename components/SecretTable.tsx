@@ -115,8 +115,8 @@ const SecretTable = ({ secrets, eye, hidden }: { secrets: Array<{ secret: string
           ))}
         </tbody >
       </table>
-      <div className='bg-cyan-200 font-bold text-slate-900 border-none px-2'>Add Another Secret</div>
-      <input type='text' name='secret' value={secretInForm} onKeyDown={handleKeyDown} onChange={handleChange} className=' bg-cyan-200 outline-none px-2 m-2' placeholder="type your secret and press enter"/>
+      <p className='font-bold text-cyan-500 border-none px-2'>Add Another Secret</p>
+      <input type='text' name='secret' value={secretInForm} onKeyDown={handleKeyDown} onChange={handleChange} className=' bg-cyan-200 outline-none px-2 m-2 text-sm min-w-[250px] text-center' placeholder="Type your secret and press enter"/>
       
     </div>
   )
