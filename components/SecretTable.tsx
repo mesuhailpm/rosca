@@ -79,11 +79,11 @@ const SecretTable = ({ secrets, eye, hidden }: { secrets: Array<{ secret: string
   return (
     <div className='w-full flex flex-col items-center'>
 
-      <table className='self-center bg-teal-600/75 text-white table-auto w-fit m-2' >
-        <thead>
-          <tr>
-            <th>Secrets</th>
-            <th>Control</th>
+      <table className='self-center bg-teal-600/75 text-white table-auto w-fit m-2 border-none rounded-md' >
+        <thead >
+          <tr className='border-none'>
+            <th className='border-none'>Secrets</th>
+            <th className='border-none'>Control</th>
 
           </tr>
         </thead>
@@ -91,8 +91,8 @@ const SecretTable = ({ secrets, eye, hidden }: { secrets: Array<{ secret: string
         <tbody className='text-black'>
           {secretState.map((secret, index) => (
 
-            <tr key={index}>
-              <td>
+            <tr key={index} className='border-none'>
+              <td className='border-none'>
                 <div className='flex justify-between items-center'>
                   <input className='text-black border-none outline-none bg-transparent text-xl font-mono font-bold italic'
                     type={secret.visibility ? 'text' : 'password'}
@@ -105,7 +105,7 @@ const SecretTable = ({ secrets, eye, hidden }: { secrets: Array<{ secret: string
                   </a>
                 </div>
               </td>
-              <td>
+              <td className='border-none'>
                 <button className='border font-bold p-1 rounded-md border-black bg-red-400 hover:bg-red-600' onClick={() => handleDelete(secret._id)}>
                   Delete
                 </button>
