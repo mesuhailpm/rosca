@@ -7,10 +7,11 @@ import crossIcon from 'public/assets/images/cross.svg'
 import Image from 'next/image';
 import { Participants, State } from '@types';
 
-
+import {noto_serif_malayalam} from '@fonts'
 
 
 export default function MainTable() {
+
   const { participants, setParticipants } = useStore() as State
 
   const [loading, setLoading] = useState(true)
@@ -40,7 +41,7 @@ export default function MainTable() {
   return (
     <div>
       {participants?.length > 0 ? (
-        <table className="md:self-start m-4 bg-[#96ffff] text-slate-950 border border-black table-auto md:w-[700px] font-raleway">
+        <table className={`md:self-start m-4 bg-[#96ffff] text-slate-950 border border-black table-auto md:w-[700px] font-raleway`}>
           <thead>
             <tr>
               <th>Serial</th>
@@ -52,7 +53,7 @@ export default function MainTable() {
             {participants.map((participantObject, index) => (
               <tr key={index} className={`${index % 2 === 1 ? '' : 'bg-green-400'}`}>
                 <td>{participantObject.serial}</td>
-                <td>{participantObject.name}</td>
+                <td className={`${noto_serif_malayalam.className}`}>{participantObject.name}</td>
                 <td><Image width={16} src={participantObject.claimed ? tickIcon : crossIcon} alt="yes/no-icon" /></td>
               </tr>
             ))}
