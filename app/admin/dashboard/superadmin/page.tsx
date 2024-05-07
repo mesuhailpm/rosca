@@ -30,7 +30,7 @@ const Dashboard = () => {
   const fetchSecretsFromServer = async () => {
 
 
-    const response = await fetch(`$/api/secret`, { next: { revalidate: 60 } }) // revalidate every 60 seconds
+    const response = await fetch(`/api/secret`, { next: { revalidate: 60 } }) // revalidate every 60 seconds
     const secretsFromServer: { secrets: Array<{ secret: string, _id: string }> } = await response.json()
     console.log(secretsFromServer)
     setsecretsFromServer(secretsFromServer);
