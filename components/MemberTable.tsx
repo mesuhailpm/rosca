@@ -4,6 +4,8 @@ import { fetchAllParticipants } from '@actions'
 
 import React, {  useEffect } from 'react'
 import { State, Participant, Action, Participants, FormData } from '@types';
+import {noto_serif_malayalam} from '@fonts'
+
 
 
 const MemberTable = ({ }) => {
@@ -67,7 +69,7 @@ const MemberTable = ({ }) => {
         return (
           <tr key={index} className={`${!(index % 2) ? 'bg-sky-500 text-teal-100' : 'text-slate-200'}`}>
             <td>{serial}</td>
-            <td>{name}</td>
+            <td className={noto_serif_malayalam.className}>{name}</td>
             <td>{claimed === true ? 'Yes' : 'No'}</td>
             <td className='hover:text-yellow-500'><button onClick={() => handleEdit(serial, name, claimed, edit, _id)}><i className="fas fa-edit"></i></button></td>
             <td className='hover:text-red-500'><button onClick={() => handleDelete(_id)}><i className="fa-solid fa-trash"></i></button></td>
