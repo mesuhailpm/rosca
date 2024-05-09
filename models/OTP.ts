@@ -1,14 +1,14 @@
 import { model,models, Schema } from 'mongoose';
 import { OTPModelType } from '@types';
 
-const OTPSchema = new Schema<OTPModelType>({ 
+const OTPSchema = new Schema<OTPModelType>({
     email:{
-        type: 'string',
+        type: String,
         unique: true,
         required: true
     },
     otp:{
-        type: 'string',
+        type: String,
         required: true,
     },
     // save the new password to create admin later after verification
@@ -17,12 +17,16 @@ const OTPSchema = new Schema<OTPModelType>({
         required: true,
     },
     createdAt:{
-        type: Number,
+        type: Date,
+        default: Date.now,
+        expires:60*60 //seconds
     },
     expiresAt: {
-        type: Number,
+        type: Date,
     }
 })
 
 const OTP = models.OTP || model<OTPModelType>('OTP', OTPSchema)
 export default OTP
+
+//added automatic deleteion of documents after 1 hour

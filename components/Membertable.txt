@@ -24,7 +24,7 @@ Removed this lines from admin page and converted thi for another component with 
             }
             )
             }
-            <tr className='bg-purple-500'><td colSpan={5} align='center'><button className='p-2 pr-4 pl-4 rounded-md bg-green-800 text-yellow-100 hover:text-green-500' onClick={() => toggleFormModal(add)}>Want to add a member? click here</button></td></tr>
+            <tr className='bg-purple-500'><td colSpan={5} align='center'><button className='p-2 pr-4 pl-4 rounded-md bg-green-800 text-yellow-100 hover:text-green-500' onClick={() => toggleShowFormModal(add)}>Want to add a member? click here</button></td></tr>
           </tbody>
 
         </table>)

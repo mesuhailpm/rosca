@@ -6,9 +6,17 @@
 @import url('https://fonts.googleapis.com/css2?&family=Pacifico&family=Poppins:wght@400;700&display=swap');
 
 
+html {
+  box-sizing: border-box;
+}
+*, *:before, *:after {
+  box-sizing: inherit;
+}
 body{
   padding:0;
   background-image: url('../public/assets/images/bg.jpg');
+  background-blend-mode: color;
+  background-color: rgba(3, 8, 31, 0.331);
 
 }
 
