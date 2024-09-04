@@ -6,6 +6,7 @@ import '@app/globals.css'
 import Confetti from 'react-confetti'
 import { useStore } from '@src/store'
 import { Participants } from '@types'
+import { noto_serif_malayalam } from '@fonts'
 
 const Spin = () => {
   const [notClaimedParticipantNames, setNotClaimedParticipantNames] = useState<string[]>([])
@@ -77,7 +78,7 @@ const Spin = () => {
 
         <h1 className='text-4xl font-pacifico animate-scale-in text-white' >Congratulations!</h1>
         <br />
-        <h1 className='font-bold text-2xl text-[#d2e05a] text-center animate-fade-in'>{`${winnerToBeDeclared} `}</h1>
+        <h1 className={`font-bold text-2xl text-[#d2e05a] text-center animate-fade-in ${noto_serif_malayalam.className}`}>{`${winnerToBeDeclared} `}</h1>
       </div>)
         }
 
