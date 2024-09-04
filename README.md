@@ -9,6 +9,7 @@ dependency mismatch
 
 
 icons tick and cross https://icons-for-free.com/
+other icons fontawesome
 
 
 
