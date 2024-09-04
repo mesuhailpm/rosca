@@ -77,7 +77,7 @@ const Spin = () => {
 
         <h1 className='text-4xl font-pacifico animate-scale-in text-white' >Congratulations!</h1>
         <br />
-        <h1 className='font-bold text-2xl text-[#d2e05a] text-center scale-50 animate-fade-in'>{`${winnerToBeDeclared} `}</h1>
+        <h1 className='font-bold text-2xl text-[#d2e05a] text-center animate-fade-in'>{`${winnerToBeDeclared} `}</h1>
       </div>)
         }
 
