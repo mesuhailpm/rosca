@@ -72,11 +72,8 @@ const Spin = () => {
         </div>
       }
 
-      {winnerToBeDeclared && (<div className='absolute t-0 l-0 h-screen w-screen bg-[#765757] flex flex-col items-center justify-center'>
-        <Confetti
-          width={1000}
-          height={2000}
-        />
+      {winnerToBeDeclared && (<div className='fixed t-0 l-0 h-screen w-screen bg-[#765757] flex flex-col items-center justify-center'>
+        <Confetti />
 
         <h1 className='text-4xl font-pacifico animate-scale-in text-white' >Congratulations!</h1>
         <br />
