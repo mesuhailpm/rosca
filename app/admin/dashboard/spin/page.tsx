@@ -10,7 +10,7 @@ import { Participants } from '@types'
 const Spin = () => {
   const [notClaimedParticipantNames, setNotClaimedParticipantNames] = useState<string[]>([])
   const { participants, isLoggedIn, setParticipants } = useStore()
-  const [winnerToBeDeclared, setWinnerToBeDeclared] = useState<string>('')
+  const [winnerToBeDeclared, setWinnerToBeDeclared] = useState<string>('')//ഹിബ ഷെറിൻ പൂക്കോട്ടുംപാടം.
 
 
   const declareWinner = (winner: string) => {
@@ -72,18 +72,14 @@ const Spin = () => {
         </div>
       }
 
-      {winnerToBeDeclared ? <div className='absolute t-0 l-0 h-screen w-screen bg-green-400 flex flex-col items-center justify-center'>
-        <Confetti
-          width={1000}
-          height={2000}
-        />
+      {winnerToBeDeclared && (<div className='fixed t-0 l-0 h-screen w-screen bg-[#765757] flex flex-col items-center justify-center'>
+        <Confetti />
 
-        <h1 className='text-4xl font-pacifico' >Congratulations!</h1>
+        <h1 className='text-4xl font-pacifico animate-scale-in text-white' >Congratulations!</h1>
         <br />
-        <h1 className='font-bold text-2xl text-[#49499c]'>{`${winnerToBeDeclared} `}</h1>
-      </div>
-        :
-        <></>}
+        <h1 className='font-bold text-2xl text-[#d2e05a] text-center animate-fade-in'>{`${winnerToBeDeclared} `}</h1>
+      </div>)
+        }
 
 
     </div>
