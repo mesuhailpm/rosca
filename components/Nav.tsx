@@ -63,8 +63,9 @@ const Nav = () => {
               useStore.setState({ isLoggedIn: false });
               localStorage.removeItem("userObject");
             }}
-            className="bg-orange-600 text-white rounded-md p-2 m-2 hover:bg-red-700 border border-yello-100"
+            className="flex gap-2 items-center justify-center bg-fuchsia-700 text-white rounded-md p-2 m-2 hover:bg-red-700 border border-yello-100"
           >
+            <i className="fa-solid fa-right-from-bracket fa-lg"></i>
             Logout
           </button>
         </div>
