@@ -1,5 +1,5 @@
 import mongoose,{ConnectOptions} from "mongoose"
-const mongodbUri = process.env.NEXT_PUBLIC_MONGODB_URI
+const mongodbUri = process.env.NEXT_MONGODB_URI
 
 let isConnected : boolean;
 export default async () => {
