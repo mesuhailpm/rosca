@@ -9,14 +9,14 @@ const SecretTable = ({ secrets, eye, hidden }: { secrets: Array<{ secret: string
   const secretsData = secrets.map((secret) => {
     return { ...secret, visibility: false }
   })
-  const [secretInForm, setSecretInForm] = useState('')
+  const [secretInForm, setSecretInForm] = useState({secret:''})
   const [secretState, setSecretState] = useState(secretsData)
 
 
   const { runConfirmation, startResponseLoading, endResponseLoading } = useStore()
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
-    setSecretInForm(e.target.value)
+    setSecretInForm({secret: e.target.value})
   }
 
   const handleAddSecret = async () => {
@@ -42,7 +42,7 @@ const SecretTable = ({ secrets, eye, hidden }: { secrets: Array<{ secret: string
   const handleKeyDown = async (e: KeyboardEvent) => {
     if (e.key === 'Enter') {
       await handleAddSecret()
-      setSecretInForm('')
+      setSecretInForm({secret:''})
     }
   }
   const toggleVisibility = (id: string) => {
@@ -116,7 +116,7 @@ const SecretTable = ({ secrets, eye, hidden }: { secrets: Array<{ secret: string
         </tbody >
       </table>
       <p className='font-bold text-cyan-500 border-none px-2'>Add Another Secret</p>
-      <input type='text' name='secret' value={secretInForm} onKeyDown={handleKeyDown} onChange={handleChange} className=' bg-cyan-200 outline-none px-2 m-2 text-sm min-w-[250px] text-center' placeholder="Type your secret and press enter"/>
+      <input type='text' name='secret' value={secretInForm.secret} onKeyDown={handleKeyDown} onChange={handleChange} className=' bg-cyan-200 outline-none px-2 m-2 text-sm min-w-[250px] text-center' placeholder="Type your secret and press enter"/>
       
     </div>
   )
