@@ -13,6 +13,7 @@ import { AdminModelType } from '@types'
 import { useEffect, useState } from 'react'
 import eye from 'public/assets/images/eye.svg'
 import hidden from 'public/assets/images/hide.svg'
+import checkLoggedIn from '@utils/checkLoggedIn'
 
 
 const Dashboard = () => {
@@ -28,9 +29,13 @@ const Dashboard = () => {
     setadmindatafromserver(admindatafromserver);
   }
   const fetchSecretsFromServer = async () => {
+    const loggedIn = await checkLoggedIn()
+    const userObject = localStorage.getItem('userObject')
+    if (!userObject) { return; }
+    const token: string = JSON.parse(userObject)?.token
 
 
-    const response = await fetch(`/api/secret`, { next: { revalidate: 60 } }) // revalidate every 60 seconds
+    const response = await fetch(`/api/secret`, { method: 'POST', body: JSON.stringify({ get: true, token, secret: ''}), next: { revalidate: 60 } }) // revalidate every 60 seconds
     const secretsFromServer: { secrets: Array<{ secret: string, _id: string }> } = await response.json()
     console.log(secretsFromServer)
     setsecretsFromServer(secretsFromServer);
