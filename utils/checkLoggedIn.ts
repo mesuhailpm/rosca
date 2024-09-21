@@ -13,7 +13,10 @@ const checkLoggedIn = async (startVerifyLoading?: () => void, endResponseLoading
 
         // const isTokenValid = await verifyToken(token)
         const response = await fetch('/api/verifyToken', { method: 'POST', body: JSON.stringify(token) })
-
+        if(!response.ok){
+            endResponseLoading && endResponseLoading()
+            return false
+            }
         const decodedData = await response.json()
         // console.log(decodedData, ' is decoded data from jsonwebtoken, inside checkLoggedIn function');
         // console.log(decodedData)
@@ -33,14 +36,10 @@ const checkLoggedIn = async (startVerifyLoading?: () => void, endResponseLoading
             if(decodedData.userName && (location.pathname.startsWith ('/admin/go') || location.pathname.startsWith('/admin/dashboard/superadmin') ) ) {location.href = '/admin/dashboard'} 
         }
 
-        if (response.ok) {
             endResponseLoading && endResponseLoading();
             setRedirectingLoading && setRedirectingLoading(true)
             return true;
-        } else {
-            endResponseLoading && endResponseLoading()
-            return false
-        }
+        
 
     } catch (error) {
         console.error(error)
