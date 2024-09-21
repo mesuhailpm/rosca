@@ -2,8 +2,6 @@
 
 const layout = async ({ children }: { children: React.ReactNode}) => {
 
-    console.log(process.env.NEXT_PUBLIC_SITE_URL, ' is base URL')
-
 
 
     
