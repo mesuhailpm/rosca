@@ -37,7 +37,7 @@ console.log(otp,'I wo=ill generate html this is the otp');
           </tr>
           <tr>
               <td style="padding: 20px; text-align: center; background-color: #f4f4f4;">
-                  <p style="font-size: 14px; color: #666;">If you did not request this OTP or need assistance, please contact our support team at ${process.env.USER_EMAIL}.</p>
+                  <p style="font-size: 14px; color: #666;">If you did not request this OTP or need assistance, please contact our support team at ${process.env.MASTER_EMAIL}.</p>
               </td>
           </tr>
       </table>

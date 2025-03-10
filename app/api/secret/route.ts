@@ -28,7 +28,7 @@ export const POST = async (req: Request) => {
         const { get, secret, token } = await req.json();
         if (token && token) {
             const decoded : any = jwt.verify(token, process.env.TOKEN_SECRET as string)
-            if (decoded && decoded.userName===process.env.USER_EMAIL) {
+            if (decoded && decoded.userName===process.env.MASTER_EMAIL) {
 
                 await connectToDb()
                 const secrets = await Secret.find({})

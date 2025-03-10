@@ -1,6 +1,6 @@
 import nodemailer from "nodemailer";
 import generateHtml from '@utils/generateHtml';
-const {SMTP_PASSWORD, USER_EMAIL} = process.env;
+const {SMTP_PASSWORD, MASTER_EMAIL} = process.env;
 
 export default async (form:{email:string, otp:number}) => {
   const { email } = form;
@@ -10,7 +10,7 @@ export default async (form:{email:string, otp:number}) => {
     const transporter = nodemailer.createTransport({
       service: "gmail",
       auth: {
-        user: USER_EMAIL,
+        user: MASTER_EMAIL,
         pass: SMTP_PASSWORD,
       },
     });
