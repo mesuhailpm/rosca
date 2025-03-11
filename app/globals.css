@@ -40,6 +40,13 @@ input,select{
   padding: 5px;
   border-radius: 4px;
 }
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+
 .modal{
   background-color: rgba(18, 30, 51, 0.8);
   opacity: 0;
