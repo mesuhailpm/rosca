@@ -15,7 +15,7 @@ const AdminTable = ({ admindatafromserver }: { admindatafromserver: AdminModelTy
     const handleDeleteAdmin = async (username: string) => {
         if (confirm('Are you sure you want to delete the admin? This is not reversible')) {
             try {
-                startResponseLoading('Fetching data...')
+                startResponseLoading('Removing from database...')
                 const response = await fetch(`/api/admin/delete/${username}`, { method: 'DELETE' })
                 const data: { message: string, error?: any } = await response.json()
                 if (data.error) {
@@ -70,9 +70,10 @@ const AdminTable = ({ admindatafromserver }: { admindatafromserver: AdminModelTy
 
 
         return (
-            <div className='flex flex-col w-full m-2'>
-
-                <table className='self-center bg-green-800/75 text-white font-raleway m-4 rounded-lg border-none'>
+            <div className='flex flex-col m-2 w-full items-start text-white'>
+            <h2 className='text-3xl font-semibold m-[1rem] '>All Admins</h2>
+                
+                <table className=' bg-green-800/75  font-raleway m-4 rounded-lg border-none'>
                     <thead>
                         <tr className='border-none'>
 

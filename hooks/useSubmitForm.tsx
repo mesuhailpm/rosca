@@ -1,21 +1,24 @@
 
 import { useStore } from "@src/store";
 import { updateParticipant, addParticipant, deleteParticipant } from "@actions";
-import { Action, FormData, HandleSubmit, Participant, Participants, State } from "@types";
+import { Participant, State } from "@types";
 import { useEffect, useState } from "react";
 
-type formValueProp = {
-  action: Action | '',
-  _id: string,
-  formData: FormData | {}
-}// some properties are redundant but passed blank for type validation, and actually unnecessary
+const initialValue: {
+  action: string,
+  formData: {
+    serial: number;
+    name: string;
+    _id?: string;
+    claimed: boolean;
+    roscaId: string;
+}} = { action: '', formData: {serial:0, name:'', _id:'', claimed: false, roscaId: ''} }
 
-const initialValue = { action: '', _id: '', formData: {serial:0, name:'', _id:'', claimed: false} }
 const useSubmitForm = () => {
-  const { startResponseLoading, endResponseLoading, setParticipants, runConfirmation, participants, toggleShowDeleteModal, setShowFormModal,setShowDeleteModal } = useStore() as State
+  const { startResponseLoading, endResponseLoading, setParticipants, runConfirmation, participants, setShowFormModal,setShowDeleteModal } = useStore() as State
 
   const [formValue, serFormValue] = useState(initialValue)
-  const { action, _id, formData } = formValue;
+  const { action, formData } = formValue;
   console.log('I got acation as : ', action);
 
 
@@ -26,7 +29,10 @@ const useSubmitForm = () => {
       switch (action) {
         case 'edit':
           startResponseLoading();
-          const dataWithMessage: { result: Participant, message: string } = await updateParticipant(_id, formData)
+          if(formData.serial < 1) { throw Error('Invalid serial provided')}
+          if(!formData._id){ throw new Error('No participant Id passed to update.')}
+          if(!formData.claimed || !formData.name || !formData.serial) { throw Error( 'All fields must be filled')}
+          const dataWithMessage: { result: Participant, message: string } = await updateParticipant(formData._id, formData)
           if (!dataWithMessage) throw new Error;
           runConfirmation({ message: dataWithMessage.message, success: true })
           setShowFormModal(false);
@@ -34,8 +40,6 @@ const useSubmitForm = () => {
           setParticipants(participants.map((participant: Participant) => {
             return participant._id === dataWithMessage.result._id ? dataWithMessage.result : participant
           }));
-          //bard suggested to use immer and draft array before updating directly, should do if necessary
-
           endResponseLoading();
 
 
@@ -45,20 +49,30 @@ const useSubmitForm = () => {
 
         case 'add':
           startResponseLoading()
-          const dataWIthMessage = await addParticipant(formData)
-          if (!dataWIthMessage) throw new Error;
-          runConfirmation({ message: dataWIthMessage.message, success: true })
-          setShowFormModal(false)
 
-          const participantCopy = participants
-          participantCopy.push(dataWIthMessage.result)
-          setParticipants(participantCopy)
+          if(formData.serial < 1) { throw Error('Invalid serial provided')}
+          if(formData.claimed === undefined || !formData.name || !formData.serial) { throw Error( 'All fields must be filled')}
+          const data = await addParticipant(formData),{success,message,result} = data
+          if (!data) throw new Error('Something went wrong');
+          if(success){
+            runConfirmation({ message, success })
+            const participantCopy = participants
+            participantCopy.push(result)
+            setParticipants(participantCopy)
+
+          }else{
+            runConfirmation({message, success})
+          }
+          
           endResponseLoading();
           break;
 
         case 'remove':
           startResponseLoading();
-          const dataAndMessage = await deleteParticipant(_id)
+          if(!formData._id){
+            throw new Error('Error: No ID received!')
+          }
+          const dataAndMessage = await deleteParticipant(formData._id)
           runConfirmation({
             message: dataAndMessage.message,
             success: true
@@ -73,14 +87,11 @@ const useSubmitForm = () => {
           break;
 
       }
-    } catch (error) {
-      //console.logerror, ' hanlde sumit failed nwith confirm message object', confirmationMessage)
+    } catch (error: any) {
       endResponseLoading()
       console.log(error,'this from error message');
-      setShowFormModal(false)
-      setShowDeleteModal(false);
       runConfirmation(
-        { message: 'It doesn\'t work', success: false } 
+        { message: error.message || 'It doesn\'t work', success: false } 
       )
 
 
@@ -91,7 +102,7 @@ const useSubmitForm = () => {
     if (action) {
       handleSubmit()
     }
-  }, [action, _id,serFormValue]);
+  }, [action, formValue,serFormValue]);
   
   return { formValue, serFormValue }
 

@@ -5,14 +5,15 @@ import { State } from "@types";
 import useSubmitForm from "@hooks/useSubmitForm";
 
 const MemberForm = () => {
-  const { formData, toggleShowFormModal, showFormModal, action } = useStore() as State;
+  const { participantFormData, toggleShowFormModal, setShowFormModal, showFormModal, action } = useStore() as State;
   const [componentActionTitle, setComponentActionTitle] = useState(action)
   const actionAsTitle = componentActionTitle && (`${componentActionTitle[0]?.toUpperCase()}${componentActionTitle.slice(1)}`)
   const submitButtonLabel = action === "edit" ? "Update" : "Create";
 
-  const [componentFormData, setComponentFormData] = useState(formData)
-  const { serial, claimed, name } = componentFormData;
+  const [componentFormData, setComponentFormData] = useState(participantFormData)
+  const { serial, claimed, name,_id } = componentFormData;
   const { serFormValue } = useSubmitForm()
+
 
 
 
@@ -27,18 +28,40 @@ const MemberForm = () => {
 
   }
 
+  const handleSubmit = (e : React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault()
+    // if (componentFormData.serial > 1)
+    serFormValue({ action, formData: componentFormData })
+
+  }
+
+  useEffect(()=>{
+    const handleKey = (e: KeyboardEvent) =>{
+      console.log(e.key)
+      if(e.key === 'Escape'){
+        setShowFormModal(false)
+      }
+
+    }
+
+    if(showFormModal)document.addEventListener('keydown',handleKey)
+
+    return () => document.removeEventListener('keydown',handleKey)
+
+  },[showFormModal])
+
   useEffect(() => {
-    setComponentFormData(formData)
+    setComponentFormData(participantFormData)
     setComponentActionTitle(action)
 
-  }, [formData, action])
+  }, [participantFormData, action])
     return (
       <div
-        className={`fixed w-screen h-screen top-0 left-0 flex items-center justify-center modal ${showFormModal && 'appear'}`}
+        className={`fixed w-screen h-screen top-0 left-0 flex items-center justify-center modal ${showFormModal ? 'appear':''}`}
       >
         <form
           className={`relative bg-red-400 flex flex-col gap-1 p-4 rounded-md border border-yellow-100`}
-          onSubmit={(e) => { e.preventDefault(); serFormValue({ action, _id: formData._id, formData: componentFormData }) }}
+          onSubmit={handleSubmit}
         >
           <button
             type="button"

@@ -1,7 +1,7 @@
-import { model, models, Schema } from "mongoose";
-import { ParticpantModelType } from '@types';
+import { Model, model, models, Schema } from "mongoose";
+import { ParticipantModelType } from '@types';
 
-const participantSchema = new Schema<ParticpantModelType>({
+const participantSchema = new Schema<ParticipantModelType>({
   name: {
     type: String,
     required: true,
@@ -14,8 +14,9 @@ const participantSchema = new Schema<ParticpantModelType>({
     type: Boolean,
     required: true,
   },
-});
+  roscaId: { type: Schema.Types.ObjectId, ref: "ROCSA", required: true },
+},{timestamps: true});
 
-const Participant =
-  models.Participant || model<ParticpantModelType>("Participant", participantSchema);
+const Participant: Model<ParticipantModelType> =
+  models.Participant || model<ParticipantModelType>("Participant", participantSchema);
 export default Participant;

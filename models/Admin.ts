@@ -9,7 +9,8 @@ const adminSchema:Schema<AdminDocument> = new Schema({
     password: {
         required: true,
         type: String,
-    }
+    },
+    roscaIds: [{ type: Schema.Types.ObjectId, ref: "ROCSA" }], 
 })
 
 
