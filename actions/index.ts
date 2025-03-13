@@ -1,17 +1,46 @@
-import { AdminModelType, FormData, Participant } from "@types";
+import { AdminModelType, ParticipantFormData, Participant, RoscaTypeExceptAdmins } from "@types";
 
-export const fetchAllParticipants = async () => {
+export const fetchSchemes = async (adminId: string) => {
   try {
-    const response = await fetch("/api/participants/all");
-    const data = await response.json();
-    // console.log(data.allParticipants, " are all participants");
-    return data.allParticipants;
+    const {token} = JSON.parse(localStorage.getItem("userObject")|| '');
+    if(!token) {throw new Error('Token not found')}
+    
+      const res = await fetch(`/api/schemes/`, { headers: {
+        'Authorization': `Bearer ${token}`
+      }});
+      const fetchedSchemes: RoscaTypeExceptAdmins[] = await res.json(); 
+      return fetchedSchemes;
+  } catch (error: any) {
+      console.log(error);
+      return error.message as string
+  }
+}
+
+export const fetchSchemeParticipants= async (roscaId: string) => {
+  try {
+    const {token} = JSON.parse(localStorage.getItem("userObject")|| ''); 
+    if(!token) {throw new Error('Token not found')}
+
+    const response = await fetch(`/api/schemes/${roscaId}`,{ headers: {
+      'Authorization': `Bearer ${token}`
+    }}); //   const response = await fetch("/api/participants/all");
+    console.log(response)
+    if(!response.ok) {
+      const {message, success} = await response.json()
+      console.log({message})
+      return {message , success}
+    }
+
+    const { scheme, success } = await response.json();
+    
+    return {data : scheme.participants ,success}
   } catch (error) {
     console.log(error);
+    throw error
   }
 };
 
-type UpdateParticipant = (id: string, formData: FormData) => Promise<{ result: Participant, message: string }>
+type UpdateParticipant = (id: string, formData: ParticipantFormData) => Promise<{ result: Participant, message: string }>
 export const updateParticipant: UpdateParticipant = async (id, formData) => {
   console.log(id, formData, ' from updateParticipant actions');
   try {
@@ -27,21 +56,28 @@ export const updateParticipant: UpdateParticipant = async (id, formData) => {
   }
 };
 
-type AddParticipant = (formData: FormData) => Promise<{ result: Participant, message: string }>
+type AddParticipant = (formData: ParticipantFormData) => Promise<{ result: Participant, message: string, success: true }|{ result: undefined, message: string, success: false }>
 
 
 export const addParticipant: AddParticipant = async (formData) => {
+  const {token} = JSON.parse(localStorage.getItem("userObject")|| ''); 
+  if(!token) {throw new Error('Token not found')}
+
   //console.logformData);
   try {
     const response = await fetch(`/api/participants/add`, {
       method: "POST",
       body: JSON.stringify(formData),
+      headers: {'Authorization': `Bearer ${token}`}
     });
-    const data = await response.json(); //{data: 'particpant object', message: 'successflly updated'}
-    //console.logdata, ' is the result after creating a new participant');
-    return data;
+    console.log(response)
+
+      
+      const {result = undefined, message,success} = await response.json(); //{data: 'particpant object', message: 'successflly updated'}
+
+      return {result ,message,success}
   } catch (error) {
-    console.log(error);
+    throw error
   }
 };
 
