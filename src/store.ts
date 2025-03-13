@@ -1,12 +1,12 @@
 import { StateCreator, StoreMutatorIdentifier, create } from "zustand";
-import { State, Participants, Participant, FormData, Action } from "@types";
+import { State, Participants, Participant, ParticipantFormData, Action } from "@types";
 import { FormEvent } from "react";
 const initialFormData = {
   _id: '',
   serial: 0,
   name: '',
-  claimed: false
-
+  claimed: false,
+  roscaId: ''
 }
 
 const applyTimeout = (action: Function, time: number) => {
@@ -16,10 +16,24 @@ const applyTimeout = (action: Function, time: number) => {
 }
 
 export const useStore = create<State>((set) => ({
-  formData: initialFormData,
-  setFormData: (formData: FormData) => {
+  adminLoading: true,
+
+  setAdminLoading: (flag) => {
     set(() => ({
-      formData: formData
+      adminLoading: flag
+    }))
+  },
+  selectedRosca: null,
+  setSelectedRosca: (rosca) => {
+    set(() => ({
+      selectedRosca: rosca
+    }))
+  },
+  admin: null,
+  participantFormData: initialFormData,
+  setParticipantFormData: (data: ParticipantFormData) => {
+    set(() => ({
+      participantFormData: data
     }))
 
   },
@@ -74,39 +88,41 @@ export const useStore = create<State>((set) => ({
   },
 
 
-  showFormModal: false,
-  setShowFormModal: (flag: boolean) => {
+  FormVisibility: false,
+  setFormVisibility: (flag: boolean) => {
     set(() => ({
-      showFormModal: flag
+      FormVisibility: flag
     }))
   },
-  toggleShowFormModal: (action?: Action) => {
+  toggleFormVisibility: (action?: Action) => {
     set((state: State) => ({
-      showFormModal: !state.showFormModal,
+      FormVisibility: !state.FormVisibility,
       action: action
     }))
   }
   ,
 
-  showDeleteModal: false,
-  setShowDeleteModal:(flag:boolean)=>{
-    set({showDeleteModal: flag})
+  deletePopupVisibility: false,
+  setDeletePopupVisibility:(flag:boolean)=>{
+    set({deletePopupVisibility: flag})
   },
-  toggleShowDeleteModal: () => {
+  toggleDeletePopupVisibility: () => {
     set((state: State) => ({
-      showDeleteModal: !state.showDeleteModal,
+      deletePopupVisibility: !state.deletePopupVisibility,
 
     } as State))
   },
 
 
-  login: () => {
+  login: (admin) => {
     set(() => ({
+      admin,
       isLoggedIn: true,
     }));
   },
   logOut: () => {
     set(() => ({
+      admin: null,
       isLoggedIn: false,
     }));
   },
