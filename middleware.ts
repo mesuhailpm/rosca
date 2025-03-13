@@ -22,7 +22,7 @@ export async function middleware(request: CustomeRequest) {
     }
 
     // Check if the request is from an admin
-    if (request.admin) {
+    if (!request.admin) {
         return NextResponse.redirect(new URL('/api/unauthorized', request.url),{headers:{'targetUrl':request.url, 'method': request.method}});
     }
 
