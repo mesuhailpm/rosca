@@ -29,9 +29,9 @@ export const POST = async (req:NextRequest) => {
         { status: 401 }
       );
     //send a token and username
-    const token = await generateToken(registeredAdmin.userName)
+    const token = await generateToken({adminId: registeredAdmin._id, userName: registeredAdmin.userName})
     
-    return new Response(JSON.stringify({ message: "successful", token, userName: registeredAdmin.userName }), {
+    return new Response(JSON.stringify({ message: "successful", data:{ token, userName: registeredAdmin.userName, adminId: registeredAdmin._id} }), {
       status: 200,
     });
   } catch (error: any) {

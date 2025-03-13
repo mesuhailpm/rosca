@@ -3,21 +3,22 @@ import Link from 'next/link'
 import React, { ChangeEvent, FormEvent, useState, useEffect } from 'react'
 import { useStore } from '@src/store'
 import checkLoggedIn from '@utils/checkLoggedIn'
+import { home } from '@constants/paths'
+import { useRouter } from 'next/navigation'
 
 
 
 const AdminLogin = () => {
 
 
-  const { isLoggedIn, runConfirmation,startResponseLoading, endResponseLoading } = useStore()
+  const { runConfirmation,startResponseLoading, endResponseLoading, login } = useStore()
   const startRedirectingLoading = () => startResponseLoading('Welcome back, we are shipping you to dashboard...')
-  const startVerifyLoading = () => {startResponseLoading('Verfying the details...')}
-
 
   const [formData, setFomData] = useState({
     userName: '',
     password: ''
   })
+  const router = useRouter()
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
     setFomData((prevState) => {
       return { ...prevState, [event.target.name]: event.target.value }
@@ -29,23 +30,21 @@ const AdminLogin = () => {
     startResponseLoading('Verifying the details...')
     try {
       const response = await fetch('/api/login', { method: 'POST', body: JSON.stringify(formData) })
-      const { message, token, userName } = await response.json();
-      console.log({message, token, userName})
 
-      if (response.ok) {
-        localStorage.setItem('userObject', JSON.stringify({ token, userName }));
-        useStore.setState({ isLoggedIn: true })
-        // location.href = '/admin/dashboard'
-      } else {
-
+      if(!response.ok){
         runConfirmation(
-          { message: message, success: false }
-
+          { message: await  response.json().then(data=> data.message), success: false }
         )
         endResponseLoading()
+        return
       }
-      // console.log(message)
-
+      else{
+        const { message, data :{token, userName, adminId }} = await response.json();        
+          localStorage.setItem('userObject', JSON.stringify({ token, userName, adminId }));
+          login({userName, adminId})
+      }
+    startRedirectingLoading()
+    router.push(home)
     } catch (error) {
       console.error(error)
       endResponseLoading()
@@ -54,10 +53,8 @@ const AdminLogin = () => {
 
   useEffect(() => {
     (async () => {
-      //console.log'useEffect');
 
       const hasLoggedIn = await checkLoggedIn(
-        // startVerifyLoading, endResponseLoading, startRedirectingLoading
         )
       if(hasLoggedIn){
         startRedirectingLoading()
@@ -93,7 +90,7 @@ const AdminLogin = () => {
           href="/admin/go/register"
           className="bg-green-900 p-2 text-yellow-100 m-2 hover:bg-green-700 flex-center"
         >
-          Request to be an admin
+          Register as an admin
         </Link>
       </form>
     </div>
