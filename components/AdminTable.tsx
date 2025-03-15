@@ -44,27 +44,6 @@ const AdminTable = ({ admindatafromserver }: { admindatafromserver: AdminModelTy
 
 
 
-    // const fetchAdmins = async () => {
-    //     try {
-    //         const response = await fetch('/api/admin')
-    //         const alladmins = await response.json()
-    //         console.log(alladmins);
-    //         (alladmins)
-
-    //         setAdmins(alladmins.admins)
-    //     } catch (error) {
-    //         console.log(error)
-
-    //     }
-
-    // }
-
-
-
-    // useEffect(() => {
-    //     fetchAdmins()
-
-    // }, [])
 
     if (admins?.length) {
 
