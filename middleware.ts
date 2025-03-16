@@ -11,6 +11,16 @@ export async function middleware(request: CustomeRequest) {
         try {
             console.log(baseUrl+'/api/verifyToken', ' is the url used to verifyt the token')
             const res  = await fetch(baseUrl+'/api/verifyToken', {method: 'POST', body: JSON.stringify(token)}); console.log(res, 'is response')
+
+            if (!res.ok) {
+                const errorBody = await res.text();  // Read the response as plain text (which is likely HTML)
+                
+                console.error('Error response body:', errorBody);  // Log the error body for debugging
+              
+                // Throw a more descriptive error with the status and body to help with debugging
+                throw new Error(`Failed to verify token: ${res.status} - ${errorBody}`);
+              }
+              
             const decodedToken = await res.json(); console.log(decodedToken,' is decoded token received in middleware')
             if(!decodedToken?.adminId) {throw Error('No adminId inside the adminId')}
                 
