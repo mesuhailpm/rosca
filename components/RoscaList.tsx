@@ -12,9 +12,11 @@ export type CustomRosca = Omit <RoscaType, 'admins' | 'participants' > & {
 
 const RoscaList = () => {
   const [schemes, setSchemes] = useState<CustomRosca[]>([]);
+  const [loading, setLoading ] = useState(true)
   const { runConfirmation, startResponseLoading, endResponseLoading } = useStore();
 
   useEffect(() => {
+    setLoading(true)
     const fetchAllSchemes = async () => {
       const { token } = JSON.parse(localStorage.getItem('userObject') || '');
       const headers = {
@@ -22,7 +24,6 @@ const RoscaList = () => {
       };
 
       try {
-        startResponseLoading();
         const response = await fetch('/api/superadmin/schemes', { headers });
         const data: { success: boolean; schemes?: CustomRosca[]; message?: string } = await response.json();
         
@@ -34,13 +35,14 @@ const RoscaList = () => {
       } catch (error: any) {
         runConfirmation({ message: error?.message || 'Something went wrong', success: false });
       } finally {
-        endResponseLoading();
+        setLoading(false)
       }
     };
 
     fetchAllSchemes();
   }, [startResponseLoading, endResponseLoading, runConfirmation]);
 
+  if (loading) return <h1 className='text-white text-center' > Loading Schemes..</h1>
   return (
     <section className='text-white flex flex-col items-center w-full'>
       <h2 className='text-3xl font-semibold self-start text-yellow-500 m-[1rem]'>All Schemes</h2>

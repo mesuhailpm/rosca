@@ -2,8 +2,6 @@ import MemberForm from '@components/MemberForm'
 import AdminTable from '@components/AdminTable'
 import Link from 'next/link'
 import SecretTable from '@components/SecretTable'
-import eye from 'public/assets/images/eye.svg'
-import hidden from 'public/assets/images/hide.svg'
 import RoscaList from '@components/RoscaList'
 import { noto_serif_malayalam } from '@fonts'
 
@@ -14,12 +12,11 @@ import { noto_serif_malayalam } from '@fonts'
 const Dashboard = () => {
 
   return (
-    <div className={`member-container flex flex-col items-center ${noto_serif_malayalam.className} relative h-full '$'{(FormVisibility || deletePopupVisibility) && ' overflow-x-hidden overflow-y-hidden '}`}>
+    <div className={`superadmin-main ${noto_serif_malayalam.className} relative`}>
       <RoscaList />
       <AdminTable />
-      <SecretTable eye={eye} hidden={hidden} />
+      <SecretTable />
       <MemberForm />
-      <Link href={'/admin/dashboard/spin'} className='self-start'><h2 className="underline text-slate-100">Click me to Spin the wheel and draw someone</h2></Link>
     </div>
   )
 

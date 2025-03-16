@@ -66,7 +66,7 @@ const AdminTable = () => {
 
 
 
-    if (loading ) return <h1 className='text-white' > Loading Admin Data..</h1>
+    if (loading ) return <h1 className='text-white text-center' > Loading Admin Data..</h1>
 
     if (admins?.length) {
 
