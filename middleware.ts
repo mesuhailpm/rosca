@@ -5,9 +5,11 @@ import { NextResponse } from 'next/server'
 export async function middleware(request: CustomeRequest) {
     const baseUrl = request.nextUrl.origin
     const authHeader = request && request?.headers?.get('Authorization');
+    console.log(authHeader, ' is auth header inside the middlware')
     if (authHeader) { 
         const token = authHeader.split(' ')[1];
         try {
+            console.log(baseUrl+'/api/verifyToken', ' is the url used to verifyt the token')
             const decodedToken = await fetch(baseUrl+'/api/verifyToken', {method: 'POST', body: JSON.stringify(token)})
                 .then(res => res.json() )
                 .then(data => data)

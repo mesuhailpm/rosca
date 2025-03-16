@@ -4,12 +4,14 @@ import { AdminModelType, ParticipantFormData, Participant, RoscaTypeExceptAdmins
 export const fetchSchemes = async () => {
   try {
     const {token} = JSON.parse(localStorage.getItem("userObject")|| '');
+    console.log(token.slice(0,10), ' is token inside the fetch Scheme action' )
     if(!token) {throw new Error('Token not found')}
     
       const res = await fetch(`/api/schemes/`, { headers: {
         'Authorization': `Bearer ${token}`
       }});
       const fetchedSchemes: RoscaTypeExceptAdmins[] = await res.json(); 
+      console.log(fetchSchemes.length,' is schemes length inside fetchSchemes')
       return fetchedSchemes;
   } catch (error: any) {
       console.log(error);
