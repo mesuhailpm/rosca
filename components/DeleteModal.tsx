@@ -13,7 +13,7 @@ const DeleteModal = () => {
 
     useEffect(()=>{
       const handleKey = (e: KeyboardEvent) =>{
-        console.log(e.key)
+
         if(e.key === 'Escape'){
           setDeletePopupVisibility (false)
         }

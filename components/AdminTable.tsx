@@ -11,9 +11,6 @@ const AdminTable = () => {
     
     
     const { runConfirmation, startResponseLoading, endResponseLoading } = useStore() as State
-
-
-
       
       
     useEffect(()=>{
@@ -76,7 +73,7 @@ const AdminTable = () => {
 
         return (
             <div className='flex flex-col m-2 w-full items-start text-white'>
-            <h2 className='text-3xl font-semibold m-[1rem] '>All Admins</h2>
+            <h2 className='text-3xl font-semibold m-[1rem] text-yellow-500'>All Admins</h2>
                 
                 <table className=' bg-green-800/75  font-raleway m-4 rounded-lg border-none'>
                     <thead>

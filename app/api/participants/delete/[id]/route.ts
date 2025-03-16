@@ -16,7 +16,7 @@ export const DELETE = async (req: NextRequest, { params }:{params:{id:string}}) 
     }
 
     const associtatedRosca = await Rosca.findOne( {participants: { $in: deletedParticipant?._id}} )
-    if (!associtatedRosca)throw Error(' Unable to deleted the member! Reason: No associated ROCSA ID found!')
+    if (!associtatedRosca)throw Error(' Unable to deleted the member! Reason: No associated ROSCA ID found!')
 
     await Rosca.findByIdAndUpdate(associtatedRosca._id, {$pull: { participants: deletedParticipant?._id}})
     await session.commitTransaction()

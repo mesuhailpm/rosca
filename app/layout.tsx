@@ -1,10 +1,8 @@
 
 import type { Metadata } from 'next'
-import { Poppins } from 'next/font/google'
 import '@app/globals.css'
 import Nav from '@components/Nav'
 import Footer from '@components/Footer'
-import { useStore } from '@src/store'
 
 export const metadata: Metadata = {
   title: 'Nammude Kuri- നമ്മുടെ കുറി',

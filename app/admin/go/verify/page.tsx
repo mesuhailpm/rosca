@@ -21,7 +21,6 @@ const Verify = () => {
   };
 
 
-  // 13console.log(pendingAdmin, storedObject, " is admin to verify, its from local storage");
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
@@ -34,11 +33,6 @@ const Verify = () => {
 
       const { pendingAdmin }: { pendingAdmin: string } = storedObject;
       const data = await verifyOTP({ otp, admin: pendingAdmin });
-      console.log("Verifying the OTP the  ", {
-        otp,
-        admin: pendingAdmin,
-      });
-      console.log("got data", data);
 
       if (data.success)
       //Email got verified
@@ -65,10 +59,8 @@ const Verify = () => {
             } else {
               runConfirmation({ message: data.message, success: false }, 3000)
             }
-
           }, 3000 + 2000)
 
-          console.log(data);
         }, 3000);
       } else {
         console.log("otp validation failed");

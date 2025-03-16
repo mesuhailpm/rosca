@@ -1,10 +1,8 @@
-import { NextApiRequest, NextApiResponse } from "next";
-import ROCSA from "@models/Rosca";
+import ROSCA from "@models/Rosca";
 import Admin from "@models/Admin";
 import Participant from "@models/Participant";
-import mongoose, { Types } from "mongoose";
-import { CustomeRequest, ParticipantFormData, RoscaType } from "@types";
-import { Console } from "console";
+import mongoose from "mongoose";
+import { CustomeRequest } from "@types";
 import connectToDb from "@utils/connectToDb";
 
 export const GET = async (req: CustomeRequest) => {
@@ -15,7 +13,7 @@ export const GET = async (req: CustomeRequest) => {
             throw Error('Only Owner Can Request This Data')
         }
         await connectToDb()
-        const schemes = await ROCSA.find()
+        const schemes = await ROSCA.find()
             .populate(
                 { path: 'admins',
                     select: '-password'
@@ -46,7 +44,7 @@ export const DELETE = async (req: CustomeRequest) => {
           
         await connectToDb()
 
-        const deleted = await ROCSA.findByIdAndDelete(id, {session})
+        const deleted = await ROSCA.findByIdAndDelete(id, {session})
         if(!deleted){
             throw Error("Rosca not found" );
         }

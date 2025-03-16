@@ -10,7 +10,7 @@ const adminSchema:Schema<AdminDocument> = new Schema({
         required: true,
         type: String,
     },
-    roscaIds: [{ type: Schema.Types.ObjectId, ref: "ROCSA" }], 
+    roscaIds: [{ type: Schema.Types.ObjectId, ref: "ROSCA" }], 
 })
 
 

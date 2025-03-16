@@ -4,33 +4,39 @@ import Link from "next/link";
 import logo from "public/assets/images/logo.png";
 import Image from "next/image";
 import { useStore } from "@src/store";
-import { useState, useEffect } from "react";
+import { useEffect } from "react";
 import { usePathname } from "next/navigation";
 import checkLoggedIn from '@utils/checkLoggedIn'
 import { State } from "@types";
 
 
 const Nav = () => {
-  const { isLoggedIn } = useStore() as State;
+  const { isLoggedIn, setAdminLoading, setSelectedRosca } = useStore() as State;
   const pathname = usePathname()
-  // console.log(pathname)
-
-
-  //console.logisLoggedIn, " is value of isLoggedIn");
-  //console.logHasLoggedIn, " is value of hasLoggedIn");
-
-
 
   useEffect(() => {
+
     (async () => {
-      //console.log"useEffect");
+      setAdminLoading(true)
+      const userObjectRaw = localStorage.getItem('userObject')
+      if (!userObjectRaw){
+        useStore.setState({ adminLoading: false, isLoggedIn: false, admin: null });
+        return;
+      }
+      const userObject = JSON.parse(userObjectRaw)
+      const { adminId, userName } = userObject
 
       const hasLoggedIn = await checkLoggedIn()
       if(hasLoggedIn){
-        useStore.setState({ isLoggedIn: true });
-      }else{
-        useStore.setState({ isLoggedIn: false });
+        useStore.setState({ adminLoading: false, isLoggedIn: true, admin: {adminId, userName} });
+        const selectedRosca  = localStorage.getItem('selectedRosca')
+        if (selectedRosca){
+          setSelectedRosca(JSON.parse(selectedRosca))
+        }
+      }else{  
+        useStore.setState({adminLoading: false, isLoggedIn: false, admin: null });
       }
+      setAdminLoading(false)
     })();
   }, [isLoggedIn, useStore.setState, pathname]);
 
@@ -50,7 +56,7 @@ const Nav = () => {
         <div className="self-end flex">
           {pathname !== "/admin" && (
             <Link
-              href="/admin/dashboard"
+              href="/admin/dashboard/manage"
               className="flex gap-1 items-center bg-blue-800 text-white tex-xxl rounded-md p-2 m-2 hover:bg-blue-700 border border-yello-100"
             >
               <i className="fa fa-cogs fa-lg" aria-hidden="true"></i>
@@ -62,6 +68,8 @@ const Nav = () => {
             onClick={() => {
               useStore.setState({ isLoggedIn: false });
               localStorage.removeItem("userObject");
+              localStorage.removeItem('userId')
+              localStorage.removeItem('selectedRosca')
             }}
             className="flex gap-2 items-center justify-center bg-fuchsia-700 text-white rounded-md p-2 m-2 hover:bg-red-700 border border-yello-100"
           >

@@ -23,7 +23,8 @@ const Page = () => {
         e.preventDefault();
         try {          
             startResponseLoading('Working on it...')
-            const {token} = JSON.parse(localStorage.getItem("userObject")|| ''); console.log('token is ', token);
+            const {token} = JSON.parse(localStorage.getItem("userObject")|| '');
+
             if(!token) {throw new Error('Token not found')}
             const res = await fetch(`/api/schemes`, {
                  method: 'POST', 
@@ -34,7 +35,7 @@ const Page = () => {
                     'Authorization': `Bearer ${token}`
                   }
             })
-            console.log(res)
+
             const {result, message, success} : {result?: RoscaDoc, message :string, success: boolean} = await res.json()
             if(!result){
                 throw new Error(message)

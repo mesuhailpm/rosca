@@ -19,7 +19,7 @@ export const POST = async (req:NextRequest) => {
 
   try {
     const adminId = req.headers.get('x-admin-id'); // Get the admin information from the custom header
-    if(!adminId || !(await Admin.findById(adminId))) throw new Error('Unauthorized Operation!')
+    console.log(adminId);    if(!adminId || !(await Admin.findById(adminId))) throw new Error('Unauthorized Operation!')
 
 
     await connectToDb();

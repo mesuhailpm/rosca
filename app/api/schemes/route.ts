@@ -1,9 +1,8 @@
-import ROCSA from "@models/Rosca";
+import ROSCA from "@models/Rosca";
 import Admin from "@models/Admin";
 import Participant from "@models/Participant";
-import mongoose, { Types } from "mongoose";
+import mongoose from "mongoose";
 import { CustomeRequest, ParticipantFormData, RoscaType } from "@types";
-import { Console } from "console";
 import connectToDb from "@utils/connectToDb";
 
 export const GET = async (req: CustomeRequest) => {
@@ -11,7 +10,7 @@ export const GET = async (req: CustomeRequest) => {
 
     try {
         await connectToDb()    
-        let schemes = await ROCSA.find({ admins: { $in: [adminId] } }).select('-admins');
+        let schemes = await ROSCA.find({ admins: { $in: [adminId] } }).select('-admins');
 
         return new Response(JSON.stringify(schemes), { status: 200 });
     } catch (error) {
@@ -42,7 +41,7 @@ export const POST = async (req: CustomeRequest) =>{
 
             const participantsData = participants.map((p: Omit<ParticipantFormData, 'roscaId'>) => new Participant(p,{session}));
             console.log(participantsData, ' is partcipinatn data')
-            const newScheme = new ROCSA({ name }, { session });
+            const newScheme = new ROSCA({ name }, { session });
             console.log(newScheme, ' is new scheme')
 
             const participantsIDs = participantsData.map(p => p._id)

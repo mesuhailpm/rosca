@@ -1,7 +1,7 @@
 'use client'
 import React, { useEffect, useState } from 'react'
 import Wheel from '@components/Wheel'
-import { fetchAllParticipants } from '@actions'
+import { fetchSchemeParticipants} from '@actions'
 import '@app/globals.css'
 import Confetti from 'react-confetti'
 import { useStore } from '@src/store'
@@ -10,7 +10,7 @@ import { noto_serif_malayalam } from '@fonts'
 
 const Spin = () => {
   const [notClaimedParticipantNames, setNotClaimedParticipantNames] = useState<string[]>([])
-  const { participants, isLoggedIn, setParticipants } = useStore()
+  const { participants, isLoggedIn, setParticipants, selectedRosca } = useStore()
   const [winnerToBeDeclared, setWinnerToBeDeclared] = useState<string>('')//ഹിബ ഷെറിൻ പൂക്കോട്ടുംപാടം.
 
 
@@ -44,12 +44,15 @@ const Spin = () => {
 
 
   useEffect(() => {
-    (async () => {
-      const allParticipants: Participants = await fetchAllParticipants()
-      allParticipants.sort((a, b) => a.serial - b.serial)
-      setParticipants(allParticipants);
+    if (selectedRosca )(async () => {
+      const result: {success: true, message: string, data: Participants}| {success: false, message: string} = await fetchSchemeParticipants(selectedRosca?._id),{success} = result
+      if(success){
+       const {data} = result 
+       setParticipants(data);
+      }
+
     })()
-  }, [])
+  }, [selectedRosca])
   useEffect(() => {
     const notClaimedParticipantNames = participants.filter((participant) => !participant.claimed).map((participant) => participant.name)
     const randomisedParticipants = shuffleArray(notClaimedParticipantNames)

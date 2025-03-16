@@ -24,21 +24,16 @@ const ResetAdminPassword = () => {
         try {
             startResponseLoading('Wait, we are working on...')
             //...handle register
-            console.log(formData);
 
             const data = await updateAdmin(formData)
 
             if (!data.success) {
-                console.log('returned error')
 
                 runConfirmation({
                     message:'Please contact the Owner',
                     success:false})
-
-
                 return;
             }
-            console.log(data)
 
             endResponseLoading()
             runConfirmation({ message: data.message, success: true })
@@ -60,16 +55,13 @@ const ResetAdminPassword = () => {
 
 
     }
-    console.log(formData);
-
-
 
     useEffect(() => {
         const storedUserObjectRaw = localStorage.getItem('userObject')
         if (storedUserObjectRaw) {
             const parsedUserObject = JSON.parse(storedUserObjectRaw)
             setStoredUserObject(parsedUserObject)
-            console.log(storedUserObjectRaw, parsedUserObject, storedUserObject)
+
             if (parsedUserObject.pendingAdmin !== 'unauthorized') {
                 setFomData((prev) => {
                     return {

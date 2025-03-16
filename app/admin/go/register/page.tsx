@@ -35,7 +35,6 @@ const RegisterAsAdmin = () => {
                 throw new Error(error.message)
             }
 
-            console.log(message)
             runConfirmation({ message, success })
             endResponseLoading();
             const storedUserObjectRaw = localStorage.getItem('userObject')

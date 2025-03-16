@@ -1,9 +1,9 @@
 'use client';
 import { fetchSchemes } from '@actions';
-import MainTable from '@components/MainTable';
+import MembersTableView from '@components/MainTable';
 import Link from 'next/link';
 import { useStore } from '@src/store';
-import { RoscaType, RoscaTypeExceptAdmins, State } from '@types';
+import { RoscaTypeExceptAdmins, State } from '@types';
 import React, { useEffect, useState } from 'react'
 
 
@@ -20,21 +20,19 @@ const Schemes = () => {
         localStorage.setItem('selectedRosca', JSON.stringify(rosca))
     }
 
-    const state = useStore();
-    // console.log(state);
 
     useEffect(() => {
-        const  fetchSchemesfor = async (adminId: string) => {             
+        const  fetchSchemesfor = async () => {             
         setSchemesLoading(true)
             
-        const fetchedSchemes: RoscaTypeExceptAdmins[] | string = await fetchSchemes(adminId);
+        const fetchedSchemes: RoscaTypeExceptAdmins[] | string = await fetchSchemes();
         if(typeof fetchedSchemes === 'string') {setSchemesLoading(false); return;}
             setSchemes(fetchedSchemes);
             setSchemesLoading(false)
         }
         if (admin) {
 
-            fetchSchemesfor(admin.adminId)
+            fetchSchemesfor()
             
         }else{
         }
@@ -50,7 +48,7 @@ const Schemes = () => {
     
     if ( selectedRosca ) {
         return <div className='text-white text-center flex flex-col items-center'>
-        <MainTable/>
+        <MembersTableView/>
         {!participantsLoading  && <section className='w-2/4 bg-d-50 flex justify-between'>
 
         {/* Button for edit */}

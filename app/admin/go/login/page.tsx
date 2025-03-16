@@ -1,8 +1,7 @@
 'use client'
 import Link from 'next/link'
-import React, { ChangeEvent, FormEvent, useState, useEffect } from 'react'
+import React, { ChangeEvent, FormEvent, useState } from 'react'
 import { useStore } from '@src/store'
-import checkLoggedIn from '@utils/checkLoggedIn'
 import { home } from '@constants/paths'
 import { useRouter } from 'next/navigation'
 
@@ -45,30 +44,12 @@ const AdminLogin = () => {
       }
     startRedirectingLoading()
     router.push(home)
+    endResponseLoading()
     } catch (error) {
       console.error(error)
       endResponseLoading()
     }
   }
-
-  useEffect(() => {
-    (async () => {
-
-      const hasLoggedIn = await checkLoggedIn(
-        )
-      if(hasLoggedIn){
-        startRedirectingLoading()
-        setTimeout(() => {
-
-          location.href = '/admin/dashboard';
-        }, 2000)
-      }
-    })()
-
-
-  }, [startResponseLoading])
-
-  // if (startRedirectingLoading) return <div className='flex flex-col bg-gray-200/50 w-screen h-screen justify-center items-center'><Spinner color='#000000' /><h1 className='text-black font-bold '>Welcome back, we are shipping you to dashboard...</h1></div>
 
   return (
     <div className=' pt-4 flex flex-col justify-center'>

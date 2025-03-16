@@ -5,6 +5,8 @@ import SecretTable from '@components/SecretTable'
 import eye from 'public/assets/images/eye.svg'
 import hidden from 'public/assets/images/hide.svg'
 import RoscaList from '@components/RoscaList'
+import { noto_serif_malayalam } from '@fonts'
+
 
 
 
@@ -12,7 +14,7 @@ import RoscaList from '@components/RoscaList'
 const Dashboard = () => {
 
   return (
-    <div className={`member-container flex flex-col items-center relative h-full '$'{(FormVisibility || deletePopupVisibility) && ' overflow-x-hidden overflow-y-hidden '}`}>
+    <div className={`member-container flex flex-col items-center ${noto_serif_malayalam.className} relative h-full '$'{(FormVisibility || deletePopupVisibility) && ' overflow-x-hidden overflow-y-hidden '}`}>
       <RoscaList />
       <AdminTable />
       <SecretTable eye={eye} hidden={hidden} />

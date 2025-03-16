@@ -45,8 +45,8 @@ export const POST = async (req: NextRequest) => {
     const newOTPDoc = new OTP<OTPModelType>({
       email,
       otp: hashedOTP,
-      password: 'passwordnotapplicable',
-      createdAt: new Date(),
+      password: 'passwordnotapplicable', //@ts-ignore
+      createdAt: new Date(), //@ts-ignore
       expiresAt: new Date(Date.now() + durationInMinutes * 60 * 1000)
     });
     

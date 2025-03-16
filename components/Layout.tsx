@@ -9,7 +9,7 @@ type LayoutProps = {
 }
 
 const Layout = ({ section }: LayoutProps) => {
-    const { isLoggedIn, startResponseLoading } = useStore() as State
+    const { isLoggedIn, startResponseLoading, adminLoading } = useStore() as State
 
     const pathname = usePathname()
 
@@ -24,15 +24,16 @@ const Layout = ({ section }: LayoutProps) => {
                 startRedirectingLoadingToAdmin()
                 setTimeout(() => {
 
-                    if (location.href !== '/admin/dashboard') location.href = '/admin/dashboard'
+                    if (location.href !== '/admin/dashboard') location.href = '/admin/dashboard/schemes'
                 }, 1000)
             }
 
         } else { //means that section === 'admin' includes superadmin as well
-            if (!hasLoggedIn) {
+            if (!adminLoading && !hasLoggedIn) {
                 startRedirectingLoadingToUser()
                 if (location.href !== '/admin/go/login') location.href = '/admin/go/login'
             }
+            if (!( location.href.endsWith('/admin/dashboard/schemes') || location.href.includes('/admin/dashboard/superadmin' ))) location.href = '/admin/dashboard/schemes'
         }
 
     }

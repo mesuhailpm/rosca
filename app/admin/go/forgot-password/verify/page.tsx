@@ -47,11 +47,7 @@ const Verify = () => {
       //verify the OTP and update the password
       const data = await verifyOtpForgot({ otp, admin: pendingAdmin });
       if (!data.success) { throw new Error(data.message) }
-      console.log("sent otp with otp and admin to verify ", {
-        otp,
-        admin: pendingAdmin,
-      });
-      console.log("got data", data);
+
 
       endResponseLoading();
 
@@ -66,16 +62,13 @@ const Verify = () => {
 
     } catch (error: any) {
       endResponseLoading()
-      console.log(error.message);
+
       runConfirmation(
         {
           message: error.message,
           success: false,
         }
       )
-      // console.log('confrmation message should have completed as state is', useStore());
-
-
     }
   };
 

@@ -5,7 +5,7 @@ import { State } from "@types";
 import useSubmitForm from "@hooks/useSubmitForm";
 
 const MemberForm = () => {
-  const { participantFormData, toggleShowFormModal, setShowFormModal, showFormModal, action } = useStore() as State;
+  const { participantFormData, toggleFormVisibility, setFormVisibility, FormVisibility, action } = useStore() as State;
   const [componentActionTitle, setComponentActionTitle] = useState(action)
   const actionAsTitle = componentActionTitle && (`${componentActionTitle[0]?.toUpperCase()}${componentActionTitle.slice(1)}`)
   const submitButtonLabel = action === "edit" ? "Update" : "Create";
@@ -37,18 +37,17 @@ const MemberForm = () => {
 
   useEffect(()=>{
     const handleKey = (e: KeyboardEvent) =>{
-      console.log(e.key)
       if(e.key === 'Escape'){
-        setShowFormModal(false)
+        setFormVisibility(false)
       }
 
     }
 
-    if(showFormModal)document.addEventListener('keydown',handleKey)
+    if(FormVisibility)document.addEventListener('keydown',handleKey)
 
     return () => document.removeEventListener('keydown',handleKey)
 
-  },[showFormModal])
+  },[FormVisibility])
 
   useEffect(() => {
     setComponentFormData(participantFormData)
@@ -57,7 +56,7 @@ const MemberForm = () => {
   }, [participantFormData, action])
     return (
       <div
-        className={`fixed w-screen h-screen top-0 left-0 flex items-center justify-center modal ${showFormModal ? 'appear':''}`}
+        className={`fixed w-screen h-screen top-0 left-0 flex items-center justify-center modal ${FormVisibility ? 'appear':''}`}
       >
         <form
           className={`relative bg-red-400 flex flex-col gap-1 p-4 rounded-md border border-yellow-100`}
@@ -66,7 +65,7 @@ const MemberForm = () => {
           <button
             type="button"
             className="absolute right-[5%] top-[5%] p-1 rounded-md bg-teal-300 flex hover:text-red-500"
-            onClick={() => toggleShowFormModal()}
+            onClick={() => toggleFormVisibility()}
           >
             <i className="fa fa-times" aria-hidden="true"></i>
           </button>

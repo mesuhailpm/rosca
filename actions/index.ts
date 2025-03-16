@@ -1,6 +1,7 @@
-import { AdminModelType, ParticipantFormData, Participant, RoscaTypeExceptAdmins } from "@types";
+import {  CustomRosca} from "@components/RoscaElement";
+import { AdminModelType, ParticipantFormData, Participant, RoscaTypeExceptAdmins, RoscaType, Participants } from "@types";
 
-export const fetchSchemes = async (adminId: string) => {
+export const fetchSchemes = async () => {
   try {
     const {token} = JSON.parse(localStorage.getItem("userObject")|| '');
     if(!token) {throw new Error('Token not found')}
@@ -16,7 +17,16 @@ export const fetchSchemes = async (adminId: string) => {
   }
 }
 
-export const fetchSchemeParticipants= async (roscaId: string) => {
+type FetchSchemeParticipants = (roscaId: string) => Promise<{
+  data: Participants;
+  success: true;
+  message: string;
+} | {
+  message: string;
+  success: false;
+}>
+
+export const fetchSchemeParticipants: FetchSchemeParticipants = async (roscaId: string) => {
   try {
     const {token} = JSON.parse(localStorage.getItem("userObject")|| ''); 
     if(!token) {throw new Error('Token not found')}
@@ -24,32 +34,31 @@ export const fetchSchemeParticipants= async (roscaId: string) => {
     const response = await fetch(`/api/schemes/${roscaId}`,{ headers: {
       'Authorization': `Bearer ${token}`
     }}); //   const response = await fetch("/api/participants/all");
-    console.log(response)
+
     if(!response.ok) {
-      const {message, success} = await response.json()
-      console.log({message})
+      const {message, success}:{message: string, success: false} = await response.json()
+
       return {message , success}
     }
 
-    const { scheme, success } = await response.json();
+    const { scheme, success }:{scheme: CustomRosca, success: true} = await response.json();
     
-    return {data : scheme.participants ,success}
-  } catch (error) {
-    console.log(error);
-    throw error
+    return {data : scheme.participants ,success, message: 'Details fetched'}
+  } catch (error: any) {
+    return {message: error?.message as string || 'Unable to fetch members', success: false}
   }
 };
 
 type UpdateParticipant = (id: string, formData: ParticipantFormData) => Promise<{ result: Participant, message: string }>
 export const updateParticipant: UpdateParticipant = async (id, formData) => {
-  console.log(id, formData, ' from updateParticipant actions');
+
   try {
     const response = await fetch(`/api/participants/edit/${id}`, {
       method: "POST",
       body: JSON.stringify(formData),
     });
     const data = await response.json(); //{data: 'particpant object', message: 'successflly updated'}
-    //console.logdata, 'from updateParticipant It should contain the error');
+
     return data;
   } catch (error) {
     console.log(error);
@@ -63,14 +72,13 @@ export const addParticipant: AddParticipant = async (formData) => {
   const {token} = JSON.parse(localStorage.getItem("userObject")|| ''); 
   if(!token) {throw new Error('Token not found')}
 
-  //console.logformData);
   try {
     const response = await fetch(`/api/participants/add`, {
       method: "POST",
       body: JSON.stringify(formData),
       headers: {'Authorization': `Bearer ${token}`}
     });
-    console.log(response)
+
 
       
       const {result = undefined, message,success} = await response.json(); //{data: 'particpant object', message: 'successflly updated'}
@@ -84,13 +92,13 @@ export const addParticipant: AddParticipant = async (formData) => {
 type DeleteParticipant = (id: string) => Promise<{ result: Participant, message: string }>
 
 export const deleteParticipant: DeleteParticipant = async (id) => {
-  //console.logid,' got in action');
+
   try {
     const response = await fetch(`/api/participants/delete/${id}`, {
       method: "DELETE",
     });
     const data = await response.json(); //{data: 'particpant object', message: 'successflly updated'}
-    //console.logdata, ' is data returned');
+
     return data;
   } catch (error) {
     console.log(error);
@@ -106,9 +114,6 @@ export const initiateRegister: InitiateRegister = async (credentials) => {
       body: JSON.stringify(credentials),
     });
     const data = await response.json();
-    console.log(data);
-
-
     return data;
 
   } catch (error) {
@@ -182,7 +187,7 @@ type UpdateAdmin = (formData: { email: string }) => Promise<{ updatedAdmin: Part
 export const updateAdmin: UpdateAdmin = async (credentials) => {
 
   try {
-    console.log('email is ' + credentials.email);
+
     const response = await fetch(`/api/admin/update/${credentials.email}`, { method: 'POST', body: JSON.stringify(credentials) });
 
     const data = await response.json();

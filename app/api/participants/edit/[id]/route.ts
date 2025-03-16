@@ -1,9 +1,10 @@
 import connectToDb from "@utils/connectToDb";
 import Participant from "@models/Participant";
 import { NextRequest } from "next/server";
+import { ParticipantFormData } from "@types";
 export const POST = async (req: NextRequest, { params }:{params:{id: string}}) => {
   try {
-    const body = await req.json();
+    const body: ParticipantFormData = await req.json();
     console.log(body, " is body in backed post request");
     await connectToDb();
     const updatedParticipant = await Participant.findByIdAndUpdate(

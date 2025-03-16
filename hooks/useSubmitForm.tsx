@@ -15,14 +15,12 @@ const initialValue: {
 }} = { action: '', formData: {serial:0, name:'', _id:'', claimed: false, roscaId: ''} }
 
 const useSubmitForm = () => {
-  const { startResponseLoading, endResponseLoading, setParticipants, runConfirmation, participants, setShowFormModal,setShowDeleteModal } = useStore() as State
+  const { startResponseLoading, endResponseLoading, setParticipants, runConfirmation, participants, setFormVisibility,setDeletePopupVisibility } = useStore() as State
 
   const [formValue, serFormValue] = useState(initialValue)
   const { action, formData } = formValue;
-  console.log('I got acation as : ', action);
 
-
-
+  
   const handleSubmit = async () => {
 
     try {
@@ -35,7 +33,7 @@ const useSubmitForm = () => {
           const dataWithMessage: { result: Participant, message: string } = await updateParticipant(formData._id, formData)
           if (!dataWithMessage) throw new Error;
           runConfirmation({ message: dataWithMessage.message, success: true })
-          setShowFormModal(false);
+          setFormVisibility(false);
 
           setParticipants(participants.map((participant: Participant) => {
             return participant._id === dataWithMessage.result._id ? dataWithMessage.result : participant
@@ -59,6 +57,7 @@ const useSubmitForm = () => {
             const participantCopy = participants
             participantCopy.push(result)
             setParticipants(participantCopy)
+            setFormVisibility(false)
 
           }else{
             runConfirmation({message, success})
@@ -82,14 +81,14 @@ const useSubmitForm = () => {
           if (deletedParticipant === undefined) throw new Error()
          
           useStore.setState({ participants: participants.filter((participant) => participant._id !== deletedParticipant._id) })
-          setShowDeleteModal(false)
+          setDeletePopupVisibility(false)
           endResponseLoading();
           break;
 
       }
     } catch (error: any) {
       endResponseLoading()
-      console.log(error,'this from error message');
+
       runConfirmation(
         { message: error.message || 'It doesn\'t work', success: false } 
       )

@@ -14,7 +14,6 @@ const MemberTable = ({ }) => {
 
   const { participants,toggleDeletePopupVisibility, setParticipants, runConfirmation, selectedRosca, toggleFormVisibility, FormVisibility, participantFormData, setFormVisibility, setParticipantFormData, startResponseLoading,endResponseLoading, participantsLoading, setParticipantsLoading } = useStore() as State
 
-console.log(participants)
   const router = useRouter()
   const [tooltip, setTooltip] = useState<string | null>(null); // State for managing the tooltip
   const [reason, setReason] = useState<string>()
@@ -38,7 +37,6 @@ console.log(participants)
 
 
   const handleEditClick = async (serial: number, name: string, claimed: boolean, action: Action, _id: string, roscaId: string) => {
-    // console.log(serial, name, claimed, action, _id, ' from handleEdit')
     setParticipantFormData({ _id, serial, name, claimed, roscaId });
     toggleFormVisibility(action)
   }
@@ -54,7 +52,6 @@ console.log(participants)
         
         setParticipantsLoading(true)
         const result : { data:  Participants, success: true} | { message: string, success: false} = await fetchSchemeParticipants (selectedRosca?._id), {success} = result
-        console.log(result)
         if (success){  
           const {data} = result        
           data.sort((a, b) => a.serial - b.serial)
@@ -73,7 +70,6 @@ console.log(participants)
           
         runConfirmation({message: errorMessage, success: false })
         setParticipantsLoading(false)
-        console.log(error)
       }
       
 
@@ -106,7 +102,6 @@ console.log(participants)
     </thead>
     <tbody>
       {participants?.map((participant, index) => {
-        console.log(participant)
         const { serial, name, claimed, _id, updatedAt } = participant as Participant
         return (
           <tr key={index} className={`${!(index % 2) ? 'bg-sky-500/75 text-teal-100' : 'text-slate-200'}`}>
