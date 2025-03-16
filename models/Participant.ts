@@ -8,13 +8,15 @@ const participantSchema = new Schema<ParticipantModelType>({
   },
   serial: {
     type: Number,
+    min:1,
+    max:50,
     required: true,
   },
   claimed: {
     type: Boolean,
     required: true,
   },
-  roscaId: { type: Schema.Types.ObjectId, ref: "ROCSA", required: true },
+  roscaId: { type: Schema.Types.ObjectId, ref: "ROSCA", required: true },
 },{timestamps: true});
 
 const Participant: Model<ParticipantModelType> =

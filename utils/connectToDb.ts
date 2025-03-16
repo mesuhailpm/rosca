@@ -1,3 +1,9 @@
+import "@models/Admin";
+import "@models/OTP";
+import "@models/Rosca";
+import "@models/Participant";
+
+
 import mongoose,{ConnectOptions} from "mongoose"
 const mongodbUri = process.env.NEXT_MONGODB_URI
 

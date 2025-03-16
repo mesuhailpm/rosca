@@ -43,7 +43,7 @@ const RoscaList = () => {
 
   return (
     <section className='text-white flex flex-col items-center w-full'>
-      <h2 className='text-3xl font-semibold m-[1rem]'>All Schemes</h2>
+      <h2 className='text-3xl font-semibold self-start text-yellow-500 m-[1rem]'>All Schemes</h2>
       {schemes.map((scheme, index) => (
         <RoscaElement key={scheme._id} order={index + 1} scheme={scheme} setSchemes={setSchemes} />
       ))}

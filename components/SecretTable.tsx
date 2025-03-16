@@ -2,18 +2,46 @@
 import { useStore } from '@src/store'
 import { StaticImport } from 'next/dist/shared/lib/get-img-props'
 import Image from 'next/image'
-import React, { ChangeEvent, KeyboardEvent, useState } from 'react'
+import React, { ChangeEvent, KeyboardEvent, useEffect, useRef, useState } from 'react'
 
-const SecretTable = ({ secrets, eye, hidden }: { secrets: Array<{ secret: string, _id: string }>, eye: StaticImport, hidden: StaticImport }) => {
-
-  const secretsData = secrets.map((secret) => {
-    return { ...secret, visibility: false }
-  })
+const SecretTable = ({ eye, hidden }: { eye: StaticImport, hidden: StaticImport }) => {
+  const [loading, setLoading] = useState(true)
+  
   const [secretInForm, setSecretInForm] = useState({secret:''})
-  const [secretState, setSecretState] = useState(secretsData)
-
-
+  const [secretState, setSecretState] = useState<{value: string, _id: string, visibility: boolean }[] >([])
+  
+  
   const { runConfirmation, startResponseLoading, endResponseLoading } = useStore()
+  const  AuthorizationParametersRef = useRef({token : null, headers:{}})
+
+
+  useEffect(()=>{
+
+    const {token} = JSON.parse(localStorage.getItem("userObject")|| '')
+    
+    const headers= {
+      'Authorization': `Bearer ${token}`
+    }
+    AuthorizationParametersRef.current = {token, headers}
+    
+    const fetchSecretsFromServer = async () => {
+
+    const response = await fetch(`/api/superadmin/secret`, { method: 'POST', body: JSON.stringify({ get: true, token, secret: ''}), headers, next: { revalidate: 60 } }) // revalidate every 60 seconds
+    const secretsFromServer: { secrets: Array<{ secret: string, _id: string }> } = await response.json()
+    const secretsData = secretsFromServer ? secretsFromServer.secrets.map((el) => {
+      const {_id, secret} = el
+      return { _id, value: secret, visibility: false }
+    }) : [];
+    setSecretState(secretsData)
+    setLoading(false)
+  
+
+  }
+  
+  fetchSecretsFromServer()
+},[])
+
+
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     setSecretInForm({secret: e.target.value})
@@ -23,17 +51,19 @@ const SecretTable = ({ secrets, eye, hidden }: { secrets: Array<{ secret: string
     try {
       startResponseLoading()
 
-      const response = await fetch(`/api/secret`, { method: 'POST', body: JSON.stringify(secretInForm) })
-      const data = await response.json()
-      if (data.error) throw new Error(data.error)
-      runConfirmation({ message: data.message, success: true })
+      const response = await fetch(`/api/superadmin/secret`, { method: 'POST', body: JSON.stringify(secretInForm), headers: AuthorizationParametersRef.current.headers })
+      const data = await response.json();
+
+      if (!data.success) throw new Error(data.message)
+      runConfirmation({ message: data.message, success: data.success })
 
       endResponseLoading()
       const newSecretState = secretState
-      newSecretState.push(data.result)
+      newSecretState.push({value: data.result.secret, visibility: false,_id: data.result._id})
       setSecretState(newSecretState)
 
     } catch (error: any) {
+
       endResponseLoading()
       runConfirmation({ message: error.message, success: false })
 
@@ -54,15 +84,17 @@ const SecretTable = ({ secrets, eye, hidden }: { secrets: Array<{ secret: string
   }
 
   const handleDelete = async (id: string) => {
-    console.log(id, ' kis id')
-    if (confirm("Do you want to proceed?")) {
+    const {token, headers} = AuthorizationParametersRef.current
+
+      if (confirm("Do you want to proceed?")) {
       try {
+      if(!token){
+      throw Error('Unauthorized, Try Re-loging in')
+      }
         startResponseLoading()
-        const response = await fetch(`/api/secret`, { method: 'DELETE', body: JSON.stringify(id) })
+        const response = await fetch(`/api/superadmin/secret`, { method: 'DELETE', body: JSON.stringify(id), headers})
 
         const data = await response.json()
-
-        console.log(data)
         endResponseLoading()
         setSecretState((prev) => (
           prev.filter((secret) => secret._id !== id)
@@ -76,10 +108,12 @@ const SecretTable = ({ secrets, eye, hidden }: { secrets: Array<{ secret: string
     }
 
   }
+  if (loading ) return <h1 className='text-white' > Loading Secrets..</h1>
   return (
-    <div className='w-full flex flex-col items-center'>
+    <div className='w-full flex flex-col text-white'>
+      <h2 className='text-3xl font-semibold m-[1rem] text-yellow-500'>Manage Secrets</h2>
 
-      <table className='self-center bg-teal-600/75 text-white table-auto w-fit m-2 border-none rounded-md' >
+      <table className='bg-teal-600/75 table-auto w-fit m-2 border-none rounded-md' >
         <thead >
           <tr className='border-none'>
             <th className='border-none'>Secrets</th>
@@ -95,8 +129,8 @@ const SecretTable = ({ secrets, eye, hidden }: { secrets: Array<{ secret: string
               <td className='border-none'>
                 <div className='flex justify-between items-center'>
                   <input className='text-black border-none outline-none bg-transparent text-xl font-mono font-bold italic'
+                    value={secret.value}
                     type={secret.visibility ? 'text' : 'password'}
-                    value={secret.secret}
                     readOnly
                   />
 
@@ -106,7 +140,7 @@ const SecretTable = ({ secrets, eye, hidden }: { secrets: Array<{ secret: string
                 </div>
               </td>
               <td className='border-none'>
-                <button className='border font-bold rounded-md border-none p-2 bg-rose-500 hover:bg-red-600' onClick={() => handleDelete(secret._id)}>
+                <button className='border font-bold rounded-md border-none p-2 bg-rose-500 hover:bg-black hover:text-red-500 hover:ring-2 ring-yellow-300' onClick={() => handleDelete(secret._id)}>
                   Delete
                 </button>
               </td>
@@ -115,8 +149,8 @@ const SecretTable = ({ secrets, eye, hidden }: { secrets: Array<{ secret: string
           ))}
         </tbody >
       </table>
-      <p className='font-bold text-cyan-500 border-none px-2'>Add Another Secret</p>
-      <input type='text' name='secret' value={secretInForm.secret} onKeyDown={handleKeyDown} onChange={handleChange} className=' bg-cyan-200 outline-none px-2 m-2 text-sm min-w-[250px] text-center' placeholder="Type your secret and press enter"/>
+      <p className='font-bold text-cyan-500 border-none px-2'>Add A Secret</p>
+      <input type='text' name='secret' value={secretInForm.secret} onKeyDown={handleKeyDown} onChange={handleChange} className='text-black bg-cyan-200 outline-none w-fit px-2 m-2 text-sm min-w-[250px] text-center' placeholder="Type your secret and press enter"/>
       
     </div>
   )
