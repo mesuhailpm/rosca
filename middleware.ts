@@ -10,8 +10,8 @@ export async function middleware(request: CustomeRequest) {
         const token = authHeader.split(' ')[1];
         try {
             console.log(baseUrl+'/api/verifyToken', ' is the url used to verifyt the token')
-            const res  = await fetch(baseUrl+'/api/verifyToken', {method: 'POST', body: JSON.stringify(token)})
-            const decodedToken = await res.json()
+            const res  = await fetch(baseUrl+'/api/verifyToken', {method: 'POST', body: JSON.stringify(token)}); console.log(res, 'is response')
+            const decodedToken = await res.json(); console.log(decodedToken,' is decoded token received in middleware')
             if(!decodedToken?.adminId) {throw Error('No adminId inside the adminId')}
                 
             request.admin = decodedToken.adminId; 
