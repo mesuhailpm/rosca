@@ -5,14 +5,40 @@ import { AdminModelType, State } from '@types'
 
 import { useState, useEffect } from 'react'
 
-const AdminTable = ({ admindatafromserver }: { admindatafromserver: AdminModelType[] }) => {
-    const [admins, setAdmins] = useState<Array<AdminModelType>>(admindatafromserver)
+const AdminTable = () => {
+    const [admins, setAdmins] = useState<Array<AdminModelType>>()
+      const [loading, setLoading] = useState(true)
+    
+    
     const { runConfirmation, startResponseLoading, endResponseLoading } = useStore() as State
 
 
 
+      
+      
+    useEffect(()=>{
+        setLoading(true)
+        const {token} = JSON.parse(localStorage.getItem("userObject")|| '')
+
+        const headers= {
+            'Authorization': `Bearer ${token}`
+          }
+    
+        const fetchAdmins = async () => {
+    
+    
+            const response = await fetch(`/api/superadmin/admins`, { next: { revalidate: 60 },headers }) // revalidate every 60 seconds
+            const admindatafromserver: { admins: AdminModelType[] } = await response.json()
+            setAdmins(admindatafromserver.admins);
+            setLoading(false)
+        }
+        fetchAdmins()
+    },[])
+
+
 
     const handleDeleteAdmin = async (username: string) => {
+        if(!admins) return;
         if (confirm('Are you sure you want to delete the admin? This is not reversible')) {
             try {
                 startResponseLoading('Removing from database...')
@@ -21,10 +47,9 @@ const AdminTable = ({ admindatafromserver }: { admindatafromserver: AdminModelTy
                 if (data.error) {
                     endResponseLoading()
                     runConfirmation({ message: data.error, success: false })
-                    console.log(data.error)
                 } else {
                     endResponseLoading()
-                    console.log(data.message)
+
                     runConfirmation({
                         message: data.message,
                         success: true
@@ -44,6 +69,7 @@ const AdminTable = ({ admindatafromserver }: { admindatafromserver: AdminModelTy
 
 
 
+    if (loading ) return <h1 className='text-white' > Loading Admin Data..</h1>
 
     if (admins?.length) {
 
