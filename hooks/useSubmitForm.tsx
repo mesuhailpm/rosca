@@ -29,7 +29,7 @@ const useSubmitForm = () => {
           startResponseLoading();
           if(formData.serial < 1) { throw Error('Invalid serial provided')}
           if(!formData._id){ throw new Error('No participant Id passed to update.')}
-          if(!formData.claimed || !formData.name || !formData.serial) { throw Error( 'All fields must be filled')}
+          if(String(formData.claimed) ==="" || !formData.name || !formData.serial) { throw Error( 'All fields must be filled')};
           const dataWithMessage: { result: Participant, message: string } = await updateParticipant(formData._id, formData)
           if (!dataWithMessage) throw new Error;
           runConfirmation({ message: dataWithMessage.message, success: true })
@@ -49,7 +49,7 @@ const useSubmitForm = () => {
           startResponseLoading()
 
           if(formData.serial < 1) { throw Error('Invalid serial provided')}
-          if(formData.claimed === undefined || !formData.name || !formData.serial) { throw Error( 'All fields must be filled')}
+          if(String(formData.claimed) === "" || !formData.name || !formData.serial) { throw Error( 'All fields must be filled')}
           const data = await addParticipant(formData),{success,message,result} = data
           if (!data) throw new Error('Something went wrong');
           if(success){
