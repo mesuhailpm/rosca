@@ -4,6 +4,7 @@ import Image from 'next/image'
 import React, { ChangeEvent, KeyboardEvent, useEffect, useRef, useState } from 'react'
 import eye from 'public/assets/images/eye.svg'
 import hidden from 'public/assets/images/hide.svg'
+import { SecretDocument } from '@models/Secret'
 
 
 const SecretTable = () => {
@@ -18,30 +19,43 @@ const SecretTable = () => {
 
 
   useEffect(() => {
+  const { token } = JSON.parse(localStorage.getItem("userObject") || '');
 
-    const { token } = JSON.parse(localStorage.getItem("userObject") || '')
+  const headers = {
+    'Authorization': `Bearer ${token}`
+  };
+  AuthorizationParametersRef.current = { token, headers };
 
-    const headers = {
-      'Authorization': `Bearer ${token}`
-    }
-    AuthorizationParametersRef.current = { token, headers }
+  const fetchSecretsFromServer = async () => {
+    try {
+      const response = await fetch('/api/superadmin/secret', {
+        method: 'POST',
+        body: JSON.stringify({ get: true, token, secret: '' }),
+        headers,
+        next: { revalidate: 60 } // revalidate every 60 seconds
+      });
 
-    const fetchSecretsFromServer = async () => {
+      if (!response.ok) {
+        throw new Error('Failed to fetch secrets from server');
+      }
 
-      const response = await fetch(`/api/superadmin/secret`, { method: 'POST', body: JSON.stringify({ get: true, token, secret: '' }), headers, next: { revalidate: 60 } }) // revalidate every 60 seconds
-      const secretsFromServer: { secrets: Array<{ secret: string, _id: string }> } = await response.json()
+      const secretsFromServer:{secrets: SecretDocument[]} = await response.json();
       const secretsData = secretsFromServer ? secretsFromServer.secrets.map((el) => {
-        const { _id, secret } = el
-        return { _id, value: secret, visibility: false }
+        const { _id, secret } = el;
+        return { _id, value: secret, visibility: false };
       }) : [];
-      setSecretState(secretsData)
-      setLoading(false)
 
-
+      setSecretState(secretsData);
+    } catch (error: any) {
+      runConfirmation({ message: error.message, success: false })
+    } finally {
+      setLoading(false); // Ensure this runs whether there's an error or not
     }
+  };
 
-    fetchSecretsFromServer()
-  }, [])
+  fetchSecretsFromServer();
+}, []);
+
 
 
 

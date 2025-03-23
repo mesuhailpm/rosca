@@ -1,6 +1,6 @@
 import { Document, Model, model, models, Schema } from 'mongoose';
 
-interface SecretDocument extends Document { secret: string}
+export interface SecretDocument extends Document { secret: string}
 const secretSchema:Schema<SecretDocument> = new Schema({
     secret: {
         required: true,
