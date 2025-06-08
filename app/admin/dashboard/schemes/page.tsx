@@ -44,7 +44,11 @@ const Schemes = () => {
     }
     
     if(schemesLoading) return <h3 className="text-center text-white">Fetching Your Schemes...</h3>
-    if (!schemes?.length) return <div>Create scheme</div>
+    if (!schemes?.length) return <div className='flex flex-col items-center'>
+        <Link href={'schemes/create'} className='m-2 p-2 bg-blue-500 text-white rounded hover:ring-1 ring-yellow-400 font-semibold hover:font-bold' aria-label='Create Scheme'>
+                    <i className="fa-solid fa-plus m-2"></i>Create Scheme
+                </Link>
+        </div>
     
     if ( selectedRosca ) {
         return <div className='text-white text-center flex flex-col items-center'>
